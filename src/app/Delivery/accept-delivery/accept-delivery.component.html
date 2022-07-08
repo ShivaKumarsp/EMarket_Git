@@ -1,0 +1,96 @@
+<div class="my-4 min-vh-100">
+  <div class="container ">
+    <div class="my-3">
+      <h5>Orders of Pickup</h5>
+    </div>
+    <div class="row g-0">
+      <div class="col-3 card card-body btn p-1 shadow shadow-sm" [ngClass]="{activeTab: page==1}" (click)="page=1">
+        <p class="small p-0"> <strong><i class="fa fa-check-square-o"></i> Orders to Accept</strong></p>
+      </div>
+      <div class="col-3 card card-body btn p-1 shadow shadow-sm" [ngClass]="{activeTab: page==2}" (click)="page=2">
+        <p class="small p-0"> <strong><i class="fa fa-check-square-o"></i> Accepted Orders</strong></p>
+      </div>
+      <div class="col-3 card card-body btn p-1 shadow shadow-sm" [ngClass]="{activeTab: page==3}" (click)="page=3">
+        <p class="small p-0"> <strong><i class="fa fa-truck"></i> In-Transit Orders</strong></p>
+      </div>
+    </div>
+
+
+    <div class="my-3" [ngSwitch]="page">
+
+      <div class="card rounded-0 shadow shadow-sm" *ngSwitchCase="1">
+        <div class="card-header">
+          <i class="fa fa-fa-truck"></i> New Orders for Pickup
+        </div>
+        <div class="card-body">
+          <div class="mb-3 card card-body" *ngFor="let order of pending_delivery_list|filter:search| paginate: {itemsPerPage: tableSize, currentPage: page1, totalItems: count};let i = index">
+            <div class="d-flex justify-content-between">
+              <h5>Tracking ID #{{order.tracking_id}}</h5>
+              <small>{{order.datetime}}</small>
+            </div>
+
+            <p> Pickup <b>{{order.pickup_location}}</b> <br/> Drop   <b>{{order.delivery_address}}</b></p>
+            <div class="text-end">
+              <button class="btn btn-template bg-primary" type="button" (click)="acceptingParcel(order)">Accept</button>
+            </div>
+          </div>
+          <div class="d-flex justify-content-center">
+            <pagination-controls
+              previousLabel="Prev"
+              nextLabel="Next"
+              (pageChange)="onTableDataChange($event)"
+            >
+            </pagination-controls>
+          </div>
+        </div>
+      </div>
+      <div class="card rounded-0 shadow shadow-sm" *ngSwitchCase="2">
+        <div class="card-header">
+           Accepted Orders
+        </div>
+        <div class="card-body">
+          <div class="mb-3 card card-body" *ngFor="let order of accept_delivery_list|filter:search1| paginate: {itemsPerPage: tableSize1, currentPage: page2, totalItems: count1};let i = index">
+            <div class="d-flex justify-content-between">
+              <h5>Parcel ID #{{order.tracking_id}}</h5>
+              <!-- <small>{{order.datetime}}</small> -->
+            </div>
+
+            <p> Pickup <b>{{order.pickup_location}}</b> <br/> Drop   <b>{{order.delivery_address}}</b></p>
+            <!-- <div class="text-end">
+              <button class="btn btn-template bg-primary" type="button" (click)="acceptingParcel(order)">Accept</button>
+            </div> -->
+          </div>
+          <div class="d-flex justify-content-center">
+            <pagination-controls
+              previousLabel="Prev"
+              nextLabel="Next"
+              (pageChange)="onTableDataChange1($event)"
+            >
+            </pagination-controls>
+          </div>
+        </div>
+      </div>
+      <div class="card rounded-0 shadow shadow-sm" *ngSwitchCase="3">
+        <div class="card-header">
+          <i class="fa fa-fa-truck"></i> In-Transit
+        </div>
+        <div class="card-body">
+          <div class="mb-3 card card-body" *ngFor="let order of orders;index as i">
+            <div class="d-flex justify-content-between">
+              <h5>Parcel ID #{{order.parcelid}}</h5>
+              <small>{{order.datetime}}</small>
+            </div>
+
+            <p> Pickup <b>{{order.pickup}}</b> <br/> Drop   <b>{{order.drop}}</b></p>
+            <!-- <div class="text-end">
+              <button class="btn btn-template bg-primary" type="button" (click)="acceptingParcel(order)">Accept</button>
+            </div> -->
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>

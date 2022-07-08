@@ -1,0 +1,257 @@
+<div class="container">
+    <div class="row mt-4 border p-2">
+        <div class="col-md-5">
+            <h5 class="my-3">Delivery Address</h5>
+            <b>Name : </b>{{customer_shipping_address[0].customer_name}}
+            <p>	
+                <b>Address : </b> {{customer_shipping_address[0].addressline_1}} &nbsp;  {{customer_shipping_address[0].addressline_2}},
+                {{customer_shipping_address[0].v_city}},		
+                 {{customer_shipping_address[0].landmark}},
+                {{customer_shipping_address[0].v_pincode}},	
+                {{customer_shipping_address[0].v_mobile}},
+                {{customer_shipping_address[0].v_email}}</p>
+        </div>        
+
+        <div class="col-md-4">
+            <h5 class="my-3 d-none">Your Rewards</h5>
+            <p class="d-none">100 Super Coins</p>
+        </div>
+
+        <div class="col-md-3" *ngIf="estimate_time">
+            <h6 class="my-3">Estimate Delivery</h6>
+           <p>{{deliveryhour}}</p>
+        </div>
+
+        <div class="col-md-3 d-none">
+            <h5 class="my-3">More Actions</h5>
+            <p >Download Invoice</p>
+            <button class="btn btn-dark btn-sm">
+                Download
+            </button>
+        </div>
+
+    </div>
+</div>
+
+<div class="container">
+    <div class="row mt-4 border p-2">
+        <div class="col-md-6">
+            <p><b>{{order_item_details[0].itemname}}</b></p>
+            <p class="small" *ngFor="let spec of order_item_specification">
+               {{ spec.attributename}} &nbsp; :{{spec.attributevalue}}</p>
+          
+            <p>{{order_item_details[0].sellingprice|currency:'INR'}}</p>
+
+        </div>
+
+        <div class="col-md-6" *ngIf="this.order_item_status=='Canceled'">
+            <div class="steps"  style="width: 50%;" text="center">
+                <progress id="progress" class="progress-bar " role="progressbar" [style]="{'width':status_bar}" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" ></progress>
+                <div class="step-item">
+                    <button class="btn btn-primary btn-sm btn-rounded step-button text-center" type="button" ></button>
+                    <div class="step-title small ">
+                        Ordered
+                    </div>
+                </div>
+                <div class="step-item">
+                    <button class="btn btn-primary  btn-sm btn-rounded step-button text-center" type="button" ></button>
+                    <div class="step-title small">
+                        Canceled
+                    </div>
+                </div>
+             
+            </div>
+        </div>
+        <div class="col-md-6" *ngIf="this.order_item_status=='Return Request'">
+            <div class="steps"  style="width: 50%;" text="center">
+                <progress id="progress" class="progress-bar " role="progressbar" [style]="{'width':status_bar}" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" ></progress>
+                <div class="step-item">
+                    <button class="btn btn-primary btn-sm btn-rounded step-button text-center" type="button" ></button>
+                    <div class="step-title small ">
+                        Ordered
+                    </div>
+                </div>
+                <div class="step-item">
+                    <button class="btn btn-primary  btn-sm btn-rounded step-button text-center" type="button" ></button>
+                    <div class="step-title small">
+                        Return Request Sent
+                    </div>
+                </div>
+             
+            </div>
+        </div>
+        <div class="col-md-6" *ngIf="this.order_item_status!='Canceled' && order_item_status!='Return Request'">
+            <div class="steps"  style="width: 100%;" text="center">
+                <progress id="progress" class="progress-bar " role="progressbar" [style]="{'width':status_bar}" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" ></progress>
+                <div class="step-item">
+                    <button class="btn btn-primary btn-sm btn-rounded step-button text-center" type="button" ></button>
+                    <div class="step-title small ">
+                        Ordered
+                    </div>
+                </div>
+                <div class="step-item">
+                    <button class="btn btn-primary  btn-sm btn-rounded step-button text-center" type="button" ></button>
+                    <div class="step-title small">
+                        Shipped
+                    </div>
+                </div>
+                <div class="step-item">
+                    <button class="btn btn-primary  btn-sm btn-rounded step-button text-center" type="button"></button>
+                    <div class="step-title small">
+                        Out For Delivery
+                    </div>
+                </div>
+                <div class="step-item">
+                  <button class="btn btn-primary  btn-sm btn-rounded step-button text-center" type="button"></button>
+                  <div class="step-title small">
+                      Delivered
+                  </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+                        
+            <button class="btn btn-link text-decoration-none"
+            data-bs-toggle="collapse"
+            data-bs-target="#expland"
+            aria-expanded="false"
+            aria-controls="expland"  *ngIf="this.order_item_status=='Delivered'"
+            ><i class="fa fa-reply"></i>Write Review</button> <b>Need Help</b><br>
+
+            <div class="form-check form-check-inline my-4" [formGroup] ='forms1' *ngIf="this.order_item_status=='Order Placed' || this.order_item_status=='Shipped' || this.order_item_status=='Out For Delivery'">
+                <input class="form-check-input" type="radio" (change)="ShowForm(1)" name="inlineRadioOptions" id="inlineRadio1" value="option1" [(ngModel)]="cancel_status" formControlName="cancelSelection">
+                <label class="form-check-label" for="inlineRadio1">Cancel Order</label>
+            </div>
+            <div class="form-check form-check-inline" [formGroup] ='forms2' *ngIf="this.order_item_status=='Delivered'">
+                <input class="form-check-input" type="radio" (change)="ShowForm(2)" name="inlineRadioOptions" id="inlineRadio2" value="option2" formControlName="returnSelection">
+                <label class="form-check-label" for="inlineRadio2">Return Order</label>
+            </div>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade" [ngClass]="{'show active': tab==1}" id="return" role="tabpanel" aria-labelledby="return-tab">
+                    <form [formGroup]="cancelforms">
+                        <div class="mb-3">
+                          <label for="exampleInputEmail1" class="form-label"><b>Reason For cancelation</b></label>
+                          
+                          <div class="form-floating">
+                            <select class="form-select" id="floatingSelectGrid" aria-label="Floating label select example" formControlName="cancel_reasion" [(ngModel)]="cancel_reasion_id"
+                            [ngClass]="{ 'is-invalid': submitted && f['cancel_reasion'].errors }" required>
+                                <option selected>Select Reason </option>
+                              <option *ngFor="let reasion of cancel_reasion" value="{{reasion.cancel_reasion_id}}">{{reasion.cancel_reasion}}</option>                            
+                            </select>
+                            <label for="floatingSelectGrid">Reason For Cancelling</label> 
+                          </div>
+                          <div *ngIf="submitted && f['cancel_reasion'].errors" class="invalid-feedback">
+                            <div *ngIf="f['cancel_reasion'].errors['required']">Select Reasion</div> 
+                          </div>
+
+                        </div>
+                        <div class="mb-3">
+                          <label for="exampleInputPassword1" class="form-label"><b>Comments</b></label>
+                          <div class="form-floating">
+                            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" formControlName="cancel_comments" [(ngModel)]="cancelreasion" style="height: 100px"></textarea>
+                            <label for="floatingTextarea2">Type Here..</label>
+                          </div>
+                        </div>
+                       
+                        <div class="m-4">
+                            <button type="submit" class="btn btn-primary" (click)="order_cancel()">Proceed</button>
+                        </div>
+                        
+                      </form>                  
+
+                </div>
+                <div class="tab-pane fade" [ngClass]="{'show active': tab==2}" id="replace" role="tabpanel" aria-labelledby="replace-tab">
+                    <form [formGroup]="returnforms">
+                        <div class="mb-3">
+                          <label for="exampleInputEmail1" class="form-label"><b>Reason For Returning</b></label>
+                         
+                        </div>
+                        <div class="form-floating">
+                            <select class="form-select" id="floatingSelectGrid" aria-label="Floating label select example" formControlName="return_reasion"  [(ngModel)]="return_reasion_id"
+                            [ngClass]="{ 'is-invalid': submitted && g['return_reasion'].errors }" required>
+                                <option selected>Select Reason </option>
+                                <option *ngFor="let return of return_reasion" value="{{return.return_reasion_id}}">{{return.return_reasion}}</option>
+                            </select>
+                            <label for="floatingSelectGrid">Reason For Return</label>
+                            <div *ngIf="submitted && g['return_reasion'].errors" class="invalid-feedback">
+                                <div *ngIf="g['return_reasion'].errors['required']">Select Reasion</div> 
+                              </div>
+                          </div>
+                      
+                        <div class="mb-3">
+                          <label for="exampleInputPassword1" class="form-label"><b>Comments</b></label>
+                          <div class="form-floating">
+                            <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" formControlName="return_comments" style="height: 100px" [(ngModel)]="returnreasion"></textarea>
+                            <label for="floatingTextarea2">Type Here..</label>
+                          </div>
+                        </div>
+                       
+                        <div class="m-4">
+                            <button type="submit" class="btn btn-primary" (click)="order_return()">Proceed</button>
+                        </div>
+                      </form>    
+                </div>
+
+            </div>
+              
+        </div>
+
+
+    </div>
+</div>
+<div class="container d-none">
+    <div class="row mt-4 border p-2">
+        <div class="col-md-5">
+            <b>Your Issues with this item</b>
+            <p class="small">I need details of the delivery Person</p>
+            <p>3 May 2021</p>
+        </div>
+        <div class="col-md-4">
+          
+        </div>
+        <div class="col-md-3">
+            <b>View Issues</b>
+        </div>
+        <div class="callout">
+            <button class="btn btn-dark btn-sm">
+                View all Issues
+            </button>
+           
+        </div>
+    </div>
+</div>
+
+
+  <div class="col-md-12" class="collapse"  id="expland" >
+    <div class="my-4">
+      <div class="card card-body my-4 shadow shadow-sm ms-auto border-0" >
+        <form  [formGroup]="rating">
+          <div class="form-floating mb-3">
+            <input type="Topic" class="form-control" formControlName="v_title" [(ngModel)]="title" placeholder="Topic">
+            <label>Topic</label>
+          </div>
+          <div class="mt-3">
+            <p>Rate this product</p>
+          </div>
+          <div class=" mb-3 p-0 d-flex justify-content start" >
+            <i class="fa fa-star text-warning"></i>
+            <input type="range" class="form-range mx-3" formControlName="v_rating_number" [(ngModel)]="rating_number"  min="1" max="5"  [style]="{'max-width':'200px'}">
+
+          </div>
+
+          <div class="form-floating mb-3">
+            <textarea class="form-control" placeholder="Leave a review here" formControlName="v_comments" [(ngModel)]="comments" [style]="{'min-height': '100px'}"></textarea>
+            <label>Your Review</label>
+          </div>
+          <div class="text-end">
+            <button class="btn btn-template btn-primary my-4" (click)="save_rating_review()">Send</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+
+
+

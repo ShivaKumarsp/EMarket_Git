@@ -1,0 +1,110 @@
+
+<section class="min-vh-100">
+  <div class="my-4 min-vh-100">
+    <div class="container ">
+      <div class="my-3">
+        <h5>Assign Order</h5>
+      </div>
+      <div class="row g-0">
+        <div class="col-3 card card-body btn p-1 shadow shadow-sm" [ngClass]="{activeTab: page==1}" (click)="page=1">
+          <p class="small p-0"> <strong><i class="fa fa-truck"></i> Get this Order</strong></p>
+        </div>
+
+      </div>
+
+
+      <div class="my-3" [ngSwitch]="page">
+
+        <div class="card rounded-0 shadow shadow-sm" *ngSwitchCase="1">
+          <div class="mb-3" >
+            <div class="table-responsive overflow-auto" style="height: 500px;">
+
+              <table class="table table-bordered small" >
+                <thead>
+                  <tr>
+
+                    <th>Item</th>
+                    <th>Order No</th>
+
+                    <th>Item Details</th>
+
+
+                    <th>Order Amount</th>
+                    <th>DateTime</th>
+                    <th class="text-end">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let txn of vendorreassignlist;index as i" >
+
+                    <td>
+                      <a target="_blank" href={{txn.itemimage}}>
+                        <img src={{txn.itemimage}}  height="50px" width="auto" max-width="80px">
+                      </a>
+                    </td>
+                    <td>#{{txn.orderid}}</td>
+
+                    <td> {{txn.itemname}} <br/>
+                        <strong>Variant</strong> Size:7 Color:White <br/>
+                        <strong>Quantity</strong> {{txn.iquantity}}
+
+                    </td>
+
+
+                    <td>{{txn.listingprice | currency:'INR'}}</td>
+                    <td>{{txn.orderdate | date:'medium'}}</td>
+                    <td class="text-end"><button class="btn btn-sn btn-template bg-primary shadow shadow-sm" (click)="myItemList=[];acceptingOrder(txn)">Accept</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+
+    </div>
+  </div>
+
+</section>
+
+
+
+<!-- modal -->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <h5 class="modal-title" id="exampleModalLabel">&nbsp;</h5>
+        <button type="button" class="btn-close" (click)="doSomething()"></button>
+      </div>
+      <div class="modal-body border-0">
+        <div *ngIf="vendoritemlist.length<1">
+          <div class="text-center">
+            <h5>You don't have any relavant Product or quantity in your inventory !</h5>
+          </div>
+        </div>
+        <div *ngIf="vendoritemlist.length>0">
+          <div class="row" *ngFor="let item of vendoritemlist">
+            <div class="col-sm-1"></div>
+            <div class="col-sm-11 d-flex justify-content-start">
+              <img src={{item.itemimage}}  heigth="100px" [style]="{'max-width':'100px'}"/>
+              <div class="p-2">
+                <small>{{item.itemname}}</small><br/>
+                <small><span class="badge bg-dark text-white">Available Quantity {{item.iquantity}}</span></small>
+                <small><span class="badge bg-dark text-white">My Listing Price {{item.listingprice|currency:'INR'}}</span></small>
+
+              </div>
+            </div>
+            <div class="text-end col-sm-12">
+              <button class="btn btn-template bg-primary btn-sm" (click)="updateOrderItem(item,currentOrderItem)">Select</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

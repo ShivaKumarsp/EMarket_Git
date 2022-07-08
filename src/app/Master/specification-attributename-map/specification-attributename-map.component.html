@@ -1,0 +1,142 @@
+
+<div>
+    <section class="hero hero-page gray-bg padding-small">
+        <div class="container">
+            <div class="row d-flex">
+                <div class="col-lg-9 order-2 order-lg-1">
+                    <h1>Specification Attribute Name</h1>
+                </div>
+                <div class="col-lg-3 text-right order-1 order-lg-2">
+                    <ul class="breadcrumb justify-content-lg-end">
+                        <li class="breadcrumb-item"><a>Home</a></li>
+                        <li class="breadcrumb-item active">Specification Attribute Name</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="checkout">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <ul class="nav nav-pills">
+                        <li class="nav-item"><a class="nav-link" routerLink="/app/master_specification">Specification</a></li>
+                        <li class="nav-item"><a class="nav-link " routerLink="/app/master_attributename">Attribute Name</a></li>
+                        <li class="nav-item"><a class="nav-link"  routerLink="/app/master_attributevalue">Attribute Value</a></li> 
+                        <li class="nav-item"><a class="nav-link active"  routerLink="/app/specification_attribute">Specification Attribute Map</a></li> 
+                    </ul>
+                </div>
+            </div>
+
+            <form  [formGroup]="specattr">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="tab-content">
+                            <div id="item_info" class="active tab-block">
+                                <div class="row">
+                                    <div class="col-md-12 d-none">
+                                        <!--<input type="hidden" name="item_id" id="item_id">-->
+                                    </div>
+
+                               
+                                    <div class="col-md-3" >
+                                        <label  class="form-label search">Specification Name</label>
+                                        <select class="form-control" formControlName="specname"  [(ngModel)]="specification_id" 
+                                        (change)="get_attribute_name(specification_id)" required
+                                        [ngClass]="{ 'is-invalid': submitted && f['specname'].errors }">
+                                            <option value="">-- Select Specification --</option>
+                                            <option *ngFor="let spec of specification_dd" [value]="spec.specificationid" ng-selected="{{spec.specificationid == specification_id}}">
+                                                {{spec.specificationname}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="submitted && f['specname'].errors" class="invalid-feedback">
+                                            <div *ngIf="f['specname'].errors['required']">Select Specification </div> 
+                                          </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="attname" class="form-label search">Attribute Name</label>
+                                        <select class="form-control" formControlName="attribute"  [(ngModel)]="attribute_name_id" required 
+                                            [ngClass]="{ 'is-invalid': submitted && f['attribute'].errors }">
+                                            <option value="" >-- Select Attribute --</option>
+                                            <option *ngFor="let attlist of attribute_name_dd"
+                                                [value]="attlist.attributename_id" ng-selected="{{attlist.attributename_id == attribute_name_id}}">
+                                                {{attlist.attributename}}
+                                            </option>
+                                        </select>
+                                        
+                                        <div *ngIf="submitted && f['attribute'].errors" class="invalid-feedback">
+                                            <div *ngIf="f['attribute'].errors['required']">Select Attribute </div> 
+                                          </div>
+                                    </div>
+                                 
+                                    
+
+                                    <div class="col-lg-12 mt-4">
+                                        <div class="text-center">
+                                            <input type="text" [(ngModel)]="spe_attr_id" hidden />                       
+                                            <a type="button" class="btn btn-template wide next" (click)="Clear()" >
+                                                Clear
+                                            </a> &nbsp;
+                                            <a type="button" class="btn btn-template wide next"  (click)="savedata()" >
+                                                Save<i class="fa fa-angle-right"></i>
+                                            </a>
+                    
+                                        </div>
+                                    </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </form>
+
+        </div>
+        <div class="container">
+            <div class="col-lg-12">
+                <div class="tab-content">
+                    <h5 class="my-4">Specification Attribute List</h5>
+                    <div class="col-md-4" style="float: right">                    
+                        <input class="form-control form-control-sm" type="text" [(ngModel)]="search" placeholder="search here...">
+                    </div>
+                    <table class="table table-hover table-responsive-md small">
+                        <thead>
+                            <tr>
+                                <th>SL No</th>                                                        
+                                <th>Specification Name</th>
+                                <th>Attribute Name</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let pro of specification_attribute_list |filter:search | paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index">
+                                <th>{{tableSize *(page-1)+i+1}}</th>
+                                 <td>{{pro.specificationname}}</td>
+                                <td>{{pro.attributename}}</td>                                                           
+                                <td>
+                                    <a class="btn btn-primary btn-sm"  (click)="edit_spec_attribute(pro)"><i
+                                            class="fa fa-edit"></i></a>
+                                </td>
+                                <td>
+                                  <a class="btn btn-danger btn-sm" (click)="delete_spec_attribute(pro)"><i
+                                            class="fa fa-trash"></i></a>
+                                </td>
+                            </tr>
+    
+                        </tbody>
+                    </table>
+                    <div class="d-flex justify-content-center">
+                        <pagination-controls
+                          previousLabel="Prev"
+                          nextLabel="Next"
+                          (pageChange)="onTableDataChange($event)">
+                        </pagination-controls>
+                      </div>
+                </div>
+            </div>
+    
+        </div>
+
+    </section>
+</div>

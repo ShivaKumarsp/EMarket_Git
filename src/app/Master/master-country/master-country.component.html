@@ -1,0 +1,114 @@
+<section class="checkout">
+  <div class="container">
+      <div class="row">
+          <div class="col-12">
+              <ul class="nav nav-pills">
+                  <li class="nav-item"><a class="nav-link active">Country</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/app/master_state">State</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/app/master_city" >City</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/app/master_pincode" >Pincode</a></li>
+              </ul>
+          </div>
+      </div>
+  </div>
+  
+
+</section>
+
+        <div class="container-fluid min-vh-100">
+        
+          <div class="row">
+          
+            <div class="col-md-12">
+              <hr class="d-none d-sm-block d-md-none">
+              <div class="container my-3">
+                <div class="col-md-4">
+                  <ul class="side-ui d-flex flex-wrap">
+                   <a  type="button" class="btn btn-template wide next" (click)="openModal()">
+                    Add Country </a> 
+                  </ul>                 
+                </div>
+                <div class="col-md-4" style="float: right">                    
+                    <input class="form-control form-control-sm" type="text" [(ngModel)]="search" placeholder="search here...">
+                </div>
+                   <table class="table table-bordered" >
+                  <table class="table table-sm">
+                      <table class="table table-light table-hover">
+                  <thead>
+                    <tr>
+                      <th scope="col">SL No</th>
+                      <th scope="col">Country Name</th>                   
+                      <th scope="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let cou of country_list| filter:search | paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index; filter:search">
+                      <th>{{tableSize *(page-1)+i+1}}</th>
+                      <td>{{cou.country_name}}</td>
+                      <td>
+                        <a class="btn btn-primary btn-sm" (click)="edit_country(cou)"><i class="fa fa-edit"></i></a>  &nbsp;
+                        <a  class="btn btn-danger btn-sm" (click)="delete_country(cou)"><i class="fa fa-trash"></i></a>
+                      </td>
+                    </tr>  
+                         </tbody>            
+                </table>   
+                <div class="d-flex justify-content-center">
+                    <pagination-controls
+                      previousLabel="Prev"
+                      nextLabel="Next"
+                      (pageChange)="onTableDataChange($event)"
+                    >
+                    </pagination-controls>
+                  </div>            
+              </table>
+              </table>
+              </div>        
+            </div>
+          </div>        
+        </div>       
+        
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header border-0">
+                    <h5 *ngIf="add_status==true" class="modal-title" id="exampleModalLabel">
+                     Add Country
+                    </h5>
+                    <h5 *ngIf="add_status==false" class="modal-title" id="exampleModalLabel">
+                      Update Country
+                     </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body border-0">
+                    <div class="container">
+        
+                        <form class="row g-0" [formGroup]="countrydata">
+                         
+                          <div class="col-md-12">
+                            <div>
+                              <label for="store_title" class="form-label p-0">Country<b style="color: red;">*</b></label>
+                              <input type="text" placeholder="Enter Country" class="form-control form-control" formControlName="v_country" [(ngModel)]="country_name" [ngClass]="{ 'is-invalid': submitted && f['v_country'].errors }">
+                              <div *ngIf="submitted && f['v_country'].errors" class="invalid-feedback">
+                                <div *ngIf="f['v_country'].errors['required']">Enter Country</div> 
+                              </div>
+                            </div>                          
+                          </div>                        
+                          <div class="col-lg-12 mt-4">
+                              <div class="text-center">
+                                  <input type="text" [(ngModel)]="country_id" hidden />                       
+                                  <a *ngIf="add_status==true" type="button" class="btn btn-template wide next" (click)="Clear()">Clear</a> &nbsp;
+                                  <a type="button" class="btn btn-template wide next"  (click)="save_country()" >
+                                      Save<i class="fa fa-angle-right"></i>
+                                  </a>
+          
+                              </div>
+                          </div>
+                        </form>
+        
+                    </div>
+                  </div>
+        
+                </div>
+              </div>
+            </div>
+        

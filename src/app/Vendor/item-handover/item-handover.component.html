@@ -1,0 +1,94 @@
+<section class="checkout">
+          <div class="container">
+              <div class="row">
+                  <div class="col-12">
+                      <ul class="nav nav-pills">
+                          <li class="nav-item"><a class="nav-link" href="/app/vendororderlist">Order List</a></li>
+                          <li class="nav-item"><a class="nav-link" href="/app/consignment">Consignment</a></li>
+                          <li class="nav-item"><a class="nav-link active">Hand Over</a></li>
+                          <li class="nav-item"><a class="nav-link" href="/app/item_handover_list">Hand Over List</a></li>
+                      </ul>
+                  </div>
+              </div>
+          </div> 
+        </section>
+
+        <div class="container my-3">
+          <h6>Hand Over List &nbsp;<span class="badge bg-secondary" alignment="text-left" > {{handover_list.length}}</span></h6>
+          <div class="col-md-4" style="float: right">                    
+            <input class="form-control form-control-sm" type="text" [(ngModel)]="search" placeholder="search here...">
+        </div>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>SL No</th>
+              <th>Consignment No</th>
+              <th>Dimenstion</th>
+              <th>Weight</th>
+               <th>First Hub</th>
+              <th>Final Hub</th>
+              <th>Route Details</th>              
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let han of handover_list| filter:search | paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index; filter:search">
+                      <th>{{tableSize *(page-1)+i+1}}</th>
+                      <th>{{han.consignment_id}}</th>
+                      <th>{{han.consignment_l}}*{{han.consignment_l}}*{{han.consignment_l}}</th>
+                      <th>{{han.weight}}</th>
+                      <th>{{han.first_hub}}</th>
+                      <th>{{han.last_hub}}</th>
+                      <th>{{han.hub_route_id}}</th>  
+                      <th><input class="form-check-input" type="checkbox" (change)="add_data(han)" [(ngModel)]="han.is_check" id="flexCheckChecked"></th>              
+            </tr>
+          </tbody>
+        </table>
+        <div class="d-flex justify-content-center">
+          <pagination-controls
+            previousLabel="Prev"
+            nextLabel="Next"
+            (pageChange)="onTableDataChange($event)"
+          >
+          </pagination-controls>
+        </div>
+        </div>
+
+
+
+
+           <div class="container min-vh-100"> 
+        <div class="table-responsive" *ngIf="handover_list_array.length>0">
+          <table class="table">
+            <thead>
+              <tr>
+                <th>SL No</th>
+                <th>Consignment No</th>
+                <th>Dimenstion</th>
+                <th>Weight</th>
+                 <th>First Hub</th>
+                <th>Final Hub</th>
+                <th>Route Details</th>              
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let han1 of handover_list_array;let i = index; filter:search">
+                        <th>{{i+1}}</th>
+                        <th>{{han1.consignment_id}}</th>
+                        <th>{{han1.consignment_l}}*{{han1.consignment_l}}*{{han1.consignment_l}}</th>
+                        <th>{{han1.weight}}</th>
+                        <th>{{han1.first_hub}}</th>
+                        <th>{{han1.last_hub}}</th>
+                        <th>{{han1.hub_route_id}}</th>                                 
+              </tr>
+            </tbody>
+          </table>
+          <div class="col-12 text-end">
+                    <a type="button" class="btn btn-template wide next"  (click)="hand_over()">
+                        Hand Over<i class="fa fa-angle-right"></i>
+                    </a>
+                </div>
+        </div>
+        <br>
+
+       
+      </div>

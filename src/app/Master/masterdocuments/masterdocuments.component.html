@@ -1,0 +1,131 @@
+
+<section class="hero hero-page gray-bg padding-small">
+  <div class="container">
+      <div class="row d-flex">
+          <div class="col-lg-9 order-2 order-lg-1">
+              <h1>Master Documents</h1>
+          </div>
+          <div class="col-lg-3 text-right order-1 order-lg-2">
+              <ul class="breadcrumb justify-content-lg-end">
+                  <li class="breadcrumb-item active">For Vendor Documents</li>
+              </ul>
+          </div>
+      </div>
+  </div>
+</section>
+
+<section class="min-vh-100">
+
+  <div class="container ">
+    <div class="d-flex justify-content-end my-4 py-4">
+      <button type="button" class="btn btn-template bg-primary btn-sm mx-4 p-2" (click)="openModal('',false)"><i
+          class="fa fa-plus"></i> Add new</button>
+    </div>
+    <table class="table table-light table-hover">
+      <thead>
+        <tr>
+          <th scope="col">SL No</th>
+          <!-- <th scope="col">Id</th> -->
+          <th scope="col">Document Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Pattern</th>
+          <th scope="col">Required</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let mdoc of masterdoclist;let i = index;">
+          <td>{{i+1}}</td>
+          <!-- <td>{{mdoc.in_md_id}}</td> -->
+          <td>{{mdoc.in_md_documentname}}</td>
+          <td>{{mdoc.in_md_description}}</td>
+          <td>{{mdoc.in_pattern}}</td>
+          <td *ngIf="mdoc.in_required">Yes</td>
+          <td *ngIf="!mdoc.in_required">No</td>
+          <td><button type="button" class="btn btn-template bg-primary btn-sm"
+              (click)="openModal(mdoc,true)">Update</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</section>
+
+<!-- Modal -->
+<div class="modal fade" id="masterdocModal" tabindex="-1" aria-labelledby="exampleallOrderModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <h5 class="modal-title" id="exampleallOrderModal"></h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body border-0">
+
+        <div class="'row">
+          <div class="col-lg-12">
+            <!-- for venfor registration -->
+
+            <div class="block">
+              <div class="block-header">
+                <h5><span *ngIf="is_editing">Edit</span> <span *ngIf="!is_editing">New</span> Master Document</h5>
+              </div>
+              <div class="block-body">
+                <div>
+                  <form [formGroup]="dform" (submit)="update()">
+                    <div class="  mb-3">
+                      <label for="docname" class="form-label"><b>Document Name</b></label>
+
+                      <input class="form-control" placeholder="Enter Document Name"
+                        [ngClass]="dform.get('docname')?.touched && dform.get('docname')?.errors ? 'is-invalid':''"
+                        class="form-control" [id]="dform" formControlName="docname">
+                      <div class="invalid-feedback">
+                        {{
+                        dform.get('docname')?.hasError('required')? "docname is required": " "||dform.get('docname')?.hasError('minLength')? "Minimum 5 Charactor is required": ""
+                        }}
+
+                      </div>
+                    </div>
+                    <div class="mb-3">
+                      <label for="description" class="form-label"><b>Document Description</b></label>
+                      <input class="form-control" placeholder="Enter Document Description" formControlName="description"
+                        [(ngModel)]="md_description" id="description">
+                    </div>
+                    <div class="mb-3">
+                      <label for="pattern" class="form-label"><b>Document Pattern</b></label>
+                      <input class="form-control" placeholder="Enter Document Pattern" formControlName="pattern"
+                        [(ngModel)]="md_pattern" id="pattern">
+                    </div>
+
+                    <div class="row">
+                      <div class="col-1">
+                        <input  formControlName="isrequired" type="checkbox" value="" id="isrequired" checked>
+                      </div>
+                      <div class="col-11">
+                        <label  for="isrequired">
+                          Check this if this document is required for submit.
+                        </label>
+                      </div>
+                    </div>
+
+
+                    <div class="d-flex justify-content-end">
+                      <input type="hidden" formControlName="md_id">
+                      <input type="hidden" formControlName="language_id">
+                      <button type="submit" class="btn btn-primary m-2" [disabled]="!dform.valid"><span *ngIf="is_editing"><i class="fa fa-edit"></i> Update</span> <span *ngIf="!is_editing"><i class="fa fa-plus"></i> New</span></button>
+                    </div>
+
+                  </form>
+
+                </div>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>

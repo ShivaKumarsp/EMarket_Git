@@ -1,0 +1,114 @@
+
+    <section class="hero hero-page gray-bg padding-small mt-5">
+        <div class="container">
+            <div class="row d-flex">
+                <div class="col-lg-9 order-2 order-lg-1">
+                    <h1>Upload Your Documents</h1>
+                </div>
+                <div class="col-lg-3 text-right order-1 order-lg-2">
+                    <ul class="breadcrumb justify-content-lg-end">
+                        <li class="breadcrumb-item"><a >Home</a></li>
+                        <li class="breadcrumb-item active">Upload Documents</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- {{documentlist|json}} -->
+    <section class="checkout min-vh-100" [ngSwitch]="screen">
+        <div class="container" *ngSwitchCase="1">
+          <div class="card card-header bg-light">
+            <div class="d-flex justify-content-around">
+                <div class="text text-right">
+                  <button type="button" class="btn btn-primary d-block" (click)="screen=0;getData()"> Back </button>
+                </div>
+                <h5>Document Details</h5>
+            </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="my-4 p-4">
+              <ul>
+                <li>Kindly Skip the field which you don't want to update.</li>
+              </ul>
+
+            </div>
+          </div>
+          <div class="col-md-6">
+            <form  [formGroup]="forms" class="card card-body p-4 shadow shadow-sm border-0" (submit)="savedata()">
+              <div class="mb-3" *ngFor="let other of documentlist;let i=index">
+
+                {{addform(other.mdid,other.mddocumentname,other)}}
+                <label for="exampleInputEmail1" class="form-label p-0 m-0">{{other.mddocumentname}} <br/> <span [id]="'old'+other.mdid">{{tempModel}}</span></label>
+                <input type="text" formControlName="control{{other.mdid}}"  [pattern]="other.mdpattern" class="form-control" [id]="'ids'+other.mdid"  [attr.aria-describedby]="'test'+other.md_id" aria-describedby="emailHelp" >
+                <div [id]="'test'+other.mdid" class="form-text">
+                </div>
+
+              </div>
+              <div class="text-center my-2">
+                <!-- <p (click)="checkForm()">Click</p> -->
+                <button class="btn btn-sm btn-primary" [disabled]="!forms.valid"> Save </button>
+            </div>
+            </form>
+          </div>
+        </div>
+
+        </div>
+        <div class="container" *ngSwitchCase="0">
+            <div class="row card">
+                <div class="card">
+                    <div class="card-header bg-light">
+                        <div class="d-flex justify-content-around">
+                            <div class="text text-right">
+                              <button type="button" class="btn btn-primary d-block" (click)="screen=1">Add Documents</button>
+                            </div>
+                            <h5>Document Details</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+
+                            <table class="table" id="">
+                                <thead>
+                                    <tr>
+                                        <th>SLNo</th>
+                                        <th>Document Name</th>
+                                        <th>Document Number</th>
+                                        <th>Status</th>
+                                        <th>Approve or Reject Description</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr  *ngFor="let data of vendordocumentlist;let i=index">
+                                        <td>{{i+1}}</td>
+                                        <td>{{data.mddocumentname}}</td>
+                                        <td>{{data.documentnumber}}</td>
+                                        <td>{{data.status}}</td>
+                                        <td>{{data.approveorrejectdescription}}</td>
+                                        <td>
+
+                                            <a class="btn btn-success btn-sm text-decoration-none" role="button"  *ngIf="data.status=='Verified'" ><i class="fa fa-check"></i></a>
+                                            <a class="btn btn-warning btn-sm text-decoration-none" role="button"  *ngIf="data.status=='Pending'" ><i class="fa fa-clock-o"></i></a>
+                                            <a class="btn btn-danger btn-sm text-decoration-none" role="button"  *ngIf="data.status=='Reject'" ><i class="fa fa-times"></i></a>
+                                          </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+          </div>
+
+</section>
+
+
+
+
+

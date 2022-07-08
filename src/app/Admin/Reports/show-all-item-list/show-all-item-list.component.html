@@ -1,0 +1,72 @@
+<ngx-spinner  bdColor="rgba(51,51,51,0.8)"  size="medium"  color="#fff"  type="ball-scale-multiple">
+          <p style="font-size: 20px; color: white">Loading...</p>
+        </ngx-spinner> 
+
+<div class="container my-3">
+          <h6><span class="badge bg-secondary" alignment="text-center">{{all_item_list.length}}</span><span class="badge bg-secondary" alignment="text-left" >Item List</span></h6>
+          <div class="col-md-4" style="float: right">                    
+            <input class="form-control form-control-sm" type="text" [(ngModel)]="search" placeholder="search here...">
+        </div>
+        <table class="table table-hover  small">
+          <thead>
+              <tr>
+                  <th>SLNo</th>
+                  <th>Item Name</th>
+                  <th>Item Code</th>
+                  <th>MRP</th>
+                  <th>Quantity</th>
+                  <th>Listing Price</th>
+                  <th>Store Name</th>
+                  <th>Created Date</th>
+                  <th>Image</th>
+                
+              </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let itm of all_item_list| filter:search | paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index; filter:search">
+                <th>{{tableSize *(page-1)+i+1}}</th>                               
+                  <td>{{itm.itemname}}</td>
+                  <td>{{itm.itemcode}}</td>
+                  <td>{{itm.v_mrp}}</td>
+                  <td>{{itm.v_quantity}}</td>
+                  <td>{{itm.listingprice}}</td>
+                  <td>{{itm.storename}}</td>
+                   <td>{{itm.createdon|date}}</td>
+                  <td>
+                      <a style="cursor:pointer" (click)="previewimg(itm.itemimage)" data-toggle="modal" data-target="#staticBackdrop"><i class="fa fa-eye"></i></a>
+                  </td>               
+              </tr>
+          </tbody>
+      </table>
+      <div class="d-flex justify-content-center">
+        <pagination-controls
+          previousLabel="Prev"
+          nextLabel="Next"
+          (pageChange)="onTableDataChange($event)"
+        >
+        </pagination-controls>
+      </div>      
+        </div>
+        
+        <div class="modal fade" id="staticBackdrop" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      
+          <div class="modal-dialog">
+              <div class="modal-content rounded-0">
+                  <div class="modal-header border-0 p-0 ">
+                      <button type="button"  (click)="dismiss()" class="ms-auto btn btn-outline-danger rounded ">
+                          <span aria-hidden="true">&times;</span>
+                      </button>
+                  </div>
+                  <div class="modal-body border-0 rounded-0">
+                      <img src="{{imagepreview}}" class="img-responsive" [style]="{'max-width':'80%'}"/>
+                  </div>                   
+              </div>
+          </div>
+
+      </div>
+        
+        
+        
+        
+      
+          

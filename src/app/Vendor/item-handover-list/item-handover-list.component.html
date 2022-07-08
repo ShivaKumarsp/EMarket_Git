@@ -1,0 +1,52 @@
+<section class="checkout">
+          <div class="container">
+              <div class="row">
+                  <div class="col-12">
+                      <ul class="nav nav-pills">
+                          <li class="nav-item"><a class="nav-link" href="/app/vendororderlist">Order List</a></li>
+                          <li class="nav-item"><a class="nav-link" href="/app/consignment">Consignment</a></li>
+                          <li class="nav-item"><a class="nav-link"  href="/app/item_handover">Hand Over</a></li>
+                          <li class="nav-item"><a class="nav-link active">Hand Over List</a></li>
+                      </ul>
+                  </div>
+              </div>
+          </div> 
+        </section>
+        <div class="container my-3">
+          <h6>Total Hand Over <span class="badge bg-secondary" alignment="text-left" >{{all_handover_list.length}} &nbsp;</span></h6>
+          <div class="col-md-4" style="float: right">                    
+            <input class="form-control form-control-sm" type="text" [(ngModel)]="search" placeholder="search here...">
+        </div>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>SL No</th>
+              <th>Consignment No</th>
+              <th>Dimenstion</th>
+              <th>Weight</th>
+               <th>First Hub</th>
+              <th>Final Hub</th>
+              <th>Route Details</th>              
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let han of all_handover_list| filter:search | paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index; filter:search">
+                      <th>{{tableSize *(page-1)+i+1}}</th>
+                      <th>{{han.consignment_id}}</th>
+                      <th>{{han.consignment_l}}*{{han.consignment_l}}*{{han.consignment_l}}</th>
+                      <th>{{han.weight}}</th>
+                      <th>{{han.first_hub}}</th>
+                      <th>{{han.last_hub}}</th>
+                      <th>{{han.hub_route_id}}</th>                               
+            </tr>
+          </tbody>
+        </table>
+        <div class="d-flex justify-content-center">
+          <pagination-controls
+            previousLabel="Prev"
+            nextLabel="Next"
+            (pageChange)="onTableDataChange($event)"
+          >
+          </pagination-controls>
+        </div>
+        </div>

@@ -1,0 +1,189 @@
+
+<div>
+    <section class="hero hero-page gray-bg padding-small">
+        <div class="container">
+            <div class="row d-flex">
+                <div class="col-lg-9 order-2 order-lg-1">
+                    <h1>Product Specification Map</h1>
+                </div>
+                <div class="col-lg-3 text-right order-1 order-lg-2">
+                    <ul class="breadcrumb justify-content-lg-end">
+                        <li class="breadcrumb-item"><a >Home</a></li>
+                        <li class="breadcrumb-item active">Product Specification Map</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="checkout">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <ul class="nav nav-pills">
+                        <li class="nav-item"><a class="nav-link active">Specification for Product</a></li>
+                        <li class="nav-item"><a href="/app/item_specification" class="nav-link">Specification for
+                                Item</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <form [formGroup]="form">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="tab-content">
+                            <div id="item_info" class="active tab-block">
+                                <div class="row">
+                                    <div class="col-md-12 d-none">
+                                        <!--<input type="hidden" name="item_id" id="item_id">-->
+                                    </div>
+
+                                    <div class="col-md-3" >
+                                        <label for="acname" class="form-label search">Additional Category<b style="color: red;">*</b></label>
+                                        <select class="form-control" id="acname" name="acname" (change)="getspecification(additional_cat_id,'list')"
+                                            formControlName="additionalcategory" [(ngModel)]="additional_cat_id"
+                                            required [ngClass]="{ 'is-invalid': submitted && f['additionalcategory'].errors }">
+                                            <option value="" >-- Select Category --</option>
+                                            <option *ngFor="let aclist of additionalcategorylist"
+                                                [ngValue]="aclist.additionalcat_id">
+                                                {{aclist.additionalcat_name}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="submitted && f['additionalcategory'].errors" class="invalid-feedback">
+                                            <div *ngIf="f['additionalcategory'].errors['required']">Select Category</div> 
+                                          </div>
+                                    </div>
+                                    <div class="col-md-3" >
+                                        <label for="specname" class="form-label search">Specification Name<b style="color: red;">*</b></label>
+                                        <select class="form-control" id="specname" name="specname" (change)="getattribute(specification_id,'list')"
+                                            formControlName="specification" [(ngModel)]="specification_id" required 
+                                            [ngClass]="{ 'is-invalid': submitted && f['specification'].errors  }">
+                                            <option value="" >-- Select Specification --</option>
+                                            <option *ngFor="let spelist of specificationlist"
+                                                [ngValue]="spelist.specificationid">
+                                                {{spelist.specificationname}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="submitted && f['specification'].errors" class="invalid-feedback">
+                                            <div *ngIf="f['specification'].errors['required']">Select Specification</div> 
+                                          </div>
+                                    </div>
+                                    <div class="col-md-3" >
+                                        <label for="attname" class="form-label search">Attribute Name<b style="color: red;">*</b></label>
+                                        <select class="form-control" id="attname" name="attname"
+                                            formControlName="attribute" [(ngModel)]="attribute_name_id"
+                                            required [ngClass]="{ 'is-invalid': submitted && f['attribute'].errors }">
+                                            <option value="" >-- Select Attribute --</option>
+                                            <option *ngFor="let attlist of attributelist"
+                                                [ngValue]="attlist.attributenameid">
+                                                {{attlist.attributename}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="submitted && f['attribute'].errors" class="invalid-feedback">
+                                            <div *ngIf="f['attribute'].errors['required']">Select Attribute</div> 
+                                          </div>
+                                    </div>
+                                    <div class="col-md-3" >
+                                        <label for="attname" class="form-label search">Is Refiner<b style="color: red;">*</b></label>
+                                        <select class="form-control" [(ngModel)]="is_refiner"
+                                            formControlName="refiner" name="ref" required [ngClass]="{ 'is-invalid': submitted && f['refiner'].errors }">
+                                            <option value="" >-- Select Refiner --</option>
+                                            <option value=false>No</option>
+                                            <option value=true>Yes</option>
+                                        </select>
+                                        <div *ngIf="submitted && f['refiner'].errors" class="invalid-feedback">
+                                            <div *ngIf="f['refiner'].errors['required']">Select Refiner</div> 
+                                          </div>
+                                    </div>
+                                    <div class="col-md-12 my-4">
+
+                                        <input id="another-address" [(ngModel)]="is_visible"
+                                            type="checkbox" class="checkbox-template">
+                                        <label for="another-address">Uncheck to hide from
+                                            Customer</label>
+                                        
+                                    </div>
+                                    <!-- <div class="col-md-12 my-4">
+                                        <input id="another-address" [value]="true" [(ngModel)]="customevalue" type="checkbox" (change)="onCheckboxChange($event)" class="checkbox-template">
+                                        <label for="another-address">Check this, If vendor can enter value for this field.</label>
+
+                                    </div> -->
+
+                                    
+                                    <div class="col-md-12 mt-3">
+                                        <div class="text-center">
+                                            <input type="text" [(ngModel)]="masteritemspec_id" *ngIf="false" />
+                                            <a type="button" class="btn btn-template wide next" (click)="Clear()">
+                                                Clear<i class="fa fa-angle-right"></i>
+                                            </a> &nbsp;
+                                            <a type="button" class="btn btn-template wide next"  (click)="savedata()" >
+                                                Save<i class="fa fa-angle-right"></i>
+                                            </a>
+                                    </div>
+                                </div>
+                                    <div class="col-lg-12">
+
+                                        <div class="tab-content">
+
+                                            <h5 class="my-4">Product Specification Map List</h5>
+                                            <div class="col-md-4" style="float: right">                    
+                                                <input class="form-control form-control-sm" type="text" [(ngModel)]="search" placeholder="search here...">
+                                            </div>
+                                            <div class="table-responsive">
+                                                <table class="table table-hover">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>SL No</th>                                                        
+                                                            <th>Additional Category</th>
+                                                            <th>Specification</th>
+                                                            <th>Attribute</th>
+                                                            <th>Refiner</th>
+                                                            <th colspan="2" style="text-align:center">Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr *ngFor="let mcslist of mastercatspeclist| paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index">
+                                                            <th>{{tableSize *(page-1)+i+1}}</th>
+                                                   
+                                                            <td>{{mcslist.additionalcatname}}</td>
+                                                            <td>{{mcslist.specificationname}}</td>
+                                                            <td>{{mcslist.attributename}}</td>
+                                                            <td>
+                                                                <div *ngIf="mcslist.isrefiner==true">Yes</div>
+                                                                <div *ngIf="mcslist.isrefiner==false">No</div>
+                                                            </td>
+                                                            <td>
+                                                                <a class="btn btn-primary btn-sm"  (click)="editmasterspecification(mcslist)"><i
+                                                                        class="fa fa-edit"></i></a>
+                                                            </td>
+                                                            <td>
+                                                               <a class="btn btn-danger btn-sm" (click)="editmasterspecification_delete(mcslist)"><i
+                                                                        class="fa fa-trash"></i></a>
+                                                            </td>
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                                <div class="d-flex justify-content-center">
+                                                    <pagination-controls
+                                                      previousLabel="Prev"
+                                                      nextLabel="Next"
+                                                      (pageChange)="onTableDataChange($event)"
+                                                    >
+                                                    </pagination-controls>
+                                                  </div>
+                                            </div>
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </form>
+
+        </div>
+    </section>
+</div>

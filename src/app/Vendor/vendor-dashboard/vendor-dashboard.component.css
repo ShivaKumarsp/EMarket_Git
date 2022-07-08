@@ -1,0 +1,7 @@
+.short-card{
+  
+    background: #FCDDFF;
+    background: -webkit-linear-gradient(top left, #FCDDFF, #FFF5E4);
+    background: -moz-linear-gradient(top left, #FCDDFF, #FFF5E4);
+    background: linear-gradient(to bottom right, #FCDDFF, #FFF5E4);
+    }

@@ -1,0 +1,245 @@
+
+
+ <ngx-spinner  bdColor="rgba(51,51,51,0.8)"  size="medium"  color="#fff"  type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner> 
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+          <div class="f-flex justify-content-center my-4">
+            <a class="btn btn-dark rounded-0 my-3 text-decoration-none" type="button">Banner</a>
+            <a class="btn btn-dark rounded-0 text-decoration-none" type="button">Slider</a>
+          </div>
+        </div>
+        <div class="col-sm-12">
+            <div class="container ">
+                <div class="">
+                    <div class=" py-4 text-center">
+                        <h3>Add Banner</h3>
+                    </div>
+                    <div class="card card-body m-auto" [style]="{'max-width':'600px'}">
+                        <form  [formGroup]="formAddBanner">
+                        <div class="row mt-4 p-2">
+
+                            <div class="col-md-12 mt-2">
+                                <div class="form-floating">
+                                    <input type="text"
+                                    formControlName="title1"
+                                    class="form-control form-control-sm" id="floatingInputGrid" placeholder="" [(ngModel)]="banner_title" [ngClass]="{ 'is-invalid': submitted && f['title1'].errors }">
+                                    <label for="floatingInputGrid">Title</label>
+                                    <div *ngIf="submitted && f['title1'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['title1'].errors['required']">Enter Banner Title</div> 
+                                      </div>
+                                </div>                               
+                            </div>
+                           
+                            <!-- <div class="col-md-12 mt-2">
+                                <div class="form-floating">
+                                    <input type="text"
+                                    formControlName="url"
+                                    class="form-control form-control-sm" id="floatingInputGrid" placeholder="" [(ngModel)]="banner_link">
+                                    <label for="floatingInputGrid">Url Link</label>
+                                </div>                               
+                            </div> -->
+                            <div class="col-md-12 mt-2">
+                                <div class="form-floating">
+                                    <input type="text"
+                                    formControlName="detail"
+                                    class="form-control form-control-sm" id="detail" placeholder="" [(ngModel)]="banner_details" [ngClass]="{ 'is-invalid': submitted && f['detail'].errors }">
+                                    <label for="detail">Details</label>                                  
+                                    <div *ngIf="submitted && f['detail'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['detail'].errors['required']">Enter Banner Details</div> 
+                                      </div>
+                                </div>                               
+                            </div>
+                           
+                            <div class="col-md-6 mt-2">
+                                <div class="form-floating">
+                                    <select class="form-select form-select-sm" id="floatingSelectGrid"
+                                    formControlName="catid"
+                                    aria-label="Floating label select example"  [(ngModel)]="add_cat_id" [ngClass]="{ 'is-invalid': submitted && f['catid'].errors }">
+                                        <option value="">select</option>
+                                        <option *ngFor="let cat of category_list"
+                                         [value]="cat.additionalcat_id">
+                                         {{cat.additionalcat_name}}
+                                        </option>                                   
+                                    </select>
+                                    <label for="floatingSelectGrid">select Category</label>
+                                    <div *ngIf="submitted && f['catid'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['catid'].errors['catid']">Select Category</div> 
+                                      </div>
+                                </div> 
+                            </div>
+                           
+                            <!-- <div class="col-md-6 mt-2">
+                                <div class="form-floating">
+                                    <select class="form-select form-select-sm" id="floatingSelectGrid"
+                                    formControlName="page"
+                                    aria-label="Floating label select example"  [(ngModel)]="page_id">
+                                        <option value="">select</option>
+                                        <option *ngFor="let pge of page_list"
+                                         [value]="pge.mp_id">
+                                         {{pge.mp_pagename}}
+                                        </option>                                   
+                                    </select>
+                                    <label for="floatingSelectGrid">select Page</label>
+                                </div>
+                            </div> -->
+                            <div class="col-md-12 mt-2">
+                                <div class="form-floating">
+                                 <input type="file" class="form-control form-control-sm"  formControlName="bannerimage" name="itemimage" accept="image/*" [(ngModel)]="banner_image" (change)="selectFileUpload(imageInput)" id="floatingInputGrid" #imageInput required [ngClass]="{ 'is-invalid': submitted && f['bannerimage'].errors }">
+                                    <label for="floatingInputGrid"></label>
+                                    <div *ngIf="submitted && f['bannerimage'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['bannerimage'].errors['bannerimage']">Upload Banner Image</div> 
+                                      </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-center my-4 mt-2">
+                            <input type="text" [(ngModel)]="banner_id" hidden>
+                            <button type="submit" (click)="addbanner()" class="btn btn-primary">Submit</button>
+                        </div>
+                        </form>
+                    </div>
+                    <div class=" py-4 text-end">
+                        <h3>All Banner</h3>
+                    </div>
+                    <div class="card card-body">
+
+                        <div class="row mb-4 " *ngFor="let a of banner_list">
+                            <div class="col-3">
+                              <div class="border" [style]="{'overflow':'hidden','width':'100px','height':'100px'}">
+                                <img src={{a.banner_image}} height="120px"  />
+                              </div>
+                            </div>
+                            <div class="col-6">
+                              <span class="badge bg-primary">{{a.page}}</span>
+                                <h6>{{a.banner_title}}</h6>
+
+                                <p><small>{{a.banner_details}}</small></p>
+
+
+                                <p>Link {{a.banner_link}}</p>
+                            </div>
+                            <div class="col-3 text-end">
+                                <button class="btn btn-sm btn-primary my-4" (click)="edit_banner(a)">
+                                    Edit
+                                </button>
+                                <button class="btn btn-sm btn-danger" (click)="delete(a)">
+                                    Delete
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+  <!-- Modal -->
+<div class="modal fade" id="editbanners" tabindex="-1" aria-labelledby="exeditbanners" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <h5 class="modal-title" id="exeditbanners"></h5>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body border-0">
+        <div class=" py-4 text-end">
+          <h3>Edit Banner</h3>
+      </div>
+      <div class="card card-body">
+        <form  [formGroup]="formEditBanner">
+            <div class="row mt-4 p-2">
+
+                <div class="col-md-12 mt-2">
+                    <div class="form-floating">
+                      
+                        <input type="text"
+                        formControlName="title1_e"
+                        class="form-control form-control-sm" id="floatingInputGrid" placeholder="" [(ngModel)]="banner_title" [ngClass]="{ 'is-invalid': submitted && f['title1_e'].errors }" required>
+                        <label for="floatingInputGrid">Title<b style="color:red ;">*</b></label>
+                        <div *ngIf="submitted && f['title1_e'].errors" class="invalid-feedback">
+                            <div *ngIf="f['title1_e'].errors['required']">Enter Banner Title</div> 
+                          </div>
+                    </div>                 
+                </div>
+               
+                <!-- <div class="col-md-12 mt-2">
+                    <div class="form-floating">
+                        <input type="text"
+                        formControlName="url"
+                        class="form-control form-control-sm" id="floatingInputGrid" placeholder="" [(ngModel)]="banner_link">
+                        <label for="floatingInputGrid">Url Link</label>
+                    </div>
+                </div> -->
+                <div class="col-md-12 mt-2">
+                    <div class="form-floating">
+                        <input type="text"
+                        formControlName="detail_e"
+                        class="form-control form-control-sm" id="detail" placeholder="" [(ngModel)]="banner_details" [ngClass]="{ 'is-invalid': submitted && f['detail_e'].errors }">
+                        <label for="detail">Details<b style="color:red ;">*</b></label>
+                        <div *ngIf="submitted && f['detail_e'].errors" class="invalid-feedback">
+                            <div *ngIf="f['detail_e'].errors['required']">Enter Banner Details</div> 
+                          </div>
+                    </div>                   
+                </div>
+                <div class="col-md-6 mt-2">
+                    <div class="form-floating">
+                        <select class="form-select form-select-sm" id="floatingSelectGrid"
+                        formControlName="catid_e"
+                        aria-label="Floating label select example"  [(ngModel)]="add_cat_id" [ngClass]="{ 'is-invalid': submitted && f['catid_e'].errors }">
+                            <option value="">select</option>
+                            <option *ngFor="let cat of category_list"
+                             [value]="cat.additionalcat_id">
+                             {{cat.additionalcat_name}}
+                            </option>                                   
+                        </select>
+                        <label for="floatingSelectGrid">select Category<b style="color: red;">*</b></label>
+                        <div *ngIf="submitted && f['catid_e'].errors" class="invalid-feedback">
+                            <div *ngIf="f['catid_e'].errors['required']">Select Category</div> 
+                          </div>
+                    </div>                  
+                </div>
+               
+                <!-- <div class="col-md-6 mt-2">
+                    <div class="form-floating">
+                        <select class="form-select form-select-sm" id="floatingSelectGrid"
+                        formControlName="page"
+                        aria-label="Floating label select example"  [(ngModel)]="page_id">
+                            <option value="">select</option>
+                            <option *ngFor="let pge of page_list"
+                             [value]="pge.mp_id">
+                             {{pge.mp_pagename}}
+                            </option>                                   
+                        </select>
+                        <label for="floatingSelectGrid">select Page</label>
+                    </div>
+                </div> -->
+                <div class="col-md-12 mt-2">
+                    <div class="form-floating">
+                     <input type="file" class="form-control form-control-sm"  formControlName="bannerimage_e"  accept="image/*" [(ngModel)]="banner_image" (change)="selectFileUpload1(imageInput1)" id="floatingInputGrid5" #imageInput1>
+                        <label for="floatingInputGrid5"></label>
+                    </div>
+                   
+                </div>
+            </div>
+            <div class="text-center my-4 mt-2">
+         
+                <button type="submit" (click)="updatebanner()"   class="btn btn-primary">Submit</button>
+            </div>
+            </form>
+      </div>
+
+
+      </div>
+
+
+    </div>
+  </div>
+</div>
+</div>

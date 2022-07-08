@@ -1,0 +1,281 @@
+<ngx-spinner  bdColor="rgba(51,51,51,0.8)"  size="medium"  color="#fff"  type="ball-scale-multiple">
+    <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner> 
+<script>
+    function isNumber(evt) {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+            return false;
+        }
+        return true;
+    }
+
+</script>
+
+<div ng-init="BindData()">
+    <section class="padding-small" >
+       
+     
+        <div class="container">
+            <div class="row d-flex">
+                <div class="col-lg-9 order-2 order-lg-1">
+                    <h1>Customer Profile</h1>
+
+                </div>
+                <div class="col-lg-3 text-right order-1 order-lg-2">
+                    <ul class="breadcrumb justify-content-lg-end">
+                        <li class="breadcrumb-item"><a >Home</a></li>
+                        <li class="breadcrumb-item active">Profile</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <section class="padding-small" >
+        <div class="container">
+            <div class="row">
+                <!-- Customer Sidebar-->
+                <div class="customer-sidebar col-xl-3 col-lg-4 mb-md-5">
+                    <div class="customer-profile">
+                        <!-- <div  class="d-inline-block overflow-hidden">
+                            <img src="{{p_imageurl}}" class="img-fluid rounded-circle customer-image" 
+                            [style]="{'width':'200px','height':'200px'}">
+                        </div> -->
+                        <div  class="d-inline-block overflow-hidden">
+                            <img src="{{userProfileImage}}" class="img-fluid rounded-circle customer-image" 
+                            [style]="{'width':'200px','height':'200px'}">
+                        </div>
+                        
+                        <label class="badge bg-primary my-3" type="button" for="img" >
+                            <i class="fa fa-edit"></i>Add Profile Pic</label>
+                        <h6 class="text-small">{{this.first_name}} {{this.second_name}}</h6>
+             
+                    </div>
+                    <nav class="list-group customer-nav">
+                        <a routerLink="/app/orderhistory" class="list-group-item d-flex justify-content-between align-items-center text-decoration-none ">
+                          <span><span class="icon icon-bag"></span>Orders</span>
+                        </a>
+                        <a routerLink="/app/customerprofile" class="active list-group-item d-flex justify-content-between align-items-center text-decoration-none">
+                            <span><span class="icon icon-profile"></span>Profile</span>
+                        </a>                      
+                              <a  class="list-group-item d-flex justify-content-between align-items-center" (click)="logout()">
+                                <span><span class="fa fa-sign-out"></span>Log out</span></a>
+                      </nav>
+                </div>
+                <div class="col-lg-8 col-xl-9 pl-lg-3">
+                    <div class="block-header mb-5" hidden>
+                        <h5>Change Password</h5>
+                    </div>
+                    <form method="post" role="form" name="myForm" class="content-block" hidden>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="password_old" class="form-label">Old Password</label>
+                                    <input id="password_old" name="old_pass" type="password" class="form-control" [(ngModel)]="old_pass">
+                                    <div class="error-messages" ng-if="interacted(myForm.old_pass)" ng-messages="myForm.old_pass.$error">
+                                        <div ng-message="required" style="color:red">Old Password cannot be blank!</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="password_1" class="form-label">New Password</label>
+                                    <input id="password_1" name="new_pass" type="password" class="form-control" [(ngModel)]="new_pass">
+                                    <div class="error-messages" ng-if="interacted(myForm.new_pass)" ng-messages="myForm.new_pass.$error">
+                                        <div ng-message="required" style="color:red">Password cannot be blank!</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="password_2" class="form-label">Re-Enter Password</label>
+                                    <input id="password_2" name="retype_pass" type="password" class="form-control" [(ngModel)]="retype_pass">
+                                    <div class="error-messages" ng-if="interacted(myForm.retype_pass)" ng-messages="myForm.retype_pass.$error">
+                                        <div ng-message="required" style="color:red">Password cannot be blank!</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.row-->
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary" onclick="change_password"><i class="fa fa-save"></i>Change Password</button>
+                        </div>
+                    </form>
+                    <div class="block-header mb-5">
+                        <h5>Personal Details</h5>
+                    </div>
+                    <form method="post" [formGroup]="customervalid" name="myForm1" class="content-block">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="firstname" class="form-label">First Name</label>
+                                    <input id="firstname" formControlName="firstname"  type="text" class="form-control" 
+                                    [(ngModel)]="first_name" maxlength="15" onkeydown="return /[a-zA-Z]/i.test(event.key)"  required>
+                                    <div *ngIf="f['firstname'].touched && f['firstname'].invalid" class="text-danger">
+                                                <div *ngIf="f['firstname'].errors && f['firstname'].errors['required']">Enter First Name</div>
+                                            </div> 
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="lastname" class="form-label">Last Name</label>
+                                    <input id="lastname" formControlName="lastname"   type="text" class="form-control" maxlength="15" [(ngModel)]="second_name" onkeydown="return /[a-zA-Z]/i.test(event.key)" >
+                                    <div *ngIf="f['lastname'].touched && f['lastname'].invalid" class="text-danger">
+                                        <div *ngIf="f['lastname'].errors && f['lastname'].errors['required']">Last First Name</div>
+                                    </div> 
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.row-->
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input id="email" formControlName="email" type="email" class="form-control" [(ngModel)]="email">
+                                    <div *ngIf="f['email'].touched && f['email'].invalid" class="text-danger">
+                                        <div *ngIf="f['email'].errors && f['email'].errors['required']">Enter Email</div>
+                                        
+                                    </div> 
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="mobile" class="form-label">Mobile</label>
+                                    <input id="mobile" formControlName="phonenumber" type="text" class="form-control" [(ngModel)]="mobile"
+                                          minlength="10" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                                          <div *ngIf="f['phonenumber'].touched && f['phonenumber'].invalid" class="text-danger">
+                                            <div *ngIf="f['phonenumber'].errors && f['phonenumber'].errors['required']">Enter Mobile</div>
+                                                                                   </div> 
+                                      
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.row-->
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="address" class="form-label">Address</label>
+                                    <textarea id="address" formControlName="address" type="text" class="form-control" [(ngModel)]="address"></textarea>
+                                    <div *ngIf="f['address'].touched && f['address'].invalid" class="text-danger">
+                                        <div *ngIf="f['address'].errors && f['address'].errors['required']">Enter Address</div>
+                                    </div> 
+                                </div>
+                            </div>
+                            <div class="form-group col-md-6">
+                                <label for="country" class="form-label">Country</label>
+                                <select class="custom-select form-control form-control-sm"  formControlName="countryid" [(ngModel)]="countryid" (click)="getstate(countryid)">
+                                    <option value="">-- Select Country --</option>
+                                    <option *ngFor="let cname of countrylist" value="{{cname.countryid}}" ng-selected="{{cname.countryid==countryid}}">
+                                        {{cname.countryname}}
+                                    </option>
+                                </select>
+                                <div *ngIf="f['countryid'].touched && f['countryid'].invalid" class="text-danger">
+                                    <div *ngIf="f['countryid'].errors && f['countryid'].errors['required']">Select Country</div>
+                                </div> 
+                            </div>
+                            <div class="col-sm-6 ">
+                                <div class="form-group">
+                                    <label for="state" class="form-label">State</label>
+                                    <select class="custom-select form-control form-control-sm" formControlName="state" [(ngModel)]="stateid">
+                                        <option value="">-- Select State --</option>
+                                        <option *ngFor="let state of statelist" value="{{state.stateid}}" ng-selected="{{state.stateid==stateid}}">
+                                            {{state.statename}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="f['state'].touched && f['state'].invalid" class="text-danger">
+                                        <div *ngIf="f['state'].errors && f['state'].errors['required']">Select State</div>
+                                    </div> 
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6 ">
+                                <div class="form-group">
+                                    <label for="city" class="form-label">City</label>
+                                    <input id="city" name="city" type="text" formControlName="city" class="form-control" [(ngModel)]="city">
+                                    <div *ngIf="f['city'].touched && f['city'].invalid" class="text-danger">
+                                        <div *ngIf="f['city'].errors && f['city'].errors['required']">Enter City</div>
+                                    </div> 
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <div class="form-group">
+                                    <label for="phone" class="form-label">Pincode</label>
+                                    <input id="phone" name="pincode" type="text"  formControlName="pincode" class="form-control" [(ngModel)]="pincode"
+                                        minlength="6" maxlength="6" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                                        <div *ngIf="f['pincode'].touched && f['pincode'].invalid" class="text-danger">
+                                            <div *ngIf="f['pincode'].errors && f['pincode'].errors['required']">Enter Pincode</div>
+                                        </div> 
+                                </div>
+                            </div>
+
+
+                            <div class="form-group col-md-6">
+                                <div class="form-group">
+                                    <label for="dob" class="form-label">Date Of Birth</label>
+                                        <input id="manufacturing_date" formControlName="new_dob" type="date"
+                                   name="manufacturing_date" class="form-control"  [max]="min_dob| date: 'yyyy-MM-dd'" [(ngModel)]="new_dob">
+                                   <div *ngIf="f['new_dob'].touched && f['new_dob'].invalid" class="text-danger">
+                                    <div *ngIf="f['new_dob'].errors && f['new_dob'].errors['required']">Enter DOB</div>
+                                </div> 
+                                          </div>
+                            </div> 
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="gender" class="form-label">Gender</label>
+                                    <select class="custom-select form-control form-control-sm" formControlName="gender" [(ngModel)]="genderid">
+                                        <option value="">-- Select Gender --</option>
+                                        <option *ngFor="let genname of genderlist" value="{{genname.genderid}}" ng-selected="{{genname.genderid==genderid}}">
+                                            {{genname.gendername}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="f['gender'].touched && f['gender'].invalid" class="text-danger">
+                                        <div *ngIf="f['gender'].errors && f['gender'].errors['required']">Select Gender</div>
+                                    </div> 
+
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="alternative_mobile" class="form-label">Alternative Mobile</label>
+                                    <input id="alternative_mobile" formControlName="altermob" type="text" class="form-control" [(ngModel)]="alternative_mobile"
+                                           minlength="10" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                                           <div *ngIf="f['altermob'].touched && f['altermob'].invalid" class="text-danger">
+                                            <div *ngIf="f['altermob'].errors && f['altermob'].errors['required']">Enter Alter Mobile Number</div>
+                                        </div> 
+                                </div>
+                            </div>
+                            <div class="col-sm-12 mb-4">
+                                 
+                                <input type="file" class="form-control form-control-sm d-none"  formControlName="profile" name="itemimage" accept="image/*" [(ngModel)]="p_imageurl" (change)="selectFileUpload(imageInput)" id="img" #imageInput required>
+                                <div *ngIf="f['profile'].touched && f['profile'].invalid" class="text-danger">
+                                    <div *ngIf="f['profile'].errors && f['profile'].errors['required']">Upload Profile Picture</div>
+                                </div> 
+                            </div> 
+
+                            <div class="col-sm-12 text-center">
+                                <a type="button" class="btn btn-template wide next"  (click)="updatecustomerdata()">
+                                    Update
+                                </a>
+
+                                <!-- <button type="submit" class="btn btn-primary" (click)="updatecustomerdata()"><i class="fa fa-save"></i>Save</button> -->
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="row mt-2" *ngFor="let val of validation_list">
+                <div class="col-md-9" style="color:red">{{val}}</div>               
+            </div> 
+
+        </div>
+    </section>
+</div>
+
+
+

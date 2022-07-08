@@ -1,0 +1,123 @@
+
+<div class="container min-vh-100">
+  <h5 class="my-4">Gallery</h5>
+  <div class=" p-2 mb-3 row">
+    <div class="col-md-8 d-flex">
+      <button type="button" class="btn btn-primary btn-sm" (click)="global_media_id=0" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        <i class="fa fa-plus"></i> Add Media
+      </button>
+    </div>
+    <form [formGroup]="search" class="col-md-4" (submit)="searchImage()">
+      <div class="form-group d-flex" >
+        <input type="text" formControlName="searchingString" class="form-control form-control-sm"/>
+        <button type="submit" class="btn btn-template bg-primary btn-sm mx-2">Search</button>
+      </div>
+    </form>
+  </div>
+  <div class="row overflow-auto my-4" [style]="{'height':'500px'}">
+    <div class="col-md-2 mt-2" *ngFor="let gallery of galleryData" >
+      <div class="card shadow shadow-sm border-0">
+        <div class="card-header bg-white border-0">
+          <div class="d-flex justify-content-end">
+            <button class="btn btn-sm btn-outline-info border-0" (click)="global_media=gallery;global_media_id=gallery.id;screen=0" data-bs-toggle="modal" data-bs-target="#exampleModal" >
+              <i class="fa fa-edit"></i> Edit Media
+            </button>
+
+            <button class="btn btn-sm btn-outline-danger border-0" (click)="remove(gallery.id)">
+              <i class="fa fa-trash"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body overflow-hidden">
+          <img src={{gallery.data}}  height="150px" width="auto"/>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog ">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <h5 class="modal-title" id="exampleModalLabel" >
+          <span *ngIf="global_media_id==0">Add New Media</span>
+          <span *ngIf="global_media_id!=0">Edit Media</span>
+          <br/>
+
+        </h5>
+        <span class="text-primary badge" *ngIf="global_media_id!=0">{{global_media.id}} </span>
+        <button type="button" (click)="files.reset();screen=0;imageUrl='';" class="btn-close"
+        data-bs-dismiss="modal" aria-label="Close"></button>
+
+      </div>
+      <div class="modal-body border-0">
+        <div class="container-fluid">
+          <div class="row" [ngSwitch]="screen">
+            <div class="col-md-12" >
+              <div class="card card-body rounded-0 shadow shadow-sm">
+                <form  [formGroup]="files">
+
+                  <div class="input-group mb-3">
+                    <input type="text" formControlName="name" [(ngModel)]="title"   class="form-control" placeholder="File Title" required/>
+
+                  </div>
+                  <div class="input-group mb-3 d-none">
+                    <input type="text" formControlName="type" [(ngModel)]="media_type"  class="form-control" placeholder="File Type" required/>
+
+                  </div>
+                  <div class="input-group">
+                    <input type="file" formControlName="data" [(ngModel)]="media_data" (change)="changeImage($event)" #imageInput   class="form-control" id="fileImage" aria-describedby="fileImage" aria-label="Upload">
+                    <!-- <button class="btn btn-outline-secondary" type="submit" id="fileImage">Save</button> -->
+                  </div>
+                </form>
+              </div>
+
+            </div>
+            <div class="col-md-12" *ngSwitchCase="screen==1">
+
+              <div *ngIf="imageUrl!== ''" >
+
+                <div class="p-3 shadow shadow-sm" >
+                    <table class="table table-borderless  small" >
+                      <tr>
+                        <td>Name</td>
+                        <td>{{imageDetails[0].name}}</td>
+                      </tr>
+                      <tr>
+                        <td>Size</td>
+                        <td>{{(imageDetails[0].size/1024).toFixed(2)}} KB</td>
+                      </tr>
+                      <tr>
+                        <td>Type</td>
+                        <td>{{imageDetails[0].type}}</td>
+                      </tr>
+                    </table>
+                    <div>
+                      <img [src]=imageUrl.result   width="100%"/>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                      <a type="button" class="text-decoration-none text-danger mb-3" (click)="imageUrl='';files.reset();screen=0">
+                        <i class="fa fa-arrow-left"></i>Cancel
+                      </a>
+                      <button class="btn btn-sm btn-primary" (click)="SaveFile()">
+                        Save
+                      </button>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+
+
+      </div>
+
+    </div>
+  </div>
+</div>

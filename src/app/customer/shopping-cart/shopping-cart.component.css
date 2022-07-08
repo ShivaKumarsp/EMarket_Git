@@ -1,0 +1,8 @@
+a.btn.btn-template.btn-lg.wide {
+    background-color: darkmagenta;
+}
+
+a.btn.btn-template-outlined.wide {
+    background-color: darkmagenta;
+    color: white;
+}

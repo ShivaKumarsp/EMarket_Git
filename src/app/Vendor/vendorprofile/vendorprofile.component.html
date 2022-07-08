@@ -1,0 +1,296 @@
+<section class="hero hero-page gray-bg padding-small">
+    <div class="container">
+        <div class="row d-flex">
+            <div class="col-lg-9 order-2 order-lg-1">
+                <h1 id="demo">Your Profile1</h1>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="padding-small" id="demo">
+    <div class="container">
+        <form [formGroup]="vendorform">
+            <div class="row">
+                <!-- Customer Sidebar-->
+                <div class="customer-sidebar col-xl-3 col-lg-4 mb-md-5">
+                    <div class="customer-profile">
+                        <a  class="d-inline-block"><img src="{{p_imageurl}}"
+                                class="img-fluid rounded-circle customer-image"></a>
+                        <h5>{{this.vendor_name}}</h5>
+                        <p class="text-muted text-small">{{this.permanentAddress}}</p>
+                    </div>
+                    <nav class="list-group customer-nav">
+                    
+                        <a href="vendor-account.html"
+                            class="active list-group-item d-flex justify-content-between align-items-center"><span><span
+                                    class="icon icon-profile"></span>Profile</span></a><a href="customer-login.html"
+                            class="list-group-item d-flex justify-content-between align-items-center"><span><span
+                                    class="fa fa-sign-out"></span>Log out</span></a>
+                    </nav>
+                </div>
+                <div class="col-lg-8 col-xl-9 pl-lg-3">
+                    <br>
+                    <!-- Invoice Address-->
+                    <div class="block-header mb-5">
+                        <h5>Your Personal Details</h5>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label  class="form-label">Name</label>
+                            <input  type="text"  formControlName="name"  placeholder="Enter Name" class="form-control" minlength="3" maxlength="20" [(ngModel)]="vendor_name" [ngClass]="{ 'is-invalid': submitted && f['name'].errors }" required>
+                            <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
+                                <div *ngIf="f['name'].errors['required']">Enter Name </div> 
+                              </div>
+                            </div>
+
+                        <div class="form-group col-md-6" >
+                            <label   class="form-label">Phone Number</label>
+                            <input  formControlName="phonenumber"  type="text"  placeholder="Your phone number" minlength="10" maxlength="10"  class="form-control" [(ngModel)]="vendor_mobile" onkeypress='return event.charCode >= 48 && event.charCode <= 57' [ngClass]="{ 'is-invalid': submitted && f['phonenumber'].errors }">
+                            <div *ngIf="submitted && f['phonenumber'].errors" class="invalid-feedback">
+                                <div *ngIf="f['phonenumber'].errors['required']">Enter Phone Number</div> 
+                              </div>
+
+                            </div>
+                        <div class="form-group col-md-6">
+                        
+                            <label  class="form-label">Email ID</label>
+                            <input  type="text" formControlName="email"   placeholder="enter your email address"  class="form-control" [(ngModel)]="vendor_email" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" required>
+                            <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+                                <div *ngIf="f['email'].errors['required']">Enter Email ID</div> 
+                                <div *ngIf="f['email'].errors['email']">Email is invalid</div>
+                              </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="dob" class="form-label">Date Of Birth</label>
+
+                            <input id="manufacturing_date" formControlName="new_dob1" type="date"
+                            name="manufacturing_date" class="form-control" [max]="min_dob| date: 'yyyy-MM-dd'" [(ngModel)]="new_dob" [ngClass]="{ 'is-invalid': submitted && f['new_dob1'].errors }" required>
+                            <div *ngIf="submitted && f['new_dob1'].errors" class="invalid-feedback">
+                                <div *ngIf="f['new_dob1'].errors['required']">Select Date Of Birth</div> 
+                              </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label   class="form-label">Country</label>
+                            <select class="form-control" formControlName="v_country"  [(ngModel)]="vendor_country_id" (change)="getstate(vendor_country_id)" [ngClass]="{ 'is-invalid': submitted && f['v_country'].errors }" required>
+                                <option value="" >-- Select Country --</option>
+                                <option *ngFor="let cou of countrylist" value="{{cou.countryid}}" ng-selected="{{cou.countryid==vendor_country_id}}">
+                                    {{cou.countryname}}
+                                </option>
+                            </select>
+
+                            <div *ngIf="submitted && f['v_country'].errors" class="invalid-feedback">
+                                <div *ngIf="f['v_country'].errors['required']">Select Country</div> 
+                              </div> 
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label  class="form-label">State</label>
+                            <select class="form-control" formControlName="state"  [(ngModel)]="vendor_state_id" [ngClass]="{ 'is-invalid': submitted && f['state'].errors }" required>
+                                <option value="" disabled>-- Select State --</option>
+                                <option *ngFor="let states of statelist" [ngValue]="states.stateid">
+                                    {{states.statename}}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && f['state'].errors" class="invalid-feedback">
+                                <div *ngIf="f['state'].errors['required']">Select State</div> 
+                              </div> 
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label  class="form-label">City</label>
+                            <input  type="text" formControlName="cname"  placeholder="Enter the City"  class="form-control" [(ngModel)]="vendor_city" [ngClass]="{ 'is-invalid': submitted && f['cname'].errors }" required>
+                            <div *ngIf="submitted && f['cname'].errors" class="invalid-feedback">
+                                <div *ngIf="f['cname'].errors['required']">Enter City</div> 
+                              </div>
+                        </div>
+                        
+                        <!-- <div class="form-group col-md-6" >
+                            <label for="panno" class="form-label">PAN Number</label>
+                            <input   type="text" formControlName="panno" placeholder="Enter the pan no"
+                              class="form-control" [(ngModel)]="vendor_panno" [ngClass]="{ 'is-invalid': submitted && f['panno'].errors }" required>
+                              <div *ngIf="submitted && f['panno'].errors" class="invalid-feedback">
+                                <div *ngIf="f['panno'].errors['required']">Enter PAN Number</div> 
+                              </div>
+                        </div> -->
+                        <div class="form-group col-md-6">
+                            <label for="gender" class="form-label">Gender</label>
+                            <select class="form-control" formControlName="gender"  [(ngModel)]="mg_id" [ngClass]="{ 'is-invalid': submitted && f['gender'].errors }" required>
+                                <option value="" disabled>-- Select Gender --</option>
+                                <option *ngFor="let options of genderlist" [ngValue]="options.genderid">
+                                    {{options.gendername}}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && f['gender'].errors" class="invalid-feedback">
+                                <div *ngIf="f['gender'].errors['required']">Select Gender</div> 
+                              </div> 
+                        </div>
+
+                        <div class="form-group col-md-9">
+                            <label for="permanentaddress" class="form-label">Permanent Address</label>
+                            <input type="text" class="form-control" formControlName="paddress"  [(ngModel)]="permanentAddress" placeholder="..." [ngClass]="{ 'is-invalid': submitted && f['paddress'].errors }" required>
+                            <div *ngIf="submitted && f['paddress'].errors" class="invalid-feedback">
+                                <div *ngIf="f['paddress'].errors['required']">Enter Permanent Address</div> 
+                              </div>
+                        </div>
+                        <div class="form-group col-md-3">
+                            <label for="vendorpincode" class="form-label">Pincode</label>
+                            <input type="text" placeholder="enter the pincode" formControlName="vpincode" class="form-control" onkeypress='return event.charCode >= 48 && event.charCode <= 57'  [(ngModel)]="vendor_pincode" minlength="6" maxlength="6" [ngClass]="{ 'is-invalid': submitted && f['vpincode'].errors }" required>
+                            <div *ngIf="submitted && f['vpincode'].errors" class="invalid-feedback">
+                                <div *ngIf="f['vpincode'].errors['required']">Enter Pincode</div> 
+                              </div>
+                        </div>
+                        <div class="form-group col-md-6 p-4">
+                            <label class="form-label">Image</label>
+                            <input type="file"  formControlName="profile"  accept="image/*" [(ngModel)]="vendor_image" (change)="VendorImageUpload(imageInput)" #imageInput id="img" [ngClass]="{ 'is-invalid': submitted && f['file'].errors }" required>
+                            <div *ngIf="submitted && f['file'].errors" class="invalid-feedback">
+                                <div *ngIf="f['file'].errors['required']">Upload Image</div> 
+                              </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="col-lg-12 col-xl-12 pl-lg-3">
+                    <br>
+                    <!-- Invoice Address-->
+                    <div class="block-header mb-3 my-4">
+                        <h5>Your Business Details</h5>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <ol class="small my-5">
+                                <li>first condition</li>
+                                <li>second condition</li>
+                            </ol>
+
+                        </div>
+                        <div class="form-group col-md-12">
+                            <div class="form-check mt-3">
+                                <input class="form-check-input"  type="checkbox" formControlName="businesstermscondiction"  [(ngModel)]="business_termscondiction"  [ngClass]="{ 'is-invalid': submitted && f['businesstermscondiction'].errors }" required>
+                                <label class="form-check-label" for="agreeforregistration">
+                                    Terms and Conditions
+                                </label>
+                                <div *ngIf="submitted && f['businesstermscondiction'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['businesstermscondiction'].errors['required']">Read and Check Check Box</div> 
+                                  </div>
+
+                            </div>
+                        </div>
+                        <div class="form-group col-md-6 mt-3">
+                            <label for="businessname" class="form-label ">Business Name</label>
+                            <input type="text" class="form-control" formControlName="businessname"  [(ngModel)]="vendor_businessname" [ngClass]="{ 'is-invalid': submitted && f['businessname'].errors }" required ng-disabled="businessnamecheck==true">
+                            <div *ngIf="submitted && f['businessname'].errors" class="invalid-feedback">
+                                <div *ngIf="f['businessname'].errors['required']">Enter Business Name</div> 
+                              </div>
+                        </div>
+
+                        <div class="form-group col-md-6">
+                            <label for="country" class="form-label">Business Country</label>
+                            <select class="form-control"  formControlName="bcountry"  [(ngModel)]="business_country_id" (change)="getstate1($event)" [ngClass]="{ 'is-invalid': submitted && f['bcountry'].errors }" required>
+                                <option value="" disabled>-- Select Country --</option>
+                                <option *ngFor="let country of countrylist" [ngValue]="country.countryid">
+                                    {{country.countryname}}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && f['bcountry'].errors" class="invalid-feedback">
+                                <div *ngIf="f['bcountry'].errors['required']">Select Business Country</div> 
+                              </div>
+                           </div>
+                        <div class="form-group col-md-6">
+                            <label for="state" class="form-label">Business State</label>
+                            <select class="form-control" formControlName="bstate"  [(ngModel)]="business_state_id" [ngClass]="{ 'is-invalid': submitted && f['bstate'].errors }" required>
+                                <option value="">-- Select State --</option>
+                                <option *ngFor="let state of statelist" [ngValue]="state.stateid">
+                                    {{state.statename}}
+                                </option>
+                            </select>
+                            <div *ngIf="submitted && f['bstate'].errors" class="invalid-feedback">
+                                <div *ngIf="f['bstate'].errors['required']">Select Business State</div> 
+                              </div>
+                        </div>
+                        <!-- <div class="col-md-3">
+                            <label for="pan" class="form-label">PAN Number</label>
+                            <input type="text" class="form-control" formControlName="bpanno"
+                                [(ngModel)]="business_pan_no" name="bpanno" maxlength="10" minlength="10"
+                                ng-pattern="/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/">
+                            <div *ngIf="gstshow==true">
+                                <div *ngIf="f['bpanno'].touched && f['bpanno'].invalid" class="text-danger">
+                                    <div *ngIf="f['bpanno'].errors && f['bpanno'].errors['required']">PAN Number
+                                      is required.</div>
+                                </div>
+                            </div>                           
+                        </div> -->
+
+                        <div class="form-group col-md-10">
+                            <label for="businessaddress" class="form-label">Business Address</label>
+                            <input type="text" class="form-control" formControlName="baddress"  [(ngModel)]="business_address" placeholder="..." [ngClass]="{ 'is-invalid': submitted && f['baddress'].errors }" required>
+                            <div *ngIf="submitted && f['baddress'].errors" class="invalid-feedback">
+                                <div *ngIf="f['baddress'].errors['required']">Enter Business Address</div> 
+                              </div> 
+                        </div>
+                        <div class="form-group col-md-2">
+                            <label for="businessaddresspincode" class="form-label">Pincode</label>
+                            <input type="text" class="form-control" formControlName="bpincode"  [(ngModel)]="business_pincode" onkeypress='return event.charCode >= 48 && event.charCode <= 57'  [(ngModel)]="vendor_pincode" minlength="6" maxlength="6" placeholder="Business Pincode" [ngClass]="{ 'is-invalid': submitted && f['bpincode'].errors }" required>
+                            <div *ngIf="submitted && f['bpincode'].errors" class="invalid-feedback">
+                                <div *ngIf="f['bpincode'].errors['required']">Enter Business Pincode</div> 
+                              </div>   
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-lg-12 col-xl-12 pl-lg-3">
+                    <br>
+                    <!-- Invoice Address-->
+                    <div class="block-header mb-5 my-4">
+                        <h5>GST Details</h5>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+                            <label  class="form-label ">Do you have GST No?</label>
+                            <select  class="form-control" formControlName="gstavail"  [(ngModel)]="vendor_gst_available" (change)="gstchange(vendor_gst_available)" required>
+                                <option value="">-- Select --</option>
+                                <option value=0>No</option>
+                                <option value=1>Yes</option>
+                            </select>
+                            <div *ngIf="f['gstavail'].touched && f['gstavail'].invalid" class="text-danger">
+                                <div *ngIf="f['gstavail'].errors && f['gstavail'].errors['required']">Address is
+                                    required.</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-12 " *ngIf="gstshow==true">
+                            <div class="p-0">
+                                <div class="row">
+
+                                    <div class="col-md-3">
+                                        <label for="gstlegalname" class="form-label ">Legal Name</label>
+                                        <input type="text" class="form-control" formControlName="gstlegalname" [(ngModel)]="legal_name" [ngClass]="{ 'is-invalid': submitted && f['gstlegalname'].errors }" >
+                                        <div *ngIf="submitted && f['gstlegalname'].errors" class="invalid-feedback">
+                                            <div *ngIf="f['gstlegalname'].errors['required']">Enter Legal Name</div> 
+                                          </div> 
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label for="gstno" class="form-label ">Registration Number</label>
+                                        <input type="text" class="form-control" [(ngModel)]="registration_no" formControlName="regno" >                                       
+                                    </div>
+                                    <div class="col-md-3 d-none">
+                                        <label for="pan" class="form-label">PAN Number</label>
+                                        <input type="text" class="form-control" formControlName="bpanno" [(ngModel)]="business_pan_no"  maxlength="10" minlength="10">                                       
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+      
+        </form>
+
+        <div class="col-12 text-end">
+            <a type="button" class="btn btn-template wide next"  (click)="savedata()" >
+                Update<i class="fa fa-angle-right"></i>
+            </a>
+        </div>
+    </div>
+</section>

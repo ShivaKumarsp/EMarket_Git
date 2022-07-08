@@ -1,0 +1,26 @@
+
+
+<div class="container min-vh-100">
+  <div class="p-2">
+    <div class="text-end">
+      <h6>Total Estimate Time {{finalHour}} Hours</h6>
+      <p>Starts From {{firsthub}}</p>
+      <p>Ends From {{lasthub}}</p>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th> S NO </th>
+          <th> Hub ID </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let route of finalRoute;index as i">
+          <td> {{i+1}} </td>
+          <td> {{route}} </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

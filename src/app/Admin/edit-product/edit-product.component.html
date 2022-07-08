@@ -1,0 +1,338 @@
+
+
+<section class="hero hero-page gray-bg padding-small">
+    <div class="container">
+        <div class="row d-flex">
+            <div class="col-lg-9 order-2 order-lg-1">
+                <h1>Add Product</h1>
+            </div>
+            <div class="col-lg-3 text-right order-1 order-lg-2">
+                <ul class="breadcrumb justify-content-lg-end">
+                    <li class="breadcrumb-item"><a >Home</a></li>
+                    <li class="breadcrumb-item active">Add Item</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="checkout">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <ul class="nav">
+                    <li class="nav-item"><a class="nav-link active">Edit Product</a></li>
+                    <li class="nav-item"><a class="nav-link">Product Specification </a></li>
+                    <li class="nav-item"><a class="nav-link">Item Specification Set For Vendor</a></li>
+                    <li class="nav-item"><a class="nav-link">Add Product Feature</a></li>
+                    <!-- <li class="nav-item"><a class="nav-link" >Add Product Variant</a></li> -->
+                </ul>
+            </div>
+        </div>
+    
+            <div class="row">
+                
+                <div class="col-lg-12">
+                    <div class="tab-content">
+                        <div id="product_info" class="active tab-block">
+                            <form [formGroup]="form"   novalidate>
+                            <div class="row">
+
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Category<b style="color:red">*</b></label>
+                                        <select class="form-control" [(ngModel)]="cat_id" formControlName="catname" (change)="get_sub_category(cat_id)" >
+                                            <option value="">-- Select Category --</option>
+                                            <option *ngFor="let cat of category_list" value="{{cat.mcid}}" ng-selected="{{cat.mcid == cat_id}}">
+                                                {{cat.categoryname}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="f['catname'].touched || f['catname'].invalid" class="text-danger">
+                                            <div *ngIf="f['catname'].errors && f['catname'].errors['required']">Select  Category</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">SubCategory <b style="color:red">*</b></label>
+                                        <select class="form-control"   [(ngModel)]="sub_cat_id" formControlName="sub_cat" (change)="get_spl_category(cat_id,sub_cat_id)" >
+                                            <option value="">-- Select Sub Category --</option>
+                                            <option *ngFor="let subcat of sub_category_list" value="{{subcat.mscid}}" ng-selected="{{subcat.mscid == sub_cat_id}}">
+                                                {{subcat.subcategory_name}}
+                                            </option>
+                                            <div *ngIf="f['sub_cat'].touched && f['sub_cat'].invalid" class="text-danger">
+                                                <div *ngIf="f['sub_cat'].errors && f['sub_cat'].errors['required']">Select Product Category</div>
+                                            </div>
+                                        </select>
+                                      
+                                    </div>
+                                </div>
+
+
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Additional Category <b style="color:red">*</b></label>
+                                        <select class="form-control" formControlName="add_cat"  [(ngModel)]="additionalcat_id" >
+                                            <option value="">-- Select Additional Category --</option>
+                                            <option *ngFor="let addcat of additional_category_list" value="{{addcat.additionalcat_id}}" ng-selected="{{addcat.additionalcat_id == additionalcat_id}}">
+                                                {{addcat.additionalcat_name}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="f['add_cat'].touched && f['add_cat'].invalid" class="text-danger">
+                                            <div *ngIf="f['add_cat'].errors && f['add_cat'].errors['required']">Select Additional Category</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--<div class="col-sm-6 col-md-6">
+                                    <label class="form-label">{{abc.Brand}} <b style="color:red">*</b></label>
+                                    <select class="form-control" name="brandname" [(ngModel)]="brand_id" required>
+                                        <option value="">-- Select Brand --</option>
+                                        <option *ngFor="brand in brand_list" value="{{brand.brandid}}" ng-selected="{{brand.brandid == brand_id}}">
+                                            {{brand.brandname}}
+                                        </option>
+                                    </select>
+                                    <div class="error-messages" ng-if="interacted(myform.brandname)" ng-messages="myform.brandname.$error">
+                                        <div ng-message="required" style="color:red">Select Brand</div>
+                                    </div>
+                                </div>-->
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">ProductType<b style="color:red">*</b></label>
+                                        <select class="form-control" formControlName="producttype" [(ngModel)]="product_type_id" required>
+                                            <option value="">-- Select Product Type --</option>
+                                            <option *ngFor="let producttype of product_type_list" value="{{producttype.producttypeid}}" ng-selected="{{producttype.producttypeid == product_type_id}}">
+                                                {{producttype.producttypename}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="f['producttype'].touched && f['producttype'].invalid" class="text-danger">
+                                            <div *ngIf="f['producttype'].errors && f['producttype'].errors['required']">Select Product Type</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-md-6">
+                                    <label class="form-label">ProductName<b style="color:red">*</b></label>
+                                    <input type="text" class="form-control" formControlName="productname_en" [(ngModel)]="product_name"
+                                           placeholder="Enter Product Name" required />
+                                          <div *ngIf="f['productname_en'].touched && f['productname_en'].invalid" class="text-danger">
+                                            <div *ngIf="f['productname_en'].errors && f['productname_en'].errors['required']">Enter Product Name</div>
+                                        </div> 
+                                </div>
+
+
+                                <!--<div class="col-sm-6 col-md-6">
+        <label class="form-label">{{abc.ProductCode}} <b style="color:red">*</b></label>
+        <input type="text" class="form-control" name="p_code_en" [(ngModel)]="product_code_en"
+               placeholder="Enter Product Code" required />
+        <div class="error-messages" ng-if="interacted(myform.p_code_en)" ng-messages="myform.p_code_en.$error">
+            <div ng-message="required" style="color:red">Enter Product Code</div>
+        </div>
+    </div>-->
+
+                                <div class="col-sm-6 col-md-6">
+                                    <label class="form-label">BasePrice <b style="color:red">*</b></label>
+                                    <input  type="number" min="1" class="form-control" formControlName="baseprice" 
+                                    [(ngModel)]="base_price" placeholder="Enter Base Price(ಮೂಲ ಬೆಲೆ)" oninput="validity.valid||(value='');">
+                                    <div *ngIf="f['baseprice'].touched && f['baseprice'].invalid" class="text-danger">
+                                        <div *ngIf="f['baseprice'].errors && f['baseprice'].errors['required']">Enter Base Price</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <div class="tab-content">
+                                        <div id="product_info" class="active tab-block">
+                                            <div class="row">
+                                                <div class="col-12">
+
+                                                    <h6 class="my-3">Product Unique Codes</h6>
+
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="form-label">HSN Code<b style="color:red">*</b></label>
+                                                    <input type="text" class="form-control" formControlName="hsn"  [(ngModel)]="hsn_code" placeholder="Enter HSN Code(ಎಚ್ಎಸ್ಎನ್ ಕೋಡ್)"  />
+                                                     <div *ngIf="f['hsn'].touched && f['hsn'].invalid" class="text-danger">
+                                                        <div *ngIf="f['hsn'].errors && f['hsn'].errors['required']">Enter HSN Code</div>
+                                                    </div> 
+                                                </div>
+                                                <div class="form-group col-md-6">
+                                                    <label class="form-label">IAN Code <b style="color:red">*</b></label>
+                                                    <input type="text" class="form-control" formControlName="ian" [(ngModel)]="ian_code" placeholder="Enter IAN Code(ಐಎಎನ್ ಕೋಡ್)" required />
+                                                    <div *ngIf="f['ian'].touched && f['ian'].invalid" class="text-danger">
+                                                        <div *ngIf="f['ian'].errors && f['ian'].errors['required']">Enter IAN Code</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <label for="uom_id" class="form-label">SetProduct Unit</label>
+                                        <select class="form-control" formControlName="uom" [(ngModel)]="uom_id" required>
+                                            <option value="">-- Select Product Unit--</option>
+                                            <option *ngFor="let uom of uom_list" value="{{uom.uomid}}" ng-selected="{{uom.uomid == uom_id}}">
+                                                {{uom.uom_name}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="f['uom'].touched && f['uom'].invalid" class="text-danger">
+                                            <div *ngIf="f['uom'].errors && f['uom'].errors['required']">Select Product Unit</div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <!--<div class="col-sm-3 col-md-3">
+                                    <label class="form-label">{{abc.ProductWeightType}} <b style="color:red">*</b></label>
+                                    <select class="form-control" name="weighttype" [(ngModel)]="uom_weight_type_id" required>
+                                        <option value="">-- Select Weight Type(ತೂಕ)--</option>
+                                        <option *ngFor="uom_wei in uom_weight_list" value="{{uom_wei.uomid}}" ng-selected="{{uom_wei.uomid == uom_weight_type_id}}">
+                                            {{uom_wei.uom_name}}
+                                        </option>
+                                    </select>
+                                    <div class="error-messages" ng-if="interacted(myform.weighttype)" ng-messages="myform.weighttype.$error">
+                                        <div ng-message="required" style="color:red">Select Weight Type(ತೂಕ)</div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 col-md-3">
+                                    <label class="form-label">{{abc.ProductWeight}} <b style="color:red">*</b></label>
+                                    <input type="text" class="form-control" name="uomweight" [(ngModel)]="product_weight" placeholder="Enter Product Weight(ತೂಕ)" required />
+                                    <div class="error-messages" ng-if="interacted(myform.uomweight)" ng-messages="myform.uomweight.$error">
+                                        <div ng-message="required" style="color:red">Enter Product Weight(ತೂಕ)</div>
+                                    </div>
+                                </div>-->
+
+                                <!--<div class="col-lg-6">
+                                    <div class="tab-content">
+                                        <div id="product_info" class="active tab-block">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <h6 class="my-3">{{abc.ProductDimensionWeight}}</h6>
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <label class="form-label">{{abc.SizeType}} <b style="color:red">*</b></label>
+                                                    <select class="form-control" name="sizetype" [(ngModel)]="uom_size_type_id" required>
+                                                        <option value="">-- Select--</option>
+                                                        <option *ngFor="uom_size in uom_size_list" value="{{uom_size.uomid}}" ng-selected="{{uom_size.uomid == uom_size_type_id}}">
+                                                            {{uom_size.uom_name}}
+                                                        </option>
+                                                    </select>
+                                                    <div class="error-messages" ng-if="interacted(myform.sizetype)" ng-messages="myform.sizetype.$error">
+                                                        <div ng-message="required" style="color:red">Select Size Type(ಗಾತ್ರ)</div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <label class="form-label">{{abc.Length}} <b style="color:red">*</b></label>
+                                                    <input type="text" class="form-control" name="len" [(ngModel)]="product_size_l"
+                                                           placeholder="Length(ಉದ್ದ)" required />
+                                                    <div class="error-messages" ng-if="interacted(myform.len)" ng-messages="myform.len.$error">
+                                                        <div ng-message="required" style="color:red">Enter Length(ಉದ್ದ)</div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <label class="form-label">{{abc.Width}} <b style="color:red">*</b></label>
+                                                    <input type="text" name="wid" class="form-control" [(ngModel)]="product_size_b" placeholder="Width(ಅಗಲ)" required />
+                                                    <div class="error-messages" ng-if="interacted(myform.wid)" ng-messages="myform.wid.$error">
+                                                        <div ng-message="required" style="color:red">Enter Width(ಅಗಲ)</div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-md-3">
+                                                    <label class="form-label">{{abc.Height}} <b style="color:red">*</b></label>
+                                                    <input type="text" name="hei" class="form-control" [(ngModel)]="product_size_h" placeholder="Height(ಎತ್ತರ)" required />
+                                                    <div class="error-messages" ng-if="interacted(myform.hei)" ng-messages="myform.hei.$error">
+                                                        <div ng-message="required" style="color:red">Enter Height(ಎತ್ತರ)</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>-->
+
+                                <div class="col-sm-6 col-md-6">
+                                    <label class="form-label">BOM Item Contain</label>
+                                    <select class="form-control" formControlName="bommm" [(ngModel)]="is_contains_bom">
+                                        <option value="">-- Select --</option>
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                    <div *ngIf="f['bommm'].touched && f['bommm'].invalid" class="text-danger">
+                                        <div *ngIf="f['bommm'].errors && f['bommm'].errors['required']">Select BOM</div>
+                                    </div>
+                                </div>
+                                <!--<div class="col-sm-3 col-md-3">
+                                    <label class="form-label">{{abc.SelfManufatured}}</label>
+                                    <select class="form-control" [(ngModel)]="self_manufacturer">
+                                        <option value="">-- Select --</option>
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-3 col-md-3">
+                                    <label class="form-label">{{abc.IsPerishable}}</label>
+                                    <select class="form-control" [(ngModel)]="is_perishable">
+                                        <option value="">-- Select --</option>
+                                        <option value="true">Yes</option>
+                                        <option value="false">No</option>
+                                    </select>
+                                </div>-->
+
+
+
+
+                                <div class="col-sm-6 col-md-6">
+                                    <label class="form-label">Short Description<b style="color:red">*</b></label>
+                                    <textarea type="text" class="form-control" cols="30" rows="3" formControlName="short_desc_en" [(ngModel)]="short_description"
+                                              placeholder="Enter Short Description" required></textarea>
+                                              <div *ngIf="f['short_desc_en'].touched && f['short_desc_en'].invalid" class="text-danger">
+                                                <div *ngIf="f['short_desc_en'].errors && f['short_desc_en'].errors['required']">Enter Description</div>
+                                            </div>
+                                </div>
+
+                                <div class="col-sm-3 col-md-3">
+                                    <label class="form-label">Product Image <b style="color:red">*</b></label><br />
+
+                                    <input type="file" formControlName="itemimage"  accept="image/jpeg" [(ngModel)]="p_imageurl" (change)="selectFileUpload(imageInput)" id="img" #imageInput required>
+                                    <div *ngIf="f['itemimage'].touched && f['itemimage'].invalid" class="text-danger">
+                                        <div *ngIf="f['itemimage'].errors && f['itemimage'].errors['required']">Select Image</div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3 col-md-3">
+                                    <div>
+                                        <img id="productimg" src="{{p_imageurl}}" class="img-responsive" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                            </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 mt-4">
+                    <div class="text-center">
+                        <input type="text" [(ngModel)]="product_id" hidden />
+                         <!-- <a type="button" class="btn btn-template wide next"  (click)="Clear()" [disabled]="btn_dissable==false">Clear </a> &nbsp; -->
+                        <a type="button" class="btn btn-template wide next"  (click)="savedata()" [disabled]="btn_dissable==false">
+                            Update Product<i class="fa fa-angle-right"></i>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2" *ngFor="let val of validation_list">
+                <div class="col-md-9">{{val.product_id_ret}}</div>
+                <div class="col-md-9">{{val.sub_category_id_ret}}</div>
+                <div class="col-md-9">{{val.additional_cat_id_ret}}</div>
+                <div class="col-md-9">{{val.product_type_id_ret}}</div>
+                <div class="col-md-9">{{val.product_name_ret}}</div>
+                <div class="col-md-9">{{val.base_price_ret}}</div>
+                <div class="col-md-9">{{val.hsn_code_ret}}</div>
+                <div class="col-md-9">{{val.ian_code_ret}}</div>
+                <div class="col-md-9">{{val.uom_id_ret}}</div>
+                <div class="col-md-9">{{val.image_path_ret}}</div>
+                <div class="col-md-9">{{val.short_description_ret}}</div>
+            </div> 
+    </div>
+</section>
+

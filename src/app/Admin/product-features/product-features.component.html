@@ -1,0 +1,77 @@
+
+<section class="hero hero-page gray-bg padding-small">
+    <div class="container">
+        <div class="row d-flex">
+            <div class="col-lg-9 order-2 order-lg-1">
+                <h1>Product Features</h1>
+            </div>
+            <div class="col-lg-3 text-right order-1 order-lg-2">
+                <ul class="breadcrumb justify-content-lg-end">
+                    <li class="breadcrumb-product"><a >Home</a></li>
+                    <li class="breadcrumb-product active">Product Features</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="checkout">
+    <form >
+    <div class="container ">
+        <div class="row">
+
+            <div class="col-12 mb-3">
+                <ul class="nav">
+                    <li class="nav-item"><a [routerLink]="['/app/editproduct/',productid]" class="nav-link">Edit Product</a></li>
+                    <li class="nav-item"><a [routerLink]="['/app/addproductspecification/',productid]"  class="nav-link">Product Specification </a></li>
+                    <li class="nav-item"><a [routerLink]="['/app/productquestionset/',productid]" class="nav-link">Item Specification Set For Vendor</a></li>
+                    <li class="nav-item"><a class="nav-link active">Add Product Feature</a></li>
+                    <!-- <li class="nav-item"><a class="nav-link"[routerLink]="['/app/productvariant/',productid]" >Add Product Variant</a></li> -->
+                </ul>
+            </div>
+        </div>
+
+        <div class="text-end">
+            <h6 class="my-3">{{productname}}</h6> 
+    </div>
+
+        <div class="row min-vh-100">
+
+            <div class="tab-content">
+                <div id="product_info" class="active tab-block">
+                    
+                    
+                        <div class="card card-body p-4">
+                                                      
+                            <div class="form-group" class="my-2" [formGroup]="forms">
+                               
+                             
+
+                                    <div class="NgxEditor__Wrapper" class="shadow shodow-sm mt-3" [style]="{'height':'300px'}">
+                                        <ngx-editor-menu [editor]="editor"  [style]="{'height':'300px'}"  minHeight="50px" formControlName="msg"> </ngx-editor-menu>
+                                        <ngx-editor
+                                        [editor]="editor"
+                                        [ngModel]="html"
+                                        [disabled]="false"
+                                        [placeholder]="'.Type here..'"
+                                        formControlName="msg"
+                                        [style]="{'height':'300px'}"
+                                        >
+                                        </ngx-editor>
+                                   
+                                    </div>
+                                    <a type="button" class="btn btn-template wide next" [style]="{'margin-top':'150px'}" (click)="savepfeatures()">
+                                        Save<i class="fa fa-angle-right"></i>
+                                    </a>
+                            </div>
+                          
+                        </div>      
+                    
+                </div>
+            </div>
+        </div>
+
+    </div>
+</form>
+</section>
+

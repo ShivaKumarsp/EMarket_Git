@@ -1,0 +1,271 @@
+
+<section class="hero hero-page gray-bg padding-small">
+          <div class="container">
+              <div class="row d-flex">
+                  <div class="col-lg-9 order-2 order-lg-1">
+                      <h1>Verify Item</h1>
+                  </div>
+                  <div class="col-lg-3 text-right order-1 order-lg-2">
+                      <ul class="breadcrumb justify-content-lg-end">
+                          <li class="breadcrumb-item"><a >Home</a></li>
+                          <li class="breadcrumb-item active">Verify Item</li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </section>
+      
+      <section class="checkout">
+          <div class="container">
+              <div class="row">
+                  <!-- <div class="col-12 mb-4">
+                      <ul class="nav nav-pills">
+                        
+                          <li class="nav-item"><a class="nav-link active">Verify Item</a></li>
+                          <li class="nav-item"><a class="nav-link">Item Specification </a></li>
+                      <li class="nav-item"><a class="nav-link">Item Feature</a></li>
+                      </ul>
+                  </div> -->
+                  <div class="col-md-8">
+      
+                      <div class="tab-content">
+                          <div id="product_info" class="active">
+                              
+                              <form  name="additemform"  novalidate>
+                                  <div class="row" >
+                                
+                                          <div class="col-md-6 p-2">
+                                           <label for="productname">Product Name</label>
+                                           <label class="form-control">{{edit_item_list[0].productname}}</label>                                                                 
+                                        </div>
+      
+                                        <div class="col-md-6 p-2">
+                                          <label for="product_type">Item Type</label>
+                                          <label class="form-control">{{edit_item_list[0].item_type_name}}</label>
+                                      </div>
+                                     
+                                      
+                                  <div class="col-md-6  mb-3 p-2">
+                                      <label for="itemname">Item Name</label>
+                                      <label class="form-control">{{edit_item_list[0].item_name}}</label>
+                                  </div> 
+      
+                                      <div class="col-md-6  mb-3">
+                                          <label for="storename">Store Name</label>
+                                          <label class="form-control">{{edit_item_list[0].store_name}}</label>
+                                      </div>
+      
+                                      <div class="col-md-6  mb-3 p-2">
+                                          <label for="item_mrp" class="form-label">MRP</label>
+                                          <label class="form-control">{{edit_item_list[0].mrp}}</label>
+                                      </div>
+      
+                                      <div class="col-md-6  mb-3 p-2">
+                                          <label for="item_list_price" class="form-label">Listing Price</label>
+                                          <label class="form-control">{{edit_item_list[0].listing_price}}</label>
+                                      </div>
+      
+                                      <div class="col-md-6  mb-3 p-2">
+                                          <label >Currency</label>
+                                          <label class="form-control">{{edit_item_list[0].currency_name}}</label>
+                                      </div>
+                                      <div class="col-md-6  mb-3 p-2">
+                                          <label for="min_quantity" class="form-label">Quantity</label>
+                                          <label class="form-control">{{edit_item_list[0].quantity}}</label>
+                                      </div>
+      
+                                      <div class="col-md-6  mb-3 p-2">
+                                          <label for="min_quantity" class="form-label">Set Low Inventory</label>
+                                          <label class="form-control">{{edit_item_list[0].min_quantity}}</label>
+                                      </div>
+      
+      
+                                      <div class="col-12 mt-3 ml-3  mb-3 p-2" >
+                                          <input id="is_perisable" type="checkbox" class="checkbox-template" [(ngModel)]="check_durability">
+                                          <label for="is_perisable" data-bs-toggle="collapse" data-bs-target="#checkdurable" aria-expanded="false" aria-controls="checkdurable">Durable</label>
+                                      </div>
+                                      <div id="checkdurable" aria-expanded="false" class="collapse col-12">
+                                          <div class="row">
+                                              <div class="col-md-6  mb-3 p-2">
+                                                  <label for="durability_duration" class="form-label">Durable till</label>
+                                                  <label class="form-control">{{edit_item_list[0].durability}}</label>
+                                              </div>
+                                              <div class="col-md-6  mb-3 p-2">
+                                                  <label for="durableumo" >Durable type</label>
+                                                  <label class="form-control">{{Durable_type}}</label>
+                                              </div>
+                                          </div>
+                                      </div>
+      
+                                      <div class="form-group col-12 form-floating mb-3">
+                                          <h6 class="my-3">Manufacturing Details</h6>
+                                      </div>
+                                      <div class="col-md-6  mb-3 p-2">
+                                          <label for="manufacturer_details" class="form-label">Manufacturer</label>
+                                          <textarea name="manufacturer_details" disabled="true" id="manufacturer_details" class="form-control" [(ngModel)]="manufacture_details"></textarea>
+                                         
+                                      </div>
+                                      <div class="col-md-6  mb-3 p-2">
+                                          <label for="manufacturing_date">Manufacturing Date</label>
+                                          <label class="form-control">{{edit_item_list[0].manufacture_date|date}}</label>
+                                      </div>
+                                      <div class="col-md-6  mb-3 p-2">
+                                          <label for="product_expiry">Expiry Date</label>
+                                          <label class="form-control">{{edit_item_list[0].expiry_date|date}}</label>
+                                      </div>
+      
+                                      <div class="col-md-6  mb-3 p-2">
+                                          <label for="country">Country of Origin</label>
+                                          <label class="form-control">{{edit_item_list[0].country_name}}</label>
+                                      </div>
+      
+                                      <div class="col-12  mb-3">
+                                          <h6 class="my-3">Warrenty Details</h6>
+                                      </div>
+                                      <div class="col-md-6  mb-3 p-2">
+                                          <label for="product_warrent">Product Warrenty</label>
+                                          <label class="form-control">{{edit_item_list[0].warranty}}</label>
+                                      </div>
+                                      <div class="col-md-6  mb-3 p-2">
+                                          <label for="warrantyumo">Warranty Type</label>
+                                          <label class="form-control">{{edit_item_list[0].warranty_name}}</label>
+                                      </div>
+      
+                                       <div class="col-md-6  mb-3 p-2">
+                                          <div>
+                                              <img id="productimg" src="{{edit_item_list[0].item_image}}" class="img-responsive" style="width:20%; height:50%" />
+                                          </div>
+                                       </div>
+                                  </div>      
+                              
+                                    
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-4" >
+                     <div class="block-body order-summary">
+                          <h6 class="text-uppercase">
+                              {{verify_product[0].productname}}
+                          </h6>
+                          <p>{{verify_product[0].shortdescription}}</p>
+                          <ul class="order-menu list-unstyled">
+                              <li class="d-flex justify-content-between">
+                                  <span>Base Price</span>
+                                  <span><strong>Rs {{verify_product[0].baseprice}}</strong></span>
+                              </li>
+                              <li class="d-flex justify-content-between">
+                                  <img src={{verify_product[0].imagepath}} width="100%" height="auto" />
+                              </li> 
+                          </ul>
+                      </div> 
+                  </div>
+              </div>
+          </div>
+                   
+   <div class="container">
+                              <div class="col-lg-12">                      
+                                  <div class="tab-content">                      
+                                      <h5 class="my-4">Verify Item Specification</h5>
+                                       <table class="table table-hover table-responsive-md small">
+                                          <thead>
+                                              <tr>
+                                                  <th>SL No</th>
+                                                  <th>Apecification</th>
+                                                  <th>Attribute Name</th>
+                                                  <th>Attribute Value</th>
+                                                  </tr>
+                                          </thead>
+                                          <tbody>
+                                              <tr *ngFor="let pro of verify_item_specification let i = index;">
+                                                      <th>{{i+1}}</th>
+                                                  <td>{{pro.specification_name}}</td>
+                                                  <td>{{pro.attribute_name}}</td>
+                                                  <td>{{pro.attributevalue}}</td> 
+                                                    </tr> 
+                                          </tbody>
+                                      </table>
+                                     
+                                  </div>
+                              </div>                      
+                          </div>      
+                          
+                          <div class="container" *ngIf="feature_list.length>0">
+                              <div class="row">
+                                        
+                                        <div class="tab-content">
+                                            <div id="product_info" class="active tab-block">
+                                               <div class="card card-body p-4">
+                                                  <h4>Item Feature</h4>
+                                                 <div class="form-group" class="my-2" >
+                                                  <div class="NgxEditor__Wrapper" class="shadow shodow-sm" [style]="{'height':'300px'}">
+                                                                  
+                                                                    <ngx-editor
+                                                                    [editor]="editor"
+                                                                    [ngModel]="html"
+                                                                    [disabled]="true"
+                                                                    [placeholder]="'.Type here..'"
+                                                                  
+                                                                    [style]="{'height':'300px'}"
+                                                                   >
+                                                                    </ngx-editor>
+                                                               
+                                                                </div>
+                                                        </div>
+                                                      
+                                                    </div>      
+                                                
+                                            </div>
+                                        </div>
+                                    </div>                    
+                          </div>   
+
+                          <div class="container">
+                              <form [formGroup]="form">    
+                              <div class="col-lg-12">     
+                                                  
+                                        <div class="col-sm-6 col-md-6">
+                                                  <div class="form-group">
+                                                      <label class="form-label">Status <b style="color:red">*</b></label>
+                                                      <select class="form-control"   [(ngModel)]="verify_status" formControlName="v_status"
+                                                        [ngClass]="{ 'is-invalid': submitted && f['v_status'].errors }" required>
+                                                          <option value="">-- Select--</option>
+                                                          <option value="Accept">Accept</option>
+                                                          <option value="Reject">Reject</option>
+                                                        </select>
+                                                        <div *ngIf="submitted && f['v_status'].errors" class="invalid-feedback">
+                                                          <div *ngIf="f['v_status'].errors['required']">Select Status</div> 
+                                                        </div>
+                                                  </div>
+                                              </div>
+
+                                              <div class="col-sm-6 col-md-6">
+                                                  <div class="form-group">
+                                                      <label class="form-label">Remarks <b style="color:red">*</b></label>
+                                                      <textarea type="text" class="form-control" cols="30" rows="3" formControlName="v_remark"
+                                                      [(ngModel)]="remarks"  placeholder="Enter Remarks" [ngClass]="{ 'is-invalid': submitted && f['v_remark'].errors }" required></textarea>
+
+                                                        <div *ngIf="submitted && f['v_remark'].errors" class="invalid-feedback">
+                                                          <div *ngIf="f['v_remark'].errors['required']">Enter Remarks</div> 
+                                                        </div>
+                                                  </div>
+                                              </div>                                        
+
+                                       
+                              </div> 
+                    </form>                      
+                          </div>   
+
+                          <div class="col-lg-12 mt-4">
+                              <div class="text-center">
+                          <input type="text" [(ngModel)]="item_id" [hidden]="true"/>
+                        
+                          <a type="submit" class="btn btn-template wide next"  (click)="update_status()">
+                              Update<i class="fa fa-angle-right"></i>
+                          </a>
+                      </div>
+                  </div>
+      </section>
+      
+      
+      

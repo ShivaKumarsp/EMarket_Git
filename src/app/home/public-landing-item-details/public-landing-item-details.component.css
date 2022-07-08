@@ -1,0 +1,13 @@
+a.btn.btn-template.wide {
+    background-color: darkmagenta;
+}
+
+.featuresection{
+    overflow:hidden;
+
+
+}
+
+.featuresection img{
+    max-width: 100vw !important;
+}

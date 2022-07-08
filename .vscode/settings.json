@@ -1,0 +1,4 @@
+{
+          "appService.defaultWebAppToDeploy": "/subscriptions/adccd21e-425c-440a-9194-108fca778d1f/microsoft.web/sites/subscriptions/adccd21e-425c-440a-9194-108fca778d1f/resourceGroups/Demo1/providers/Microsoft.Web/sites/spagenmarketplace",
+          "appService.deploySubpath": "dist"
+}

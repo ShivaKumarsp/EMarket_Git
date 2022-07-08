@@ -1,0 +1,11 @@
+a.btn.btn-template.wide.next {
+    background-color: darkmagenta;
+
+}
+::ng-deep 
+    
+.NgxEditor { height: 400px; overflow-y: scroll;  }   
+   
+ ::ng-deep.NgxEditor__Content { min-height: 400px; } 
+
+

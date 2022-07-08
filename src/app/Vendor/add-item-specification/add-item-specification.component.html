@@ -1,0 +1,172 @@
+<section class="hero hero-page gray-bg padding-small">
+    <div class="container">
+        <div class="row d-flex">
+            <div class="col-lg-9 order-2 order-lg-1">
+                <h1>Item Specification</h1>
+            </div>
+            <div class="col-lg-3 text-right order-1 order-lg-2">
+                <ul class="breadcrumb justify-content-lg-end">
+                    <li class="breadcrumb-item"><a >Home</a></li>
+                    <li class="breadcrumb-item active">Item Specification</li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="checkout">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><a  [routerLink]="['/app/edititem/',itemid]" class="nav-link">Edit Item</a></li>
+                    <li class="nav-item"><a class="nav-link active"
+                            [routerLink]="['/app/additemspecification/',itemid]">Item Specification </a></li>
+                    <li class="nav-item"><a class="nav-link">Add Item Feature</a></li>
+                </ul>
+            </div>
+        </div>
+        <!-- {{attribute_value_list_new|json}} -->
+        <!-- {{additional_cat_spec_list_new|keyvalue|json}} -->
+        <form  [formGroup]="attribute_select">
+            <div class="text-end">
+                <h6 class="my-3">{{itemname}}</h6> 
+        </div>
+
+           
+            <!-- Save Specification -->
+            <div *ngIf="edititem == false">
+            <div class="my-2 container" *ngFor="let a of additional_cat_spec_list_new|keyvalue" >
+
+                <h3 class="text-primary">{{a.key}} </h3>
+                <div class="card card-body my-3 p-2" *ngFor="let b of a.value">
+
+                    <div class="row">
+                        <div class="col-sm-6 col-md-6">
+                            <h6>{{b.attributename}} <b style="color: red;">*</b></h6>
+                            <input class="form-control" type="text" 
+                            *ngIf="b.enablevalue==true"
+                                (change)="changevalue($event,b.attributename_id,b.enablevalue, b.specificationid)">
+
+                            <div *ngFor="let match of attribute_value_list_new|keyvalue">
+
+                                <ng-template [ngIf]="match.key == b.attributename_id">
+                                    <div class="form-floating" *ngIf="b.enablevalue==false"
+                                       > <select class="form-select"
+                                            aria-label="Floating label select" formControlName="att_select_val_id"
+                                            (change)="changevalue($event,b.attributename_id,b.enablevalue,b.specificationid)">
+                                            <option value="" selected>select</option>
+                                            <option *ngFor="let matchs of match.value"
+                                                value="{{matchs.attributevalue_id}}">
+                                                {{matchs.attributevalue}}                                             
+                                            </option>
+                                        </select>
+                                    </div>
+                                </ng-template>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    
+                   
+                </div>
+            </div>
+        </div>
+        <!-- Update Specification -->
+<div *ngIf="edititem == true && edititem_edit == true">
+            <div class="my-2 container">
+                <h3 class="text-primary">{{specificationname}}</h3>
+                <div class="card card-body my-3 p-2">
+                                 <div class="row">
+                        <div class="col-sm-6 col-md-6">
+                            <h6>{{attributename}}<b style="color: red;">*</b></h6>
+            <input class="form-control" type="text" formControlName="customedata" [(ngModel)]="custon_data" *ngIf="enablecuston==true"
+                (change)="changeeditvalue(specificationid,attributenameid,enablecuston,$event)">      
+                                   
+                                        <div class="form-floating" *ngIf="enablecuston==false"
+                                           > <select class="form-select"
+                                                aria-label="Floating label select" formControlName="att_select_val_id"
+                                                (change)="changeeditvalue(specificationid,attributenameid,enablecuston,$event)">
+                                                <option value="" selected>select</option>
+                                                <option *ngFor="let matchs of attribute_value_list_edit" 
+                                                    value="{{matchs.attributevalue_id}}" [selected]="matchs.attributevalue_id==attributevalueid">
+                                                    {{matchs.attributevalue}}                                             
+                                                </option>
+                                            </select>
+                                        </div>
+                                 
+                           
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+            <div class="row">
+                <div class="col-md-12 mt-4">
+                    <div class="text-center">
+                        <a class="btn btn-primary btn-template  wide next" (click)="save_attribute()" *ngIf="edititem == false">
+                            Add<i class="fa fa-angle-right"></i>
+                        </a> &nbsp;
+                        <a class="btn btn-primary btn-template  wide next" (click)="update_attribute()" *ngIf="edititem1 == true">
+                            Update<i class="fa fa-angle-right"></i>
+                        </a>&nbsp;
+                        <a class="btn btn-primary btn-template wide next" [routerLink]="['/app/additemfeature/',itemid]">
+                            Next<i class="fa fa-angle-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <div class="tab-content">
+
+                        <h5 class="my-4">Specification Details</h5>
+                        <div class="col-md-4" style="float: right">                    
+                            <input class="form-control form-control-sm" formControlName="v_search" type="text" [(ngModel)]="search" placeholder="search here...">
+                        </div>
+                        <table class="table table-hover table-responsive-md small">
+                            <thead>
+                                <tr>
+                                    <th>SL No</th>
+                                    <th>Specification Name</th>
+                                    <th>Attribute Name</th>
+                                    <th>Attribute Value</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of item_specification_list| filter:search | paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index; filter:search">
+                                        <th>{{tableSize *(page-1)+i+1}}</th>
+                                    <td>{{item.specificationname}}</td>
+                                    <td>{{item.attributename}}</td>
+                                    <td>{{item.attributevalue}}</td>
+                                    <td>
+                                        <a class="btn btn-primary btn-sm" (click)="edit_specification(item)"><i
+                                                class="fa fa-edit"></i></a>
+                                       
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                        <div class="d-flex justify-content-center">
+                            <pagination-controls
+                              previousLabel="Prev"
+                              nextLabel="Next"
+                              (pageChange)="onTableDataChange($event)"
+                            >
+                            </pagination-controls>
+                          </div>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</section>

@@ -1,0 +1,99 @@
+
+
+    <section class="hero hero-page gray-bg padding-small">
+        <div class="container">
+            <div class="row d-flex">
+                <div class="col-lg-9 order-2 order-lg-1">
+                    <h1>{{addcategoryname}}</h1>
+                 
+                </div>
+                <div class="col-lg-3 text-right order-1 order-lg-2">
+                    <ul class="breadcrumb justify-content-lg-end">
+                        <li class="breadcrumb-item"><a>Home</a></li>
+                        <li class="breadcrumb-item active">Shop</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <main>
+        <div class="container">
+          
+            <div class="row">             
+
+                <div class="sidebar col-xl-3 col-lg-4 sidebar">
+                                 
+                        <div class="block" *ngFor="let ii of attributenamelist|keyvalue">
+                            <h6 class="text-uppercase">{{ii.key}}</h6>
+                            <div class="form-group mb-1" >         
+                                      <div class="form-group mb-1" *ngFor="let attrs of ii.value">
+                                        <input id="{{attrs.attributevalue}}{{attrs.attributename_id}}" type="checkbox" name="clothes-brand" class="checkbox-template"
+                                        [(ngModel)]="attrs.in_check" (change)="changevalue(attrs)">
+                                         <label for="{{attrs.attributevalue}}{{attrs.attributename_id}}">{{attrs.attributevalue}}</label>
+                                      </div>
+                            </div>                            
+                        </div> 
+                  </div>
+               
+              
+
+             
+                <div class="products-grid col-xl-9 col-lg-8 sidebar-left">
+                    <!-- <header class="d-flex justify-content-between align-items-start">                      
+                        <select id="sorting" class="bs-select">
+                            <option value="newest">Newest</option>
+                            <option value="oldest">Oldest</option>
+                            <option value="lowest-price">Low Price</option>
+                            <option value="heigh-price">High Price</option>
+                        </select>
+                    </header> -->
+                       <div  class="row">
+                            <div class="item col-xl-3 col-lg-4 col-md-6" *ngFor="let itm of itemlist" >
+                               <div class="product is-gray">
+                                    <div class="image d-flex align-items-center justify-content-center">
+                                        <img src="{{itm.itemimage}}" alt="{{itm.itemname}}" class="img-fluid p-3"
+                                             style="max-width: 200px; max-height: 200px">
+                                        <div class="hover-overlay d-flex align-items-center justify-content-center">
+                                            <div class="CTA d-flex align-items-center justify-content-center">
+                                                <a class="add-to-cart" (click)="add_to_cart(itm)"><i class="fa fa-shopping-cart"></i></a>
+                                                <a  type="button" class="visit-product active" (click)="viewproductdetails(itm)"><i class="fa fa-search">View</i></a>
+                                                <!-- <a data-toggle="modal" data-target="#exampleModal" ng-click="short_view(product)" class="quick-view"><i class="fa fa-arrows-alt"></i></a> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="title">
+                                      <!-- <small class="text-muted">
+                                            {{ itm.itemname}}
+                                            {{itm.itemname.length > 20 ? '...' : ''}}
+                                        </small>  -->
+                                        <a >
+                                             <h3 class="h6 text-uppercase no-margin-bottom" style="cursor:pointer ;" (click)="viewproductdetails(itm)">
+                                                {{ (itm.itemname.length>30)? (itm.itemname | slice:0:30)+'....':(itm.itemname) }}
+                                            </h3> 
+                                        </a>
+                                        <span class="price text-muted"><del>{{itm.v_mrp}}</del> {{itm.listingprice}}</span>
+                                    
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+              
+                     
+
+
+
+
+
+                </div>
+                <!-- / Grid End-->
+            </div>
+      
+        </div>
+
+
+
+
+        
+
+    </main>

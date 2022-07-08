@@ -1,0 +1,28 @@
+.side-ui{
+
+}
+.side-ui >li{
+  list-style: none;
+
+  background-color: black;
+  color:white;
+  font-size:0.7em;
+  width: 120px;
+  margin-right:5px;
+  margin-top: 5px;
+  padding:10px;
+  border-radius: 5px;
+  border:2px solid transparent;
+  text-align: center;
+}
+.side-ui >li:hover{
+
+  background-color: white;
+  color:rgb(3, 0, 0);
+  border:2px solid black;
+}
+
+.side-ui > .active{
+
+  background-color:orange;
+}

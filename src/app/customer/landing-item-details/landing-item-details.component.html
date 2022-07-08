@@ -1,0 +1,524 @@
+
+<div ng-init="BindData()">
+    <section class="hero hero-page gray-bg padding-small">
+        <div class="container">
+            <div class="row d-flex">
+                <div class="col-lg-9 order-2 order-lg-1">
+                    <h2>{{item_list.itemname}}</h2>
+                </div>
+                <div class="col-lg-3 text-right order-1 order-lg-2">
+                    <ul class="breadcrumb justify-content-lg-end">
+                        <!--<li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                        <li class="breadcrumb-item"><a href="category.html">Shop</a></li>-->
+                        <li class="breadcrumb-item active">Item Details</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="product-details">
+        <div class="container">
+            <!-- <div class="position-fixed margin-top-20 right-20" style="z-index: 999; margin-top: -7%; margin-left: -8%;">
+                <a class="btn  position-relative btn-primary btn-sm" (click)="backtomain()"><i class="fa fa-arrow-left" aria-hidden="true"></i></a>
+            </div> -->
+
+
+            <div class="row">
+                <div class="product-images col-lg-6">
+                    <!-- <div class="ribbon-info text-uppercase">Fresh</div>
+                    <div class="ribbon-primary text-uppercase">Sale</div> -->
+                    
+                    <div class="product-images col-lg-6">
+                        <owl-carousel-o [options]="customOptions">
+                          <ng-container *ngFor="let slide of slides">
+                            <ng-template carouselSlide >
+                              <img [src]="item_list.imagepath" [id]="slide.id">
+                            </ng-template>
+                          </ng-container>
+                          </owl-carousel-o>
+                      </div>
+
+                    <div data-slider-id="1" class="owl-thumbs">
+                        <button class="owl-thumb-item"><img src="{{item_list.imagepath}}" alt="shirt"></button>
+                        <button class="owl-thumb-item active"><img src="{{item_list.imagepath}}" alt="shirt"></button>
+                        <button class="owl-thumb-item"><img src="{{item_list.imagepath}}" alt="shirt"></button>
+                        <button class="owl-thumb-item"><img src="{{item_list.imagepath}}" alt="shirt"></button>
+                    </div>
+                </div>
+                <div class="details col-lg-6">
+                    <div class="d-flex align-items-center justify-content-between flex-column flex-sm-row">
+                        <ul class="price list-inline no-margin">
+                            <li class="list-inline-item current">{{item_list.currencysymbol}} {{item_list.listingprice}}</li>
+                            <li class="list-inline-item original">{{item_list.currencysymbol}} {{item_list.item_mrp}}</li>
+                        </ul>
+                        <div class="review d-flex align-items-center">
+                            <ul class="rate list-inline" *ngIf="totalrating==0">
+                                <li class="list-inline-item"><i class="fa fa-star text-primary"></i></li>
+                                <li class="list-inline-item"><i class="fa fa-star-o text-primary"></i></li>
+                                <li class="list-inline-item"><i class="fa fa-star-o text-primary"></i></li>
+                                <li class="list-inline-item"><i class="fa fa-star-o text-primary"></i></li>
+                                <li class="list-inline-item"><i class="fa fa-star-o text-primary"></i></li>
+                            </ul>
+
+                            <ul class="rate list-inline" *ngIf="totalrating>0 && totalrating<=1">
+                                <li class="list-inline-item"><i class="fa fa-star text-primary"></i></li>
+                                <li class="list-inline-item"><i class="fa fa-star-o text-primary"></i></li>
+                                <li class="list-inline-item"><i class="fa fa-star-o text-primary"></i></li>
+                                <li class="list-inline-item"><i class="fa fa-star-o text-primary"></i></li>
+                                <li class="list-inline-item"><i class="fa fa-star-o text-primary"></i></li>
+                            </ul>
+                            
+                            <ul class="rate list-inline" *ngIf="totalrating>1 && totalrating<=2">
+                                <li class="list-inline-item"><i class="fa fa-star text-primary"></i></li>
+                                <li class="list-inline-item"><i class="fa fa-star text-primary"></i></li>
+                                <li class="list-inline-item"><i class="fa fa-star-o text-primary"></i></li>
+                                <li class="list-inline-item"><i class="fa fa-star-o text-primary"></i></li>
+                                <li class="list-inline-item"><i class="fa fa-star-o text-primary"></i></li>
+                            </ul>
+                            <ul class="rate list-inline" *ngIf="totalrating>2 && totalrating<=3">
+                                <li class="list-inline-item"><i class="fa fa-star text-primary"></i></li>
+                                <li class="list-inline-item"><i class="fa fa-star text-primary"></i></li>
+                                <li class="list-inline-item"><i class="fa fa-star text-primary"></i></li>
+                                <li class="list-inline-item"><i class="fa fa-star-o text-primary"></i></li>
+                                <li class="list-inline-item"><i class="fa fa-star-o text-primary"></i></li>
+                            </ul>
+                            <ul class="rate list-inline" *ngIf="totalrating>3 && totalrating<=4">
+                                <li class="list-inline-item"><i class="fa fa-star text-primary"></i></li>
+                                <li class="list-inline-item"><i class="fa fa-star text-primary"></i></li>
+                                <li class="list-inline-item"><i class="fa fa-star text-primary"></i></li>
+                                <li class="list-inline-item"><i class="fa fa-star text-primary"></i></li>
+                                <li class="list-inline-item"><i class="fa fa-star-o text-primary"></i></li>
+                            </ul>
+                            <ul class="rate list-inline" *ngIf="totalrating>4 && totalrating<=5">
+                                <li class="list-inline-item"><i class="fa fa-star text-primary"></i></li>
+                                <li class="list-inline-item"><i class="fa fa-star text-primary"></i></li>
+                                <li class="list-inline-item"><i class="fa fa-star text-primary"></i></li>
+                                <li class="list-inline-item"><i class="fa fa-star text-primary"></i></li>
+                                <li class="list-inline-item"><i class="fa fa-star text-primary"></i></li>
+                            </ul>                            
+                            
+                            <span class="text-muted">{{rating_list.length}} reviews</span>
+                        </div>
+                    </div>
+                    <p>{{item_list.shortdescription}}</p>
+                    <div class="d-flex align-items-center justify-content-center justify-content-lg-start">
+                        <!--<div class="quantity d-flex align-items-center">
+                            <div class="dec-btn">-</div>
+                            <input type="text" value="1" class="quantity-no">
+                            <div class="inc-btn">+</div>
+                        </div>-->
+                      
+                    </div>
+                    <ul class="CTAs list-inline">
+                        <li class="list-inline-item">
+                            <a (click)="add_to_cart(item_list)" style="cursor:pointer" class="btn btn-template wide">
+                                <i class="fa fa-shopping-cart"></i>Add to Cart
+                            </a>
+
+                        </li>
+                        <li class="list-inline-item"><a  class="btn btn-template-outlined wide"> <i class="fa fa-heart-o"></i>Add to wishlist</a></li> 
+                    </ul>
+                   
+                    <ul class="CTAs list-inline">
+                        <a (click)="single_checkout(item_list)" style="cursor:pointer" class="btn btn-template wide">
+                            <i class="fa fa-shopping-cart"></i>Buy
+                        </a>
+                    </ul>
+
+                    
+               <div class="form-group mt-3 text-start" style="display: inline-flex;" *ngFor="let item  of rdata|keyvalue">                        
+                        <label for=" {{item.key}}" class=""> {{item.key}}</label>
+                        <br /> <br />
+                        <div *ngFor="let dd of objectValues(item.value)" class="my-3 d-flex d-flex-wrap" style="display: contents;">
+                         <a *ngIf="objectValues(dd)[0]!=itm_id"  (click)="change_relatedvalue(dd)" type="button"
+                              class="btn btn-outline-primary btn-attr-val btn-sm me-2">{{objectValues(dd)[4]}}</a>
+
+                            <a  *ngIf="objectValues(dd)[0]==itm_id"  (click)="change_relatedvalue(dd)" type="button"
+                               class="btn btn-outline-primary btn-attr-val btn-sm me-2">{{objectValues(dd)[4]}}</a>
+                        </div>                       
+                    </div> 
+
+                   
+                        <!-- <div class="form-group mt-3 text-start" style="display: inline-flex;" *ngFor="let item  of all_product_variant_one_new |keyvalue">                        
+                        <label for=" {{item.key}}" class=""> {{item.key}}</label>
+                        <br /> <br />
+                        <div *ngFor="let dd of item.value" class="my-3 d-flex d-flex-wrap" style="display: contents;">
+                         <a *ngIf="objectValues(dd)[0]!=itm_id"  (click)="change_relatedvalue(dd)" type="button"
+                              class="btn btn-outline-primary btn-attr-val btn-sm me-2">{{dd.attribute_value}}</a>
+                        </div>                       
+                    </div> 
+<br>
+                    <div class="form-group mt-3 text-start" style="display: inline-flex;" *ngFor="let item  of all_product_variant_two_new |keyvalue">                        
+                        <label for=" {{item.key}}" class=""> {{item.key}}</label>
+                        <br /> <br />
+                        <div *ngFor="let dd of item.value" class="my-3 d-flex d-flex-wrap" style="display: contents;">
+                         <a *ngIf="objectValues(dd)[0]!=itm_id"  (click)="change_relatedvalue(dd)" type="button"
+                              class="btn btn-outline-primary btn-attr-val btn-sm me-2">{{dd.attribute_value}}</a>
+                        </div>                       
+                    </div>  -->
+
+
+                    <br>
+
+                    <div *ngIf="item_list.inthe_box!==null && item_list.inthe_box!==''">
+                        <div>In The Box:</div>
+                        {{item_list.inthe_box}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+  <section class="product-description no-padding">
+        <div class="container">
+            <ul role="tablist" class="nav nav-tabs flex-column flex-sm-row">
+                <li class="nav-item" *ngFor="let spec of specification| keyvalue">
+                    <a data-toggle="tab" role="tab" class="nav-link " (click)="get_specification_details(spec.key)">
+                        <i style="background-color: #d7d3ce !important;" class="nav-link " style="cursor:pointer">{{spec.key}}</i>
+                    </a>
+                </li>
+                     </ul>
+            <div class="tab-content">
+              
+                 <div role="tabpanel" class="tab-pane active">
+                    <div class="row mt-2" *ngFor="let det1 of spe_details">
+                        <div class="col-md-3"><strong>{{det1.attributename}} &nbsp;</strong></div>
+                        <div class="col-md-9">{{det1.attributevalue}}</div>
+                    </div>
+                    
+                </div> 
+                <div id="reviews" role="tabpanel" class="tab-pane">
+                    <div class="row">
+                        <div class="col-xl-9">
+                            <div class="row review">
+                                <div class="col-3 text-center"><img src="img/person-1.jpg" alt="Han Solo" class="review-image"><span class="text-uppercase text-muted text-small">Dec 2018</span></div>
+                                <div class="col-9 review-text">
+                                    <h6>Han Solo</h6>
+                                    <div class="mb-2">
+                                        <i class="fa fa-star text-primary"></i><i class="fa fa-star text-primary"></i><i class="fa fa-star text-primary"></i><i class="fa fa-star text-primary"></i><i class="fa fa-star text-primary"></i>
+                                    </div>
+                                    <p class="text-muted text-small">One morning, when Gregor Samsa woke from troubled dreams, he found himself transformed in his bed into a horrible vermin. He lay on his armour-like back, and if he lifted his head a little he could see his brown belly, slightly domed and divided by arches into stiff sections</p>
+                                </div>
+                            </div>
+                            <div class="row review">
+                                <div class="col-3 text-center"><img src="img/person-2.jpg" alt="Luke Skywalker" class="review-image"><span class="text-uppercase text-muted text-small">Dec 2018</span></div>
+                                <div class="col-9 review-text">
+                                    <h6>Luke Skywalker</h6>
+                                    <div class="mb-2">
+                                        <i class="fa fa-star text-primary"></i><i class="fa fa-star text-primary"></i><i class="fa fa-star text-primary"></i><i class="fa fa-star text-primary"></i><i class="fa fa-star-o text-primary"></i>
+                                    </div>
+                                    <p class="text-muted text-small">The bedding was hardly able to cover it and seemed ready to slide off any moment. His many legs, pitifully thin compared with the size of the rest of him, waved about helplessly as he looked. &quot;What's happened to me?&quot; he thought. It wasn't a dream.</p>
+                                </div>
+                            </div>
+                            <div class="row review">
+                                <div class="col-3 text-center"><img src="img/person-3.jpg" alt="Princess Leia" class="review-image"><span class="text-uppercase text-muted text-small">Dec 2018</span></div>
+                                <div class="col-9 review-text">
+                                    <h6>Princess Leia</h6>
+                                    <div class="mb-2">
+                                        <i class="fa fa-star text-primary"></i><i class="fa fa-star text-primary"></i><i class="fa fa-star text-primary"></i><i class="fa fa-star-o text-primary"></i><i class="fa fa-star-o text-primary"></i>
+                                    </div>
+                                    <p class="text-muted text-small">His room, a proper human room although a little too small, lay peacefully between its four familiar walls. A collection of textile samples lay spread out on the table.</p>
+                                </div>
+                            </div>
+                            <div class="row review">
+                                <div class="col-3 text-center"><img src="img/person-4.jpg" alt="Jabba Hut" class="review-image"><span class="text-uppercase text-muted text-small">Dec 2018</span></div>
+                                <div class="col-9 review-text">
+                                    <h6>Jabba Hut</h6>
+                                    <div class="mb-2">
+                                        <i class="fa fa-star text-primary"></i><i class="fa fa-star text-primary"></i><i class="fa fa-star text-primary"></i><i class="fa fa-star text-primary"></i><i class="fa fa-star text-primary"></i>
+                                    </div>
+                                    <p class="text-muted text-small">Samsa was a travelling salesman - and above it there hung a picture that he had recently cut out of an illustrated magazine and housed in a nice, gilded frame.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section> 
+
+ <section>
+
+        <div class="container my-4 featuresection" [style]="{'width':'100vw'}" >
+            <div *ngFor="let fea of featurelist">
+                
+                <!-- <h2 class="my-4 text-template" ng-if="value.producttitle != null && value.producttitle != ''">{{value.producttitle}}</h2>
+
+                <h3 class="my-3 text-secondary" ng-if="value.productheader != null && value.productheader != ''">{{value.productheader}}</h3>
+
+                <h4 class="mt-2" ng-if="value.productsubheader != null && value.productsubheader != ''">{{value.productsubheader}}</h4> -->
+                <div [innerHTML]=fea.v_description ></div>
+                <!-- <div ng-if="value.v_description != null && value.v_description != ''">
+                    <p class="mt-2 p-1">{{fea.v_description}}</p>
+                </div> -->
+                <!-- <div ng-if="value.imageurl != null && value.imageurl != ''">
+                    <img src="{{value.imageurl}}" width="100%" height="auto" />
+                </div> -->
+            </div>
+
+        </div>
+
+    </section>  
+
+    <section class="related-products" *ngIf="similar_item_list.length>0">
+        <div class="container">
+            <header class="text-center">
+                <h2><small>Similar Items</small>You may also like</h2>
+            </header>
+            <div class="row">
+                <!-- item-->
+                <div class="item col-lg-3" *ngFor="let item of similar_item_list">
+                    <div class="product is-gray">
+                        <div class="image d-flex align-items-center justify-content-center">
+                            <img src={{item.itemimage}} alt="..." class="img-fluid">
+                            <div class="hover-overlay d-flex align-items-center justify-content-center">
+                                <div class="CTA d-flex align-items-center justify-content-center"><a (click)="add_to_cart(item)" class="add-to-cart"><i class="fa fa-shopping-cart"></i></a>
+                                    <a type="button" (click)="get_item_details(item.itemid)" class="visit-product active"><i class="icon-search"></i>View</a>
+                                    <!-- <a [routerLink]="['/app/home/itemdetails/',item.itemid]" class="visit-product active"><i class="icon-search"></i>View</a> -->
+                             </div>
+                            </div>
+                        </div>
+                        <div class="title">
+                            <a [routerLink]="['/app/home/itemdetails/',item.itemid]">
+                                <h3 class="h6 text-uppercase no-margin-bottom">{{item.itemname}}</h3>
+                            </a><span class="price">{{item.v_mrp|currency:'INR'}}</span>
+                        </div>
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </section>
+
+    <section class="product-description min-vh-100" *ngIf="rating_list.length>0">
+        <div class="container"> 
+            <header class="text-center">
+                <h2><small>Item Review & Rating</small> </h2>
+            </header>     
+            <div id="reviews" role="tabpanel" class="tab-pane">
+              <div class="row">
+                <div class="col-xl-12">
+                  <div class="row review" *ngFor="let r of rating_list">
+                    <div class="col-3 text-center">
+                      <img src={{r.image_url}} alt="Han Solo" class="review-image">
+                      <span class="text-uppercase text-muted text-small">{{r.customername}}</span>
+      
+                    </div>
+                    <div class="col-9 review-text">
+                      <h6>{{r.title}}</h6>
+                      <div class="mb-2" >
+                        <i class="fa fa-star text-primary"></i>{{r.rating_number}}
+                      </div>
+                      <p class="text-muted text-small">
+                        {{r.comments}}
+      
+                      </p>
+                      <span class="text-uppercase text-muted text-small">{{r.updated_on|date}}</span>
+                    </div>
+                    <div class="col-md-12 text-end" hidden>
+                      <button class="btn btn-link text-decoration-none"><i class="fa fa-reply"></i> Reply</button>
+                    </div>
+                  </div>
+      
+                </div>
+              </div>
+            </div>
+      
+        </div>
+      
+      </section>
+
+
+
+</div>
+
+<div  class="modal"   id="LoginModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true"  >
+    <div class="modal-dialog" role="document" >
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">..</h5>
+                <button type="button" #closebutton class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <!-- text page-->
+                <section class="padding-small" *ngIf="login==true">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="block">
+                                    <div class="block-header">
+                                        <h5>Login</h5>
+                                    </div>
+                                    <input type="text" ng-model="role" hidden="true" />
+                                    <div class="block-body">
+                                        <p class="lead">Alreadyour role</p>
+                                        <p class="text-muted"></p>
+                                        <hr>
+                                        <form name="loginForm" class="form-horizontal">
+
+                                            <div class="form-group">
+                                                <label for="email" class="form-label">Email</label>
+                                                <input type="text" name="usernme" [(ngModel)]='userName' class="form-control" required>
+                                                <div class="error-messages" ng-if="interacted1(loginForm.usernme)" ng-messages="loginForm.usernme.$error">
+                                                    <div ng-message="required" style="color:red">Enter User Name</div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="password" class="form-label">Password</label>
+                                                <input type="password" name="pwd11" [(ngModel)]='password' class="form-control" required>
+                                                <div class="error-messages" ng-if="interacted1(loginForm.pwd11)" ng-messages="loginForm.pwd11.$error">
+                                                    <div ng-message="required" style="color:red">Enter Password</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group text-center">
+                                                <button type="submit" class="btn btn-primary" (click)="userLogin()"><i class="fa fa-sign-in"></i> LogIn1</button>
+
+                                                <button type="button" class="btn btn-primary" ng-click="reg_page_open()"><i class="fa fa-sign-in"></i> Register</button>
+                                            </div>
+                                            <!--<div class="form-group text-center">
+                                                <button type="button" class="btn btn-primary" ng-click="forgetpassword()">Forget Password</button>
+                                            </div>-->
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+                <section class="padding-small" *ngIf="register==true">
+                    <div class="container">
+                        <div class="row">
+
+                            <div class="col-lg-12">
+                                <div class="block">
+                                    <div class="block-header">
+                                        <h5>New_account</h5>
+                                    </div>
+                                    <div class="block-body">
+                                        <p class="lead">reg_yet</p>
+                                        <p>statement_1</p>
+                                        <p class="text-muted"></p>
+                                        <hr>
+
+                                        <form name="registrationForm" method="post" novalidate>
+                                            <div class="form-group">
+                                                <label for="name" class="form-label">UserName</label>
+                                                <input name="name" type="text" class="form-control" ng-model="Username" required>
+                                                <div class="error-messages" ng-if="interacted(registrationForm.name)" ng-messages="registrationForm.name.$error">
+                                                    <div ng-message="required" style="color:red">Enter UserName</div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email" class="form-label">Email</label>
+                                                <input name="remail" type="email" class="form-control" ng-model="Email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" required>
+                                                <div class="error-messages" ng-if="interacted(registrationForm.remail)" ng-messages="registrationForm.remail.$error">
+                                                    <div ng-message="required" style="color:red">Enter the Email Id</div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email" class="form-label">Phone</label>
+                                                <input name="mob" type="text" class="form-control" minlength="10" maxlength="10" ng-model="Phone"  required>
+                                                <div class="error-messages" ng-if="interacted(registrationForm.mob)" ng-messages="registrationForm.mob.$error">
+                                                    <div ng-message="required" style="color:red">Enter the Mobile Number</div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="password" class="form-label">Password</label>
+                                                <input name="rpasswd" type="password" class="form-control" ng-model="Password" required>
+                                                <div class="error-messages" ng-if="interacted(registrationForm.rpasswd)" ng-messages="registrationForm.rpasswd.$error">
+                                                    <div ng-message="required" style="color:red">Enter the Password</div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="password" class="form-label">Confirm Password</label>
+                                                <input name="rconfpasswd" type="password" class="form-control" ng-model="Confirmpassword" required>
+                                                <div class="error-messages" ng-if="interacted(registrationForm.rconfpasswd)" ng-messages="registrationForm.rconfpasswd.$error">
+                                                    <div ng-message="required" style="color:red">Enter the Confirm Password</div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group text-center">
+                                                <button type="submit" class="btn btn-primary" ng-click="checkRegister()">
+                                                    <i class="fa fa-registered"></i>
+                                                    Register
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="padding-small" *ngIf="otp==true">
+                    <div class="container">
+                        <div class="row">
+
+                            <div class="col-lg-12">
+                                <div class="block">
+                                    <div class="block-header">
+                                        <h5>OTP has been sent to your email & Phone.<br /> Enter the otp</h5>
+                                    </div>
+                                    <div class="block-body">
+
+                                        <form method="post">
+
+
+                                            <div class="form-group">
+                                                <label class="form-label">OTP</label>
+                                                <input type="text" class="form-control" ng-model="regotp" minlength="6" maxlength="6"  required>
+                                            </div>
+
+                                            <div class="form-group text-center d-flex justify-content-around">
+                                                <button type="button" class="btn btn-primary " ng-click="Reg_Resendotp()"><i class="icon-profile"></i> Resent OTP </button>
+                                                <button type="button" class="btn btn-primary " ng-click="RegisterUser()"><i class="icon-profile"></i> Verify </button>
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="padding-small" hidden="true">
+                    <div class="container">
+                        <div class="row">
+
+                            <div class="col-lg-12">
+                                <div class="block">
+                                    <div class="block-header">
+                                        <h5>Please Enter UserName/Email/Phone</h5>
+                                    </div>
+                                    <div class="block-body">
+
+                                        <form method="post">
+
+                                            <div class="form-group">
+                                                <label class="form-label">UserName/Email/Phone</label>
+                                                <input type="text" class="form-control" ng-model="far_username">
+                                            </div>
+
+                                            <div class="form-group text-center d-flex justify-content-around">
+                                                <button type="button" class="btn btn-primary " ng-click="Reg_Resendotp()"><i class="icon-profile"></i> Resent OTP </button>
+                                                <button type="button" class="btn btn-primary " ng-click="ForgetVerify()"><i class="icon-profile"></i> Verify </button>
+                                            </div>
+
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

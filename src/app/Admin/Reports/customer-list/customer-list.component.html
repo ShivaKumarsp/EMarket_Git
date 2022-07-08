@@ -1,0 +1,58 @@
+<ngx-spinner  bdColor="rgba(51,51,51,0.8)"  size="medium"  color="#fff"  type="ball-scale-multiple">
+          <p style="font-size: 20px; color: white">Loading...</p>
+        </ngx-spinner> 
+
+<div class="container my-3">
+          <h6><span class="badge bg-secondary" alignment="text-center">{{customer_list.length}}</span><span class="badge bg-secondary" alignment="text-left" >Customer List</span></h6>
+          <div class="col-md-4" style="float: right">                    
+            <input class="form-control form-control-sm" type="text" [(ngModel)]="search" placeholder="search here...">
+        </div>
+          <table class="table table-bordered" [style]="{'height':'500px'}">
+            <table class="table table-sm">
+                <table class="table table-light table-hover">
+            <thead>
+              <tr>
+                <th scope="col">SL No</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Mobile</th>
+                <th scope="col">Address</th>
+                <th scope="col">pincode</th> 
+                <th scope="col">DOB</th> 
+                         
+              </tr> 
+            </thead>
+            <tbody>
+              <tr *ngFor="let pro of customer_list| filter:search | paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index; filter:search">
+                <td>{{tableSize *(page-1)+i+1}}</td>
+                <td>{{pro.first_name +' '+pro.second_name}}</td>
+                <td>{{pro.email}}</td>
+                <td>{{pro.mobile}}</td>
+                <td>{{pro.address+' '+pro.city}}</td>
+                <td>{{pro.pincode}}</td>
+                <td>{{pro.dob|date}}</td>
+               
+       
+                <!-- <td><button type="button" class="btn btn-primary" (click)="openModal(pro)">Update</button></td> -->
+              </tr>  
+                   </tbody>            
+          </table>
+          <div class="d-flex justify-content-center">
+            <pagination-controls
+              previousLabel="Prev"
+              nextLabel="Next"
+              (pageChange)="onTableDataChange($event)"
+            >
+            </pagination-controls>
+          </div>
+        </table>
+        </table>
+        </div>
+        
+        
+        
+        
+        
+        
+      
+          

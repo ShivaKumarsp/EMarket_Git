@@ -1,0 +1,168 @@
+
+    <section class="hero hero-page gray-bg padding-small">
+        <div class="container">
+            <div class="row d-flex">
+                <div class="col-lg-9 order-2 order-lg-1">
+                    <h1>Product Specification</h1>
+                </div>
+                <div class="col-lg-3 text-right order-1 order-lg-2">
+                    <ul class="breadcrumb justify-content-lg-end">
+                        <li class="breadcrumb-item"><a >Home</a></li>
+                        <li class="breadcrumb-item active">Add Item</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="checkout">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <ul class="nav ">
+                        <li class="nav-item"><a [routerLink]="['/app/editproduct/',productid]" class="nav-link">Edit Product</a></li>
+                        <li class="nav-item"><a class="nav-link active" [routerLink]="['/app/addproductspecification/',productid]">Product Specification </a></li>
+                        <li class="nav-item"><a class="nav-link">Item Specification Set For Vendor</a></li>
+                        <li class="nav-item"><a class="nav-link">Add Product Feature</a></li>
+                        <!-- <li class="nav-item"><a class="nav-link" >Add Product Variant</a></li> -->
+                    </ul>
+                </div>
+            </div>
+            <form>
+
+                <div class="text-end">
+                        <h6 class="my-3">{{productname}}</h6> 
+                </div>
+                
+                <div class="row" *ngIf="edit_product == false">
+                   
+                 <div class="my-2 container" *ngFor="let a of additional_cat_spec_list_new|keyvalue">
+
+                    <h3 class="text-primary">{{a.key}}</h3>
+                    <div class="card card-body my-3 p-2" *ngFor="let b of a.value">
+                       
+                        <div class="row">
+                            <div class="col-sm-6 col-md-6">
+                                <h6>{{b.attributename}}<b style="color: red;">*</b></h6>
+                                
+                                <div *ngFor="let match of attribute_value_list_new|keyvalue">                                    
+                                        <ng-template [ngIf]="match.key == b.attributename_id" >
+                                            <div class="form-floating">
+                                                <select class="form-select" aria-label="Floating label select"   (change)="changevalue($event,b.attributename_id)">
+                                                <option selected>select</option>
+                                                <option *ngFor="let matchs of match.value" value="{{matchs.attributevalue_id}}" >
+                                                    {{matchs.attributevalue}} 
+                                                    </option>
+                                                </select>                                               
+                                            </div>
+                                        </ng-template> 
+                                </div>
+                            </div>
+
+                    </div>
+                    </div>
+                  </div>
+                </div>
+               
+                <div class="row" *ngIf="edit == true">
+                   
+                     <h3 class="text-primary">{{spec_name}}</h3>
+                       <div class="card card-body my-3 p-2">                          
+                           <div class="row">
+                               <div class="col-sm-6 col-md-6">
+                                   <h6>{{attributename}}<b style="color: red;">*</b></h6>
+
+                                   <div *ngFor="let match of attribute_value_list_new|keyvalue">                                    
+                                    <ng-template [ngIf]="match.key == attributenameid" >
+                                        <div class="form-floating">
+                                            <select class="form-select" aria-label="Floating label select"   (change)="changevalue_edit($event,attributenameid)">
+                                            <option selected>select</option>
+                                            <option *ngFor="let matchs of match.value" value="{{matchs.attributevalue_id}}" [selected]="matchs.attributevalue_id===attributevalue_id" >
+                                                {{matchs.attributevalue}}
+                                                </option>
+                                            </select>                                               
+                                        </div>
+                                    </ng-template> 
+                            </div>
+                                  
+                               </div>
+   
+                       </div>
+                       </div>
+                    
+                   </div>
+
+                <br />
+                <div class="row" >
+                    <div class="text-center">
+                        <a class="btn btn-template wide next" (click)="save_attribute()" [disabled]="btn_dissable==false" *ngIf="edit_product == false">
+                            Add<i class="fa fa-angle-right"></i>
+                        </a>
+                        <a class="btn btn-template wide next" (click)="update_attribute()" [disabled]="btn_dissable==false" *ngIf="edit == true">
+                            Update<i class="fa fa-angle-right"></i>
+                        </a>
+                        <a class="btn btn-template wide next"  [routerLink]="['/app/productquestionset/',productid]">
+                            Next<i class="fa fa-angle-right"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="tab-content">
+
+                            <h5 class="my-4">Specification Details</h5>
+
+                            <table class="table table-hover table-responsive-md small">
+                                <thead>
+                                    <tr>
+                                        <th>Sl No</th>
+                                        <th>Specification Name</th>
+                                        <th>Attribute Name</th>
+                                        <th>Attribute Value</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                   
+                                        <tr *ngFor="let pro of product_specification_list| paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index">
+                                            <td>{{i+1}}</td>
+                                        <td>{{pro.specificationname}}</td>
+                                        <td>{{pro.attributename}}</td>
+                                        <td>{{pro.attributevalue}}</td>
+                                        <td>
+                                            <a class="btn btn-primary btn-sm" (click)="edit_specification(pro)"><i class="fa fa-edit"></i></a>
+                                                        </td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+
+                            <div class="d-flex justify-content-center">
+                                <pagination-controls
+                                  previousLabel="Prev"
+                                  nextLabel="Next"
+                                  (pageChange)="onTableDataChange($event)"
+                                >
+                                </pagination-controls>
+                              </div>
+
+
+
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </section>
+
+
+
+
+
+
+
+
+

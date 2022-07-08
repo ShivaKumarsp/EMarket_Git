@@ -1,0 +1,190 @@
+
+
+<section class="hero hero-page gray-bg padding-small">
+    <div class="container">
+        <div class="row d-flex">
+            <div class="col-lg-9 order-2 order-lg-1">
+                <h1>Add Additional Category</h1>
+            </div>
+            <div class="col-lg-3 text-right order-1 order-lg-2">
+                <ul class="breadcrumb justify-content-lg-end">
+                    <li class="breadcrumb-item"><a >Home</a></li>
+                    <li class="breadcrumb-item active">Add Additional Category</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="checkout">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><a class="nav-link" href="/app/mastercategory">Category</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/app/subcategory">Sub Category</a></li>
+                    <li class="nav-item"><a class="nav-link active" >Additional Category</a></li>
+
+                   
+                </ul>
+            </div>
+        </div>
+    
+            <div class="row">
+                
+                <div class="col-lg-12">
+                    <div class="tab-content">
+                        <div id="product_info" class="active tab-block">
+                            <form [formGroup]="form"   novalidate>
+                            <div class="row">
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Category<b style="color:red">*</b></label>
+                                        <select class="form-control" formControlName="catname" [(ngModel)]="mc_id" (change)="get_subcategory(mc_id)" required 
+                                        [ngClass]="{ 'is-invalid': submitted && f['catname'].errors }">
+                                            <option value="">-- Select Category --</option>
+                                            <option *ngFor="let ca of category_dd" value="{{ca.mc_id}}" ng-selected="{{ca.mc_id == mc_id}}">
+                                                {{ca.category_name}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="submitted && f['catname'].errors" class="invalid-feedback">
+                                            <div *ngIf="f['catname'].errors['required']">Select Category</div> 
+                                          </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">SubCategory<b style="color:red">*</b></label>
+                                        <select class="form-control" formControlName="subcatname" [(ngModel)]="msc_id" required 
+                                        [ngClass]="{ 'is-invalid': submitted && f['subcatname'].errors }">
+                                            <option value="">-- Select Sub Category --</option>
+                                            <option *ngFor="let cat1 of subcategory_dd" value="{{cat1.mscid}}" ng-selected="{{cat1.mscid == msc_id}}">
+                                                {{cat1.subcategory_name}}
+                                            </option>
+                                        </select>
+                                        <div *ngIf="submitted && f['subcatname'].errors" class="invalid-feedback">
+                                            <div *ngIf="f['subcatname'].errors['required']">Select SubCategory</div> 
+                                          </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Additional Category<b style="color:red">*</b></label>
+                                        <input type="text" class="form-control" formControlName="addcategoryname" [(ngModel)]="additional_cat_name"
+                                        placeholder="Enter Category Name" required [ngClass]="{ 'is-invalid': submitted && f['addcategoryname'].errors }"/>
+                                        <div *ngIf="submitted && f['addcategoryname'].errors" class="invalid-feedback">
+                                            <div *ngIf="f['addcategoryname'].errors['required']">Enter Additional Category</div> 
+                                          </div>
+                                    </div>
+                                </div>
+                            
+                                
+                                
+
+                                <div class="col-sm-6 col-md-6">
+                                    <label class="form-label">Image <b style="color:red">*</b></label><br />
+                                    <input class="form-control" type="file"  accept="image/jpeg" [(ngModel)]="s_imageurl" (change)="selectFileUpload(imageInput)"  #imageInput 
+                                     >
+                                  
+                                </div>
+                                <div class="col-sm-6 col-md-6" (show)="s_imageurl!='' || s_imageurl!=null">
+                                    <div class="item"><img src="{{s_imageurl}}"></div>
+                                  
+                                </div>
+
+                                
+
+                                <div class="col-sm-3 col-md-3">
+                                    <div>
+                                        <img id="productimg" class="img-responsive" />
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                            </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 mt-4">
+                    <div class="text-center">
+                        <input type="text" [(ngModel)]="additional_cat_id" hidden />                       
+                        <a type="button" class="btn btn-template wide next" (click)="Clear()" [disabled]="btn_dissable===false">
+                            Clear
+                        </a> &nbsp;
+                        <a type="button" class="btn btn-template wide next"  (click)="savedata()" [disabled]="btn_dissable===false">
+                            Save<i class="fa fa-angle-right"></i>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2" *ngFor="let val of validation_list">
+                <div class="col-md-9">{{val.product_id_ret}}</div>
+                <div class="col-md-9">{{val.sub_category_id_ret}}</div>
+                <div class="col-md-9">{{val.additional_cat_id_ret}}</div>
+                
+            </div> 
+    </div> 
+
+    <div class="container">
+       
+        <div class="row">          
+    
+                <div class="tab-content">
+    
+                    <h5 class="my-4">Additional Category List</h5>
+                    <div class="col-md-4" style="float: right">                    
+                        <input class="form-control form-control-sm" type="text" [(ngModel)]="search" placeholder="search here...">
+                    </div>
+                    <table class="table table-hover table-responsive-md small">
+                        <thead>
+                            <tr>
+                                <th>SL No</th>
+                                <th>SubCategory</th>
+                                <th>Additional Category</th>
+                                <th>Category Code</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          
+                                <tr *ngFor="let pro of subcategory_list|filter:search| paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index">
+                                    <th>{{tableSize *(page-1)+i+1}}</th>
+                                <td>{{pro.subcategoryname}}</td>
+                                <td>{{pro.additionalcatname}}</td>
+                                <td>{{pro.additionalcatcode}}</td>
+                               
+                                <td>
+                                    <a class="btn btn-primary btn-sm" (click)="edit_category(pro)"><i class="fa fa-edit"></i></a> &nbsp;| &nbsp;
+                                    <a class="btn btn-danger btn-sm" (click)="delete_category(pro)"><i class="fa fa-trash"></i></a>
+                                             
+                                </td>
+    
+                            </tr>
+    
+                        </tbody>
+                    </table>
+    
+                    <div class="d-flex justify-content-center">
+                        <pagination-controls
+                          previousLabel="Prev"
+                          nextLabel="Next"
+                          (pageChange)="onTableDataChange($event)"
+                        >
+                        </pagination-controls>
+                      </div>
+    
+    
+    
+                </div>
+          
+    
+        </div>
+   
+    </div>
+</section>
+
+
+

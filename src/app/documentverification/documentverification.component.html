@@ -1,0 +1,265 @@
+<!-- {{alldocumentlist|json}} -->
+<!-- {{statuslist|json}} -->
+<div class="container-fluid min-vh-100">
+    <div class="text-end p-4 my-4">
+        <h6>Document Vefification</h6>
+    </div>
+
+    <div class="row">
+      <div class="col-md-2">
+        <ul class="side-ui d-flex flex-wrap">
+          <li type="button" (click)="changevalue(1)"  [class]="{'active': tab==1}">Pending</li>
+          <li type="button" (click)="changevalue(2)" [class]="{'active': tab==2}">Verified</li>
+          <li type="button" (click)="changevalue(4)" [class]="{'active': tab==4}">Rejected</li>
+          <!-- <li type="button" (click)="tab=3" [class]="{'active': tab==3}">All Documents</li> -->
+        </ul>
+      </div>
+      <div class="col-md-10">
+        <hr class="d-none d-sm-block d-md-none">
+        <div class="container" [ngSwitch]="tab">
+
+          <div class="all-messages my-4" *ngSwitchCase="1">
+            <h4>Pending Documents</h4>
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+              <div class="accordion-item" *ngFor="let dlist of alldocumentlist;index as i" >
+                  <h6 class="accordion-header d-flex mb-3" *ngIf="dlist.status=='Pending'">
+
+                  <button class="accordion-button small" type="button" data-bs-toggle="collapse"
+                  [attr.data-bs-target]="'#collapse' + i" aria-expanded="false"
+                  [attr.controls]="'#collapse' + i" >
+                  {{dlist.mddocumentname}}| {{dlist.vendorname}} |{{dlist.vendorbusinessname}}
+                  </button>
+                </h6>
+                <div  id="collapse{{i}}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" *ngIf="dlist.status=='Pending'">
+                  <div class="accordion-body">
+
+                      <div class="card mt-4">
+                        <div class="card-body border-0 bg-light">
+                          <div class="w-100 d-flex p-2 mb-3">
+                            <p class="badge bg-dark shadow shadow-sm p-2 mx-1"><small>{{dlist.vendorname}}</small></p>
+                            <p class="badge bg-dark shadow shadow-sm p-2 mx-1"><small>{{dlist.vendoremail}}</small></p>
+                            <p class="badge bg-dark shadow shadow-sm p-2 mx-1"><small>{{dlist.vendormobile}}</small></p>
+                            <p class="badge bg-dark shadow shadow-sm p-2 mx-1"><small>{{dlist.vendorbusinessname}}</small></p>
+                            <p class="badge bg-dark shadow shadow-sm p-2 mx-1"><small>{{dlist.businessaddress}}</small></p>
+
+                          </div>
+                          <h6>Document ID - <span class="small">{{dlist.documentnumber}}
+
+                          </span></h6>
+                          <input type="hidden" [(ngModel)]="vdocid">
+
+                          <div class="p-2" [style]="{'width':'200px'}">
+                                    <label for="status" class="form-label">Status</label>
+                                    <select class="form-control" id="status" name="status"
+                                        [(ngModel)]="vdoc_status" required>
+
+                                        <option value=0 disabled>-- Select document --</option>
+                                        <option *ngFor="let status of statuslist" [ngValue]="status.statusid" >
+                                            {{status.out_status}}
+                                        </option>
+                                    </select>
+                                </div>
+                        </div>
+                        <div class="card-footer border-0 bg-light text-end">
+                          <button class="btn btn-template bg-primary shadow shadow-sm mx-2" (click)="update(dlist)">Submit<i class="fa fa_check-square"></i></button>
+                          <!-- <button class="btn btn-template bg-danger shadow shadow-sm" (click)="delete(dlist.vdocid,i)"> Move to Trash <i class="fa fa-trash"></i> </button> -->
+                        </div>
+                      </div>
+
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="alldocumentlist.length==0">
+                <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                  No more messages are available !
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="all-documentlist my-4" *ngSwitchCase="2">
+            <h4>Verified Documents</h4>
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+              <div class="accordion-item" *ngFor="let dlist of alldocumentlist;index as i" >
+
+                <h6 class="accordion-header d-flex mb-3" *ngIf="dlist.status=='Verified'">
+
+                  <button class="accordion-button small" type="button" data-bs-toggle="collapse"
+                  [attr.data-bs-target]="'#collapse' + i" aria-expanded="false"
+                  [attr.controls]="'#collapse' + i" >
+                  {{dlist.mddocumentname}} |{{dlist.vendorname}}| {{dlist.vendorbusinessname}}
+                  </button>
+                </h6>
+                <div  id="collapse{{i}}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" *ngIf="dlist.status=='Verified'">
+                  <div class="accordion-body">
+
+                      <div class="card mt-4">
+                        <div class="card-body border-0 bg-light">
+                          <div class="w-100 d-flex p-2 mb-3">
+                            <p class="badge bg-dark shadow shadow-sm p-2 mx-1"><small>{{dlist.vendorname}}</small></p>
+                            <p class="badge bg-dark shadow shadow-sm p-2 mx-1"><small>{{dlist.vendoremail}}</small></p>
+                            <p class="badge bg-dark shadow shadow-sm p-2 mx-1"><small>{{dlist.vendormobile}}</small></p>
+                            <p class="badge bg-dark shadow shadow-sm p-2 mx-1"><small>{{dlist.vendorbusinessname}}</small></p>
+                            <p class="badge bg-dark shadow shadow-sm p-2 mx-1"><small>{{dlist.businessaddress}}</small></p>
+
+                          </div>
+                          <h6>Document ID - <span class="small">{{dlist.documentnumber}}</span></h6>
+                          <input type="hidden" [(ngModel)]="vdocid">
+                          <div class="p-2" [style]="{'width':'200px'}">
+                                    <label for="status" class="form-label">Status</label>
+                                    <select class="form-control" id="status" name="status"
+                                        [(ngModel)]="vdoc_status" required>
+                                        <option value=0>-- Select document --</option>
+                                        <option *ngFor="let status of statuslist" [ngValue]="status.statusid">
+                                            {{status.out_status}}
+                                        </option>
+                                    </select>
+                                </div>
+                        </div>
+                        <div class="card-footer border-0 bg-light text-end d-none">
+                          <button class="btn btn-template bg-primary shadow shadow-sm mx-2" (click)="update(dlist)">Submit<i class="fa fa_check-square"></i></button>
+                          <!-- <button class="btn btn-template bg-danger shadow shadow-sm" (click)="delete(dlist.vdocid,i)"> Move to Trash <i class="fa fa-trash"></i> </button> -->
+                        </div>
+                      </div>
+
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="alldocumentlist.length==0">
+                <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                  No more messages are available !
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="all-documentlist my-4" *ngSwitchCase="4">
+            <h4>Rejected Documents</h4>
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+              <div class="accordion-item" *ngFor="let dlist of alldocumentlist;index as i" >
+
+                <h6 class="accordion-header d-flex mb-3" *ngIf="dlist.status=='Reject'">
+
+                  <button class="accordion-button small" type="button" data-bs-toggle="collapse"
+                  [attr.data-bs-target]="'#collapse' + i" aria-expanded="false"
+                  [attr.controls]="'#collapse' + i" >
+                  {{dlist.mddocumentname}} {{dlist.vendorname}} {{dlist.vendorbusinessname}}
+                  </button>
+                </h6>
+                <div  id="collapse{{i}}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample" *ngIf="dlist.status=='Reject'">
+                  <div class="accordion-body">
+
+                      <div class="card mt-4">
+                        <div class="card-body border-0 bg-light">
+                          <div class="w-100 d-flex p-2 mb-3">
+                            <p class="badge bg-dark shadow shadow-sm p-2 mx-1"><small>{{dlist.vendorname}}</small></p>
+                            <p class="badge bg-dark shadow shadow-sm p-2 mx-1"><small>{{dlist.vendoremail}}</small></p>
+                            <p class="badge bg-dark shadow shadow-sm p-2 mx-1"><small>{{dlist.vendormobile}}</small></p>
+                            <p class="badge bg-dark shadow shadow-sm p-2 mx-1"><small>{{dlist.vendorbusinessname}}</small></p>
+                            <p class="badge bg-dark shadow shadow-sm p-2 mx-1"><small>{{dlist.businessaddress}}</small></p>
+
+                          </div>
+                          <h6>Document ID - <span class="small">{{dlist.documentnumber}}</span></h6>
+                          <input type="hidden" [(ngModel)]="vdocid">
+
+                          <div class="p-2" [style]="{'width':'200px'}">
+                                    <label for="status" class="form-label">Status</label>
+                                    <select class="form-control" id="status" name="status"
+                                        [(ngModel)]="vdoc_status" required>
+                                        <option value=0>-- Select document --</option>
+                                        <option *ngFor="let status of statuslist" [ngValue]="status.statusid">
+                                            {{status.out_status}}
+                                        </option>
+                                    </select>
+                                    <!-- <div *ngIf="f['document'].touched && f['document'].invalid" class="text-danger">
+                                        <div *ngIf="f['document'].errors && f['document'].errors['required']">Please Select document</div>
+                                    </div> -->
+                                </div>
+                        </div>
+                        <div class="card-footer border-0 bg-light text-end">
+                          <button class="btn btn-template bg-primary shadow shadow-sm mx-2" (click)="update(dlist)">Submit<i class="fa fa_check-square"></i></button>
+                          <!-- <button class="btn btn-template bg-danger shadow shadow-sm" (click)="delete(dlist.vdocid,i)"> Move to Trash <i class="fa fa-trash"></i> </button> -->
+                        </div>
+                      </div>
+
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="alldocumentlist.length==0">
+                <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                  No more messages are available !
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="all-documentlist my-4 d-none" *ngSwitchCase="3">
+            <h4>All Documents</h4>
+            <div class="accordion accordion-flush" id="accordionFlushExample">
+              <div class="accordion-item" *ngFor="let dlist of alldocumentlist;index as i" >
+
+                <h6 class="accordion-header d-flex mb-3">
+
+                  <button class="accordion-button small" type="button" data-bs-toggle="collapse"
+                  [attr.data-bs-target]="'#collapse' + i" aria-expanded="false"
+                  [attr.controls]="'#collapse' + i" >
+                  {{dlist.mddocumentname}}
+                  </button>
+                </h6>
+                <div  id="collapse{{i}}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                  <div class="accordion-body">
+
+                      <div class="card mt-4">
+                        <div class="card-body border-0 bg-light">
+                          <div class="w-100 d-flex p-2 mb-3">
+                            <p class="badge bg-dark shadow shadow-sm p-2 mx-1"><small>{{dlist.vendorname}}</small></p>
+                            <p class="badge bg-dark shadow shadow-sm p-2 mx-1"><small>{{dlist.vendoremail}}</small></p>
+                            <p class="badge bg-dark shadow shadow-sm p-2 mx-1"><small>{{dlist.vendormobile}}</small></p>
+                            <p class="badge bg-dark shadow shadow-sm p-2 mx-1"><small>{{dlist.vendorbusinessname}}</small></p>
+                            <p class="badge bg-dark shadow shadow-sm p-2 mx-1"><small>{{dlist.businessaddress}}</small></p>
+
+                          </div>
+                          <h6>Document ID - <span class="small">{{dlist.documentnumber}}</span></h6>
+                          <input type="hidden" [(ngModel)]="vdocid">
+
+                          <div class="p-2" [style]="{'width':'200px'}">
+                                    <label for="status" class="form-label">Status</label>
+                                    <select class="form-control" id="status" name="status"
+                                        [(ngModel)]="vdoc_status" required>
+                                        <option value=0>-- Select document --</option>
+                                        <option *ngFor="let status of statuslist" [ngValue]="status.statusid">
+                                            {{status.out_status}}
+                                        </option>
+                                    </select>
+                                    <!-- <div *ngIf="f['document'].touched && f['document'].invalid" class="text-danger">
+                                        <div *ngIf="f['document'].errors && f['document'].errors['required']">Please Select document</div>
+                                    </div> -->
+                                </div>
+                        </div>
+                        <div class="card-footer border-0 bg-light text-end">
+                          <button class="btn btn-template bg-primary shadow shadow-sm mx-2" (click)="update(dlist)">Submit<i class="fal fa-save"></i></button>
+                          <!-- <button class="btn btn-template bg-danger shadow shadow-sm" (click)="delete(dlist.vdocid,i)"> Move to Trash <i class="fa fa-trash"></i> </button> -->
+                        </div>
+                      </div>
+
+                  </div>
+                </div>
+              </div>
+              <div *ngIf="alldocumentlist.length==0">
+                <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                  No more messages are available !
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+

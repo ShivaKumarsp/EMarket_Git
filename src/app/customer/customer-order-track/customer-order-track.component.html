@@ -1,0 +1,137 @@
+
+    <!-- Hero Section-->
+    <section class="hero hero-page gray-bg padding-small">
+        <div class="container">
+          <div class="row d-flex">  
+            <div class="col-lg-9 order-2 order-lg-1" *ngIf="customer_order_details[0].status!='Canceled'">
+              <h1>Order #{{orderid}} </h1><p class="lead">Order #{{orderid}} was placed on <strong>{{customer_order_details[0].order_date|date}}</strong> and is currently <strong>Being prepared</strong>.</p><p class="text-muted">If you have any questions, please feel free to <a [routerLink]="['/app/contact']">contact us</a>, our customer service center is working for you 24/7.</p>
+              </div>
+              <div class="col-lg-9 order-2 order-lg-1" *ngIf="customer_order_details[0].status=='Canceled'">
+                <h1>Order #{{orderid}} </h1><p class="lead">Order #{{orderid}} is Cancelled.</p><p class="text-muted">If you have any questions, please feel free to <a [routerLink]="['/app/contact']">contact us</a>, our customer service center is working for you 24/7.</p>
+                </div>
+
+            <div class="col-lg-3 text-right order-1 order-lg-2">
+              <ul class="breadcrumb justify-content-lg-end">
+                <li class="breadcrumb-item"><a >Home</a></li>
+                <li class="breadcrumb-item"><a>Orders</a></li>
+                <li class="breadcrumb-item active">Order #{{orderid}}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section><br>
+      <section class="padding-small">
+        <div class="container">
+          <div class="row">
+           
+            <div class="col-lg-12">
+              <div class="basket basket-customer-order">
+                <div class="basket-holder">
+                  <div class="basket-header">
+                    <div class="row">
+                      <div class="col-4">Product</div>
+                      <div class="col-2">Price</div>
+                      <div class="col-2">Quantity</div>
+                      <div class="col-2">Total</div>
+                      <div class="col-2">View Details</div>
+                    </div>
+                  </div>
+                  <div class="basket-body">
+                    <!-- Product-->
+                    <div class="item" *ngFor="let itm of customer_order_item_list">
+                      <div class="row d-flex align-items-center">
+                        <div class="col-4">
+                          <div class="d-flex align-items-center"><img src="{{itm.item_image}}" alt="..." class="img-fluid">
+                            <div class="title"><a >
+                              
+                                <h6>{{itm.itemname}}</h6>
+                                
+                                <span class="text-muted">Size: Large</span></a></div>
+                          </div>
+                        </div>
+                        <div class="col-2"><span>{{itm.sellingprice | currency:'INR'}} rs</span></div>
+                        <div class="col-2">{{ itm.v_quantity}}</div>
+                        <div class="col-2">{{ itm.v_quantity*itm.sellingprice | currency:'INR'}}</div>
+                        <div class="col-2 text-end" >
+                          <button (click)="view_item_details(itm)" class="btn btn-primary btn-sm" >View</button></div>
+                     
+                      </div>
+                    </div>
+                    <!-- Product-->
+                   
+                  </div>
+                  <div class="basket-footer">
+                    <!-- <div class="item">
+                      <div class="row">
+                        <div class="offset-md-6 col-4"> <strong>Order subtotal</strong></div>
+                        <div class="col-2 text-right"><strong>$446.00</strong></div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="row">
+                        <div class="offset-md-6 col-4"> <strong>Shipping and handling</strong></div>
+                        <div class="col-2 text-right"><strong>$10.00</strong></div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <div class="row">
+                        <div class="offset-md-6 col-4"> <strong>Tax</strong></div>
+                        <div class="col-2 text-right"><strong>$0.00</strong></div>
+                      </div>
+                    </div> -->
+                    <div class="item">
+                      <div class="row">
+                        <div class="offset-md-6 col-2"> <strong>Total</strong></div>
+                        <div class="col-2 text-right"><strong>{{total|currency:'INR'}}</strong></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row addresses">
+                <div class="col-sm-6">
+                  <div class="block-header">
+                    <h6 class="text-uppercase">Invoice address</h6>
+                  </div>
+                  <div class="block-body">
+                     <p><b>Name : </b>{{customer_invoice_address[0].customer_name}},<br>	
+                      <b>Address : </b> {{customer_invoice_address[0].addressline_1}} &nbsp;  {{customer_invoice_address[0].addressline_2}}<br>	
+                      {{customer_invoice_address[0].v_city}},<br>		
+                       <b>LandMark : </b>{{customer_invoice_address[0].landmark}}<br>	
+                       <b>Pincode : </b>  {{customer_invoice_address[0].v_pincode}}<br>		
+                       <b>Mobile : </b>	{{customer_invoice_address[0].v_mobile}}<br>
+                       <b>Email : </b> {{customer_invoice_address[0].v_email}}</p>
+                        </div>
+                </div>
+                <div class="col-sm-6">
+                  <div class="block-header">
+                    <h6 class="text-uppercase">Shipping address</h6>
+                  </div>
+                  <div class="block-body">
+                    <p><b>Name : </b>{{customer_shipping_address[0].customer_name}},<br>	
+                      <b>Address : </b> {{customer_shipping_address[0].addressline_1}} &nbsp;  {{customer_shipping_address[0].addressline_2}}<br>	
+                      {{customer_shipping_address[0].v_city}},<br>		
+                       <b>LandMark : </b>{{customer_shipping_address[0].landmark}}<br>	
+                       <b>Pincode : </b>  {{customer_shipping_address[0].v_pincode}}<br>		
+                       <b>Mobile : </b>	{{customer_shipping_address[0].v_mobile}}<br>
+                       <b>Email : </b> {{customer_shipping_address[0].v_email}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-6">
+         <div class="card">
+          <div class="card-body">
+            <h6 class="card-subtitle mb-2 text-muted">Payment Id : {{customer_order_details[0].transaction_id}}</h6>
+            <h6 class="card-subtitle mb-2 text-muted">Payment Method : {{customer_order_details[0].payment_method}}</h6>
+                </div>
+      </div>
+    </div>
+  </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      
+  

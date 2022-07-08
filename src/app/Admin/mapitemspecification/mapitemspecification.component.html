@@ -1,0 +1,191 @@
+{{mastercatspeclist|json}}
+<div class="container pt-4">
+    
+    <form (submit)="formSave()">
+        <div class="card card-body shadow shadow-sm">
+            <div class="row p-4">
+                <div class="col-md-4 mb-2">
+                    <div class="form-floating" [formGroup]="saveform">
+                        <select class="form-select" id="additionalCategory" formControlName="additionalCategory" (change)="additionCatChange()"
+                            aria-label="Floating label select example">
+                           
+                            <option selected>Select</option>
+                            <option *ngFor="let cat of additionalcategorylist" [value]="cat.additionalcatid"  > 
+                                {{cat.additionalcatname}}</option>
+                         
+                        </select>
+                        <label for="additionalCategory"> Additional Category</label>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-2">
+                    <div class="form-floating" [formGroup]="saveform">
+                        <select class="form-select" id="specificationName_id" formControlName="specificationName_id"
+                            aria-label="Floating label select example">
+
+                            <option selected>Select</option>
+                            <option *ngFor="let spelist of mastercatspeclist" [value]="spelist.specificationid" >
+                                {{spelist.specificationname}}
+                            </option>
+
+                        </select>
+                        <label for="specificationName_id">Specification Name</label>
+                    </div>
+                
+                 
+                </div>
+                <div class="col-md-4 mb-2">
+                    <div class="">
+                        <button type="submit" class="m-auto btn btn-primary">Add New</button>
+                    </div>
+                    
+                   
+                </div>
+                
+                
+                
+                <div class="d-none pb-4 px-4 py-2 d-flex justify-content-between">
+                    <div>
+                        <div class="form-check" [formGroup]="saveform">
+                            <input class="form-check-input" type="checkbox" id="refiner" formControlName="refiner">
+                            <label class="form-check-label" for="refiner">
+                                Is Refiner?
+                            </label>
+                        </div>
+                        <div class="form-check" [formGroup]="saveform">
+                            <input class="form-check-input" type="checkbox" id="visibility"
+                                formControlName="visibility">
+                                <label class="form-check-label" for="visibility">
+                                    Hide from Product Details?
+                                </label>
+                        </div>
+                    </div>
+                    
+
+
+
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div class="card card-body shadow shadow-sm my-4 ">
+
+        <h3 class="my-4">Item Specification List</h3>
+
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Sl No</th>
+                    <th scope="col">Additiional category</th>
+                    <th scope="col">Specification</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr *ngFor="let td of mastercatspeclist, index as i" >
+                    <th scope="row">{{i+1}}</th>
+                    <td>{{td.additionalcatname}}</td>
+                    <td>{{td.specificationname}}</td>
+                
+                    <td>
+                        <button type="button" class="btn btn-primary btn-sm" (click)="EditThis(td)"><i class="fa fa-edit"></i></button>
+                        <button type="button"  (click)="deletecatspecification(td)" class="btn btn-danger btn-sm" ><i class="fa fa-trash" aria-hidden="true"></i></button>
+                    </td>
+                </tr>
+               
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+
+<div class="modal fade" id="formodel" tabindex="-1" aria-labelledby="exampleformodel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <form (submit)="SaveEdit()">
+                    <div class="card card-body shadow shadow-sm">
+                        <div class="row p-4">
+                            <div class="col-md-12 my-2">
+                                <div class="form-floating" [formGroup]="editform">
+                                    <select class="form-select" id="editAdditionalCategory"
+                                        formControlName="editAdditionalCategory"
+                                        aria-label="Floating label select example" 
+                                        (change)="getEditSpec($event)"
+                                        >
+                                        
+                                        <option selected>Select</option>
+                                        <option *ngFor="let a of modalList" [value]="a.additionalcatid" [selected]="selectadditionalcatid==a.additionalcatid">
+                                            {{a.additionalcatname}}
+                                        </option>
+                                        
+                                    </select>
+                                    <label for="editAdditionalCategory"> Additional Category</label>
+                                </div>
+                            </div>
+                            <div class="col-md-12 my-2">
+                                <div class="form-floating" [formGroup]="editform">
+                                    <select class="form-select" id="editSpecificationName_id"
+                                        formControlName="editSpecificationName_id"
+                                        aria-label="Floating label select example"
+                                        
+                                        >
+                                        <option selected>Select</option>
+                                        <option value="1" *ngFor="let b of ListForEditSpec" [value]="b.specificationid">
+                                            {{b.specificationname}}
+                                        </option>
+                                        
+                                    </select>
+                                    <label for="editSpecificationName_id">Specification Name</label>
+                                </div>
+                            </div>
+                            <div class="d-none col-md-12 my-2">
+                                <div class="form-floating" [formGroup]="editform">
+                                    <select class="form-select" id="editAttributeName_id"
+                                        formControlName="editAttributeName_id"
+                                        aria-label="Floating label select example">
+                                        <option selected>Select</option>
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                    </select>
+                                    <label for="editAttributeName_id">Attribute Name</label>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="d-none pb-4 px-4 d-flex justify-content-between">
+                            <div>
+                                <div class="form-check" [formGroup]="editform">
+                                    <input class="form-check-input" type="checkbox" value="" id="editrefiner"
+                                        formControlName="editrefiner">
+                                    <label class="form-check-label" for="editrefiner">
+                                        Is Refiner?
+                                    </label>
+                                </div>
+                                <div class="form-check" [formGroup]="editform">
+                                    <input class="form-check-input" type="checkbox" value="" id="editvisibility"
+                                        formControlName="editvisibility">
+                                    <label class="form-check-label" for="editvisibility">
+                                        Hide from Product Details?
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+ 
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" (click)="doSomething()">Close</button>
+                <button type="button" class="btn btn-primary"(click)="SaveEdit()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

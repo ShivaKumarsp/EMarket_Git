@@ -1,0 +1,125 @@
+<div class="container my-3">
+    <h6>Top 50 <span class="badge bg-secondary" alignment="text-left">New Orders</span></h6>
+  
+    <table class="table table-bordered" [style]="{'height':'500px'}">
+      <table class="table table-sm">
+        <table class="table table-light table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Order No</th>
+              <th scope="col">Item Detail</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Status</th>
+              <th scope="col">Date/Time</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">1</th>
+              <td>Laptop Bag</td>
+              <td>1</td>
+              <td>Awaiting Accept</td>
+              <td>2/3/21</td>
+              <td><button type="button" class="btn btn-primary" (click)="openModal(1)">Update</button></td>
+            </tr>
+            <tr>
+              <th scope="row">2</th>
+              <td>Puma Shirt</td>
+              <td>2</td>
+              <td>Awaiting Accept</td>
+              <td>4/3/20</td>
+              <td><button type="button" class="btn btn-primary" (click)="openModal(2)">Update</button></td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td>Redmi</td>
+              <td>1</td>
+              <td>Awaiting Accept</td>
+              <td>4/10/21</td>
+              <td><button type="button" class="btn btn-primary" (click)="openModal(3)">Update</button></td>
+            </tr>
+            <tr>
+              <th scope="row">4</th>
+              <td>Sandisk</td>
+              <td>1</td>
+              <td>Awaiting Accept</td>
+              <td>5/5/21</td>
+              <td><button type="button" class="btn btn-primary" (click)="openModal(4)">Update</button></td>
+            </tr>
+            <tr>
+              <th scope="row">5</th>
+              <td>Washing Machine</td>
+              <td>1</td>
+              <td>Awaiting Accept</td>
+              <td>6/10/21</td>
+              <td><button type="button" class="btn btn-primary" (click)="openModal(5)">Update</button></td>
+            </tr>
+            <tr>
+              <th scope="row">6</th>
+              <td>LED Smart Tv</td>
+              <td>1</td>
+              <td>Awaiting Accept</td>
+              <td>4/5/21</td>
+              <td><button type="button" class="btn btn-primary" (click)="openModal(6)">Update</button></td>
+            </tr>
+            <tr>
+              <th scope="row">7</th>
+              <td>Boat Headset</td>
+              <td>2</td>
+              <td>Awaiting Accept</td>
+              <td>7/15/21</td>
+              <td><button type="button" class="btn btn-primary" (click)="openModal(7)">Update</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </table>
+    </table>
+  </div>
+  
+  
+  
+  
+  
+  
+  
+  <!-- Modal -->
+  <div class="modal fade" id="allOrderModal" tabindex="-1" aria-labelledby="exampleallOrderModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header border-0">
+          <h5 class="modal-title" id="exampleallOrderModal"></h5>
+          <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body border-0">
+          <form (submit)="submit()"  [formGroup] ="saveform">
+            <div class="text-center" >
+              <div class="form-check form-check-inline">
+                <input formControlName="response" class="form-check-input" value="1" type="radio" name="flexRadioDefault" id="flexRadioDefault1" >
+                <label class="form-check-label" for="flexRadioDefault1">
+                 Accept
+                </label>
+               
+              </div>
+              <div class="form-check form-check-inline">
+                <input class="form-check-input" formControlName="response" value="0" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked >
+                <label class="form-check-label" for="flexRadioDefault2">
+                  Cancel
+                </label>
+               
+              </div>
+              <div class="my-4">
+                <button class="btn btn-primary shadow shadow-sm" type="submit">
+                  Save Changes
+                </button>
+              </div>
+            </div>
+          </form>
+         
+  
+        </div>
+     
+  
+      </div>
+    </div>
+  </div>

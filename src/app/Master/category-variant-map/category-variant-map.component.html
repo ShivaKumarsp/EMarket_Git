@@ -1,0 +1,150 @@
+
+
+
+<section class="hero hero-page gray-bg padding-small">
+    <div class="container">
+        <div class="row d-flex">
+            <div class="col-lg-9 order-2 order-lg-1">
+                <h1>Specification</h1>
+            </div>
+            <div class="col-lg-3 text-right order-1 order-lg-2">
+                <ul class="breadcrumb justify-content-lg-end">
+                    <li class="breadcrumb-item"><a >Home</a></li>
+                    <li class="breadcrumb-item active">Specification</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="checkout">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <ul class="nav nav-pills">
+                    <!-- <li class="nav-item"><a class="nav-link active" routerLink="/app/master_specification">Specification</a></li>
+                      -->
+                </ul>
+            </div>
+        </div>
+    
+            <div class="row">
+                
+                <div class="col-lg-12">
+                    <div class="tab-content">
+                        <div id="product_info" class="active tab-block">
+                            <form [formGroup]="form"   novalidate>
+                            <div class="row">
+
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Additional Category Name<b style="color:red">*</b></label>
+                                        <select class="form-control" id="acname" name="acname" 
+                                        formControlName="additionalcategory" [(ngModel)]="additional_cat_id" (change)="get_variant_list(additional_cat_id)"
+                                        required [ngClass]="{ 'is-invalid': submitted && f['additionalcategory'].errors }">
+                                        <option value="" >-- Select Category --</option>
+                                        <option *ngFor="let aclist of additionalcategorylist"
+                                            [ngValue]="aclist.additionalcat_id">
+                                            {{aclist.additionalcat_name}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="submitted && f['additionalcategory'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['additionalcategory'].errors['required']">Select Category</div> 
+                                      </div>
+
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Attribute Name<b style="color:red">*</b></label>
+                                        <select class="form-control" id="acname" name="acname" 
+                                        formControlName="variant" [(ngModel)]="attribute_name_id"
+                                        required [ngClass]="{ 'is-invalid': submitted && f['variant'].errors }">
+                                        <option value="" >-- Select Category --</option>
+                                        <option *ngFor="let att of variant_list"
+                                        value="{{att.attributename_id}}" ng-selected="{{att.attributename_id == attribute_name_id}}">
+                                            {{att.attributename}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="submitted && f['variant'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['variant'].errors['required']">Select Attribute</div> 
+                                      </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </form>
+                            </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12 mt-4">
+                    <div class="text-center">
+                        <input type="text" [(ngModel)]="add_cat_variant_id" hidden />                       
+                        <a type="button" class="btn btn-template wide next" (click)="Clear()" [disabled]="btn_dissable===false">
+                            Clear<i class="fa fa-angle-right"></i>
+                        </a>&nbsp;
+                        <a type="button" class="btn btn-template wide next"  (click)="savedata()" [disabled]="btn_dissable===false">
+                            Save<i class="fa fa-angle-right"></i>
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2" *ngFor="let val of validation_list">
+                <div class="col-md-9">{{val.product_id_ret}}</div>
+                <div class="col-md-9">{{val.sub_category_id_ret}}</div>
+                <div class="col-md-9">{{val.additional_cat_id_ret}}</div>
+                
+            </div> 
+    </div>
+    <div class="container">
+        <div class="col-lg-12">
+
+            <div class="tab-content">
+
+                <h5 class="my-4">Category Variant List</h5>
+
+                <table class="table table-hover table-responsive-md small">
+                    <thead>
+                        <tr>
+                            <th>SL No</th>
+                            <th>Category Name</th>
+                            <th>Variant Name</th>                    
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                       
+                            <tr *ngFor="let pro of cat_variant_list| paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index">
+                               
+                                <th>{{tableSize *(page-1)+i+1}}</th>
+                                <td>{{pro.additionalcat_name}}</td>
+                            <td>{{pro.attributename}}</td>
+                          
+                            <td>
+                                <a class="btn btn-primary btn-sm" (click)="edit_variant(pro)"><i class="fa fa-edit"></i></a> &nbsp;| &nbsp;
+                                <!-- <a class="btn btn-primary btn-sm" (click)="delete_variant(pro)"><i class="fa fa-trash"></i></a>
+                                          -->
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+                </table>
+                <div class="d-flex justify-content-center">
+                    <pagination-controls
+                      previousLabel="Prev"
+                      nextLabel="Next"
+                      (pageChange)="onTableDataChange($event)"
+                    >
+                    </pagination-controls>
+                  </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+

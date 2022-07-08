@@ -1,0 +1,291 @@
+<ngx-spinner  bdColor="rgba(51,51,51,0.8)"  size="medium"  color="#fff"  type="ball-scale-multiple">
+    <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner> 
+<section class="hero hero-page gray-bg padding-small">
+    <div class="container">
+        <div class="row d-flex">
+            <div class="col-lg-9 order-2 order-lg-1">
+                <h1>Add Item</h1>
+            </div>
+            <div class="col-lg-3 text-right order-1 order-lg-2">
+                <ul class="breadcrumb justify-content-lg-end">
+                    <li class="breadcrumb-item"><a >Home</a></li>
+                    <li class="breadcrumb-item active">AddItem-1</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="checkout">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 mb-4">
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><a class="nav-link active" >Add Item</a></li>
+                    <li class="nav-item"><a class="nav-link ">Item Specification </a></li>
+                    <li class="nav-item"><a class="nav-link ">Item Feature </a></li>
+                </ul>
+            </div>
+            <div class="col-md-8">
+
+                <div class="tab-content">
+                    <div id="product_info" class="active tab-block">
+
+                        <form  name="additemform"   [formGroup]="form" novalidate>
+                            <div class="row" >
+
+                                <div class="form-group col-md-6 p-2">
+                                    <label class="form-label"> Select Products<b style="color: red;">*</b></label>
+                                    <select class="form-control" formControlName="productname"  [(ngModel)]="product_id" (change)="getimg(product_id)"  [ngClass]="{ 'is-invalid': submitted && f['productname'].errors }">
+                                      <option value="">--Select Product--</option>
+                                      <option *ngFor="let product of productlist" [ngValue]="product.productid" >
+                                        {{product.productname}}
+                                      </option>
+                                    </select>
+                                    <div *ngIf="submitted && f['productname'].errors" class="invalid-feedback">
+                                     <div *ngIf="f['productname'].errors['required']">Select Products</div>
+                                      </div>
+                                 </div>
+
+                                <div class="form-group col-md-6 p-2">
+                                    <label class="form-label">Item Type <b style="color: red;">*</b></label>
+                                    <select class="form-control" formControlName="item_type"  [(ngModel)]="item_type_id" [ngClass]="{ 'is-invalid': submitted && f['item_type'].errors }">
+                                        <option  value="">-- Select Item Type --</option>
+                                        <option *ngFor="let itemtype of producttypelist" [ngValue]="itemtype.producttypeid">
+                                            {{itemtype.producttypename}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="submitted && f['item_type'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['item_type'].errors['required']">Select Item Type</div>
+                                         </div>
+
+                                </div>
+
+
+                                <div class="col-md-6 form-group mb-3 p-2">
+                                    <label class="form-label">Item Name<b style="color: red;">*</b></label>
+                                    <input  formControlName="itemname" type="text" class="form-control" placeholder="Enter Item Name" [(ngModel)]="item_name" [ngClass]="{ 'is-invalid': submitted && f['itemname'].errors }">
+                                    <div *ngIf="submitted && f['itemname'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['itemname'].errors['required']">Enter Item Name</div>
+                                         </div>
+                                </div>
+
+                                <div class="form-group col-md-6  mb-3">
+                                    <label class="form-label">Store Name<b style="color: red;">*</b></label>
+                                    <select class="form-control" formControlName="storename"  [(ngModel)]="store_id"  [ngClass]="{ 'is-invalid': submitted && f['storename'].errors }">
+                                        <option value="">-- Select Store --</option>
+                                        <option *ngFor="let store of storelist" [ngValue]="store.storeid">
+                                            {{store.storename}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="submitted && f['storename'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['storename'].errors['required']">Select Store Name</div>
+                                         </div>
+                                  </div>
+
+                                <div class="col-md-6 form-group mb-3 p-2">
+                                    <label  class="form-label" >MRP <b style="color: red;">*</b></label>
+                                    <input formControlName="item_mrp" type="number" min="00.01" step="00.01"   placeholder="Set MRP" class="form-control"  [(ngModel)]="mrp" required [ngClass]="{ 'is-invalid': submitted && f['item_mrp'].errors }" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                                    <div *ngIf="submitted && f['item_mrp'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['item_mrp'].errors['required']">Enter MRP</div>
+                                         </div>
+                                </div>
+
+                                <div class="col-md-6 form-group mb-3 p-2">
+                                    <label  class="form-label">Listing Price <b style="color: red;">*</b></label>
+                                    <input  formControlName="item_list_price" type="number" min="00.01" step="00.01"  placeholder="Set Listing Price" class="form-control"  [(ngModel)]="listing_price" required [ngClass]="{ 'is-invalid': submitted && f['item_list_price'].errors }" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                                    <div *ngIf="submitted && f['item_list_price'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['item_list_price'].errors['required']">Enter Listing Price</div>
+                                         </div>
+                                </div>
+
+                                <div class="col-md-6 form-group mb-3 p-2">
+                                    <label class="form-label">Currency <b style="color: red;">*</b></label>
+                                    <select class="form-control" formControlName="currencyid"  [(ngModel)]="currency_id"  [ngClass]="{ 'is-invalid': submitted && f['currencyid'].errors }">
+                                        <option value="">-- Select currency --</option>
+                                        <option *ngFor="let currency of currencylist" [ngValue]="currency.currencyid" [ngClass]="{ 'is-invalid': submitted && f['currencyid'].errors }">
+                                            {{currency.currencyname}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="submitted && f['currencyid'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['currencyid'].errors['required']">Enter Currency</div>
+                                         </div>
+                                </div>
+                                <div class="col-md-6 form-group mb-3 p-2">
+                                    <label  class="form-label">Quantity<b style="color: red;">*</b></label>
+                                    <input  formControlName="itemquantity" type="text" placeholder="Enter Quantity" class="form-control" [(ngModel)]="quantity" [ngClass]="{ 'is-invalid': submitted && f['itemquantity'].errors }" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                                    <div *ngIf="submitted && f['itemquantity'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['itemquantity'].errors['required']">Enter Quantity</div>
+                                         </div>
+                                </div>
+
+                                <div class="col-md-6 form-group mb-3 p-2">
+                                    <label class="form-label">Set Low Inventory<b style="color: red;">*</b></label>
+                                     <input   formControlName="minquantity" type="number" placeholder="Set Low Inventory"  class="form-control" [(ngModel)]="min_quantity" [ngClass]="{ 'is-invalid': submitted && f['minquantity'].errors }" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                                    <div *ngIf="submitted && f['minquantity'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['minquantity'].errors['required']">Enter PrSet Low Inventoryoducts</div>
+                                         </div>
+                                </div>
+
+                                <div class="col-md-6 form-group mb-3 p-2">
+                                    <label class="form-label">SKU<b style="color: red;">*</b></label>
+                                     <input   formControlName="sku_id" type="text" placeholder="SKU"  class="form-control" [(ngModel)]="sku" [ngClass]="{ 'is-invalid': submitted && f['sku_id'].errors }">
+                                    <div *ngIf="submitted && f['sku_id'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['sku_id'].errors['required']">Enter SKU</div>
+                                         </div>
+                                </div>
+
+
+                                <div class="col-12 mt-3 ml-3  mb-3 p-2">
+                                    <input id="is_perisable" type="checkbox" class="checkbox-template" [(ngModel)]="check_durability">
+                                    <label class="form-label" data-bs-toggle="collapse" data-bs-target="#checkdurable" aria-expanded="false" aria-controls="checkdurable">Durable</label>
+                                </div>
+                                <div id="checkdurable" aria-expanded="false" class="collapse col-12">
+                                    <div class="row">
+                                        <div class="col-md-6 form-group mb-3 p-2">
+                                            <label  class="form-label">Durable Till</label>
+                                            <input formControlName="durability_duration" type="text" placeholder="Durable Till" class="form-control" [(ngModel)]="durability">
+
+                                        </div>
+                                        <div class="col-md-6 form-group mb-3 p-2">
+                                            <label class="form-label" >Durable Type</label>
+                                            <select class="form-control" formControlName="durableumo" [(ngModel)]="durability_uom">
+                                                <option value="">-- Select Durable type --</option>
+                                                <option *ngFor="let wtype of warrantytypelist" [ngValue]="wtype.warrantyid">
+                                                    {{wtype.warrantyname}}
+                                                </option>
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-12 form-group mb-3" >
+                                  <h6 class="my-3">In The Box(accessories)</h6>
+                                </div>
+
+                                <div>
+                                  <div class="form-group col-md-12 my-3">
+                                    <label class="form-label">If this item is containing any accessories along with it, Please mention here.</label>
+                                    <input type="text"  [(ngModel)]="In_the_box" formControlName="In_Box" class="form-control">
+                                    <p><small><b>Example</b> Mouse, Keyboard, Adapter</small></p>
+                                  </div>
+                                </div>
+
+
+                                <div class="form-group col-12 form-group mb-3" >
+                                    <h6 class="my-3">Manufacturing Details</h6>
+                                </div>
+                                <div class="col-md-6 form-group mb-3 p-2">
+                                    <label  class="form-label">Manufacturer</label>
+                                    <textarea formControlName="manufacturer_details" placeholder="Manufacturing Details"   class="form-control" [(ngModel)]="manufacture_details"></textarea>
+
+                                </div>
+                                <div class="col-md-6 form-group mb-3 p-2">
+                                    <label  class="form-label">Manufacturing Date</label>
+                                    <input formControlName="manufacturing_date" type="date" max={{currentDate}}   class="form-control"  [(ngModel)]="manufacture_date">
+
+                                </div>
+                                <div class="col-md-6 form-group mb-3 p-2">
+                                    <label class="form-label">Expiry Date</label>
+                                    <input  formControlName="product_expiry" type="date" min={{manufacture_date}}  class="form-control" [(ngModel)]="expiry_date">
+
+                                </div>
+
+                                <div class="col-md-6 form-group mb-3 p-2" >
+                                    <label class="form-label">Country of Origin</label>
+                                    <select class="form-control" formControlName="country"  [(ngModel)]="country_origin_id">
+                                        <option value="">-- Select Country Origin --</option>
+                                        <option *ngFor="let country of countrylist" [ngValue]="country.countryid">
+                                            {{country.countryname}}
+                                        </option>
+                                    </select>
+
+                                </div>
+
+                                <div class="col-12 form-group mb-3" >
+                                    <h6 class="my-3">Warrenty Details</h6>
+                                </div>
+                                <div class="col-md-6 form-group mb-3 p-2" >
+                                    <label class="form-label">Product Warrenty</label>
+                                    <input  formControlName="product_warrent" type="number"  placeholder="Product Warrent" class="form-control" [(ngModel)]="warranty" >
+
+                                </div>
+                                <div class="col-md-6 form-group mb-3 p-2">
+                                    <label class="form-label">Warranty Type</label>
+                                    <select class="form-control" formControlName="warrantyumo"  [(ngModel)]="warranty_uom_id" >
+                                        <option value="">-- Select Type of Warranty --</option>
+                                        <option *ngFor="let wtype of warrantytypelist" [ngValue]="wtype.warrantyid">
+                                            {{wtype.warrantyname}}
+                                        </option>
+                                    </select>
+
+                                </div>
+
+                                <div class="col-sm-3 form-group mb-3 p-2">
+                                    <label class="form-label">Product Image <b style="color:red">*</b></label><br />
+                                    <input type="file" formControlName="itemimage"  accept="image/jpeg" [(ngModel)]="p_imageurl"
+                                    (change)="ItemImageUpload(imageInput)" id="img" #imageInput [ngClass]="{ 'is-invalid': submitted && f['itemimage'].errors }">
+                                    <div *ngIf="submitted && f['itemimage'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['itemimage'].errors['required']">Upload Image</div>
+                                      </div>
+                                </div>
+
+                                <div class="col-sm-3 form-group mb-3 p-2">
+                                    <div>
+                                        <img id="productimg" src="{{p_imageurl}}" class="img-responsive" />
+                                    </div>
+                                </div>
+                            </div>
+
+
+                <div class="col-lg-12 mt-4">
+                    <div class="text-center">
+                        <input type="text" [(ngModel)]="product_id" hidden />
+                        <a type="button" class="btn btn-template wide next"  (click)="Clear()">Clear </a> &nbsp;
+                        <a type="button" class="btn btn-template wide next"  (click)="saveForm()" >
+                            Save<i class="fa fa-angle-right"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 p-0" *ngIf="showItem">
+                <div class="block-body order-summary">
+                    <!-- <div class="text-end my-3">
+                        <button class="btn btn-danger" type="button">
+                            <i class="fa fa-close"> </i> Reset
+                        </button>
+                    </div> -->
+
+
+                    <h6 class="text-uppercase">
+                        {{bindThis[0].productname}}
+                    </h6>
+                    <p>{{bindThis[0].shortdescription}}</p>
+                    <ul class="order-menu list-unstyled">
+                        <li class="d-flex justify-content-between">
+                            <span>Base Price </span>
+                            <span><strong>Rs {{bindThis[0].baseprice}}</strong></span>
+                        </li>
+
+                        <li class="d-flex justify-content-between">
+                            <img src={{bindThis[0].imagepath}} width="100%" height="auto" />
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-2" *ngFor="let val of validation_list">
+            <div class="col-md-9" style="color:red">{{val}}</div>
+        </div>
+    </div>
+
+</section>
+

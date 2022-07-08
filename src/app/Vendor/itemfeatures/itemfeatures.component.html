@@ -1,0 +1,74 @@
+
+
+    <section class="hero hero-page gray-bg padding-small">
+        <div class="container">
+            <div class="row d-flex">
+                <div class="col-lg-9 order-2 order-lg-1">
+                    <h1>Item Features</h1>
+                </div>
+                <div class="col-lg-3 text-right order-1 order-lg-2">
+                    <ul class="breadcrumb justify-content-lg-end">
+                        <li class="breadcrumb-item"><a >Home</a></li>
+                        <li class="breadcrumb-item active">Item Features</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="checkout">
+        <form >
+        <div class="container">
+            <div class="row">
+
+                <div class="col-12 mb-4">
+                    <ul class="nav nav-pills">
+                        <li class="nav-item"><a class="nav-link" [routerLink]="['/app/edititem/',itemid]">Edit Item</a></li>
+                        <li class="nav-item"><a class="nav-link">Item Specification </a></li>
+                        <li class="nav-item"><a class="nav-link active">Item Features</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="row">
+                <h5> <label for="item_id" class="form-label">Item Name :</label>
+                {{item_name}}</h5>
+
+                <div class="tab-content">
+                    <div id="product_info" class="active tab-block">                       
+                        
+                            <div class="card card-body p-4">                               
+                                <div class="form-group" class="my-2" [formGroup]="forms">
+                                  
+                                    <a type="button" class="btn btn-template wide next"  (click)="saveifeatures()">
+                                        Save<i class="fa fa-angle-right"></i>
+                                    </a>
+
+                                        <div class="NgxEditor__Wrapper" class="shadow shodow-sm" [style]="{'height':'auto'}">
+                                            <ngx-editor-menu [editor]="editor"  [style]="{'height':'auto'}"  formControlName="msg"> </ngx-editor-menu>
+                                            <ngx-editor
+                                            [editor]="editor"
+                                            [ngModel]="html"
+                                            [disabled]="false"
+                                            [placeholder]="'.Type here..'"
+                                            formControlName="msg"
+                                            
+                                            >
+                                            </ngx-editor>
+                                       
+                                        </div>
+                                </div>
+                                <div class="text-center py-0">
+                                                                    
+                                   
+                                </div>
+                            </div>       
+                        
+                    </div>
+                </div> 
+            </div>
+
+        </div>
+    </form>
+    </section>
+    

@@ -1,0 +1,147 @@
+
+
+
+<section class="hero hero-page gray-bg padding-small">
+          <div class="container">
+              <div class="row d-flex">
+                  <div class="col-lg-9 order-2 order-lg-1">
+                      <h1>Specification</h1>
+                  </div>
+                  <div class="col-lg-3 text-right order-1 order-lg-2">
+                      <ul class="breadcrumb justify-content-lg-end">
+                          <li class="breadcrumb-item"><a >Home</a></li>
+                          <li class="breadcrumb-item active">Specification</li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </section>
+      
+      <section class="checkout">
+          <div class="container">
+              <div class="row">
+                  <div class="col-12">
+                    <ul class="nav nav-tabs">
+                              <li class="nav-item"><a [routerLink]="['/app/editproduct/',productid]" class="nav-link">Edit Product</a></li>
+                              <li class="nav-item"><a [routerLink]="['/app/addproductspecification/',productid]"  class="nav-link">Product Specification </a></li>
+                              <li class="nav-item"><a [routerLink]="['/app/productquestionset/',productid]" class="nav-link">Item Specification Set For Vendor</a></li>
+                              <li class="nav-item"><a class="nav-link ">Add Product Feature</a></li>
+                              <li class="nav-item"><a class="nav-link active"[routerLink]="['/app/productvariant/',productid]" >Add Product Variant</a></li>
+                          </ul>
+                  </div>
+              </div>
+          
+                  <div class="row">
+                      <b>Product Name: <span>{{product_name}}</span></b>
+                      <div class="col-lg-12">
+                          <div class="tab-content">
+                              <div id="product_info" class="active tab-block">
+                                  <form [formGroup]="form"   novalidate>
+                                  <div class="row">
+      
+                                      <div class="col-sm-6 col-md-6">
+                                          <div class="form-group">
+                                              <label class="form-label">Attribute Name<b style="color:red">*</b></label>
+                                              <select class="form-control" id="acname" name="acname" 
+                                              formControlName="attributename" [(ngModel)]="attribute_name_id"
+                                              required [ngClass]="{ 'is-invalid': submitted && f['attributename'].errors }">
+                                              <option value="" >-- Select Attribute --</option>
+                                              <option *ngFor="let aclist of attributename_list"
+                                                  [ngValue]="aclist.attributename_id">
+                                                  {{aclist.attributename}}
+                                              </option>
+                                          </select>
+                                          <div *ngIf="submitted && f['attributename'].errors" class="invalid-feedback">
+                                              <div *ngIf="f['attributename'].errors['required']">Select Attribute</div> 
+                                            </div>
+      
+                                          </div>
+                                      </div>
+      
+                                      <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Level<b style="color:red">*</b></label>
+                                         <input class="form-control" formControlName="v_level" [(ngModel)]="level" placeholder="Enter Level"  required [ngClass]="{ 'is-invalid': submitted && f['v_level'].errors }">
+                                        <div *ngIf="submitted && f['v_level'].errors" class="invalid-feedback">
+                                            <div *ngIf="f['v_level'].errors['required']">Enter Level</div> 
+                                          </div>
+    
+                                        </div>
+                                    </div>
+                                      
+                                  </div>
+                              </form>
+                                  </div>
+                          </div>
+                      </div>
+      
+                      <div class="col-lg-12 mt-4">
+                          <div class="text-center">
+                              <input type="text" [(ngModel)]="variantid" hidden />                       
+                              <a type="button" class="btn btn-template wide next" (click)="Clear()" [disabled]="btn_dissable===false">
+                                  Clear<i class="fa fa-angle-right"></i>
+                              </a>&nbsp;
+                              <a type="button" class="btn btn-template wide next"  (click)="savedata()" [disabled]="btn_dissable===false">
+                                  Save<i class="fa fa-angle-right"></i>
+                              </a>
+      
+                          </div>
+                      </div>
+                  </div>
+                  <div class="row mt-2" *ngFor="let val of validation_list">
+                      <div class="col-md-9">{{val.product_id_ret}}</div>
+                      <div class="col-md-9">{{val.sub_category_id_ret}}</div>
+                      <div class="col-md-9">{{val.additional_cat_id_ret}}</div>
+                      
+                  </div> 
+          </div>
+          <div class="container">
+              <div class="col-lg-12">
+      
+                  <div class="tab-content">
+      
+                      <h5 class="my-4">Product Variant List</h5>
+      
+                      <table class="table table-hover table-responsive-md small">
+                          <thead>
+                              <tr>
+                                  <th>SL No</th>
+                                  <th>Attribute Name</th>   
+                                  <th>Level</th>                                         
+                                  <th>Action</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                             
+                                  <tr *ngFor="let pro of variant_list| paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index">
+                                     
+                                      <th>{{tableSize *(page-1)+i+1}}</th>
+                                      <td>{{pro.attribute_name}}</td>
+                                      <td>{{pro.is_level}}</td>
+                                
+                                  <td>
+                                      <a class="btn btn-primary btn-sm" (click)="edit_variant(pro)"><i class="fa fa-edit"></i></a> &nbsp;| &nbsp;
+                                      <a class="btn btn-danger btn-sm" (click)="delete_variant(pro)"><i class="fa fa-trash"></i></a>
+                                               
+                                  </td>
+      
+                              </tr>
+      
+                          </tbody>
+                      </table>
+                      <div class="d-flex justify-content-center">
+                          <pagination-controls
+                            previousLabel="Prev"
+                            nextLabel="Next"
+                            (pageChange)="onTableDataChange($event)"
+                          >
+                          </pagination-controls>
+                        </div>
+                  </div>
+              </div>
+      
+          </div>
+      
+      </section>
+      
+      

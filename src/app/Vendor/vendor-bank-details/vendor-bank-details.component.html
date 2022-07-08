@@ -1,0 +1,87 @@
+
+<div class="container my-4 min-vh-100" >
+
+          <form class="row g-0 m-auto card card-body p-3 border-0 shadow shadow-sm" [style]="{'max-width':'500px'}" [formGroup]="vendorbank">
+            <div class="text-end col-md-12">
+              <h4>Bank Details</h4>
+               <div class="ms-auto">
+                <p class="badge bg-primary" *ngIf="account_verify==1 && request_delete==0" >
+                  Account is verified
+                </p>
+                <p class="badge bg-secondary" *ngIf="account_verify==1 && request_delete==1">
+                 Acount Delete Request Sent
+                </p>
+                <p class="badge bg-secondary" *ngIf="is_verified==2" >
+                  Your bank details are incorrect. Kindly update the details for re-verification.
+                </p>
+              </div>
+            </div>
+            <div class="col-md-12 mt-4">
+              <div class="mb-3">
+                <label for="store_title" class="form-label p-0">Account Holder Name</label>
+                <input type="text" class="form-control form-control-sm" formControlName="accountholdername" [(ngModel)]="account_holder_name" [ngClass]="{ 'is-invalid': submitted && f['accountholdername'].errors }"  [readonly]="this.acc_dis" >
+                <div *ngIf="submitted && f['accountholdername'].errors" class="invalid-feedback">
+                    <div *ngIf="f['accountholdername'].errors['required']">Enter Account Holder Name</div> 
+                  </div>
+              </div>
+  
+              <div class="row mb-3">
+                <div class="col-md-6 mb-3">
+                  <label for="store_title" class="form-label p-0">Bank Account No</label>
+                  <input type="text" class="form-control form-control-sm" formControlName="bankaccount" [(ngModel)]="bank_account" [ngClass]="{ 'is-invalid': submitted && f['bankaccount'].errors }" [readonly]="this.acc_dis">
+                  <div *ngIf="submitted && f['bankaccount'].errors" class="invalid-feedback">
+                    <div *ngIf="f['bankaccount'].errors['required']">Enter Bank Account No</div> 
+                  </div>
+                </div>
+                <div class="col-md-6  mb-3">
+                  <label for="store_name" class="form-label p-0">IFSC Code</label>
+                  <input type="text" class="form-control form-control-sm" formControlName="ifsccode" [(ngModel)]="ifsc_code" [ngClass]="{ 'is-invalid': submitted && f['ifsccode'].errors }" [readonly]="this.acc_dis">
+                  <div *ngIf="submitted && f['ifsccode'].errors" class="invalid-feedback">
+                    <div *ngIf="f['ifsccode'].errors['required']">Enter IFSC Code</div> 
+                  </div>
+                </div>
+                <div class="col-md-6  mb-3">
+                  <label for="store_state" class="form-label p-0">Account Type</label>
+                  <select  class="form-select form-select-sm" formControlName="accounttype" [(ngModel)]="account_type" [ngClass]="{ 'is-invalid': submitted && f['accounttype'].errors }" [disabled]="acc_dis">
+                    <option value="">Choose...</option>
+                    <option value="Current">Current</option>
+                    <option value="Saving">Saving</option>
+                  </select>
+                  <div *ngIf="submitted && f['accounttype'].errors" class="invalid-feedback">
+                    <div *ngIf="f['accounttype'].errors['required']">Select Account Type</div> 
+                  </div>
+                </div>
+                <div class="col-md-6  mb-3">
+                  <label for="formFileSm" class="form-label p-0" *ngIf="this.acc_dis==false">Upload Passbook</label>
+                  <input type="file" formControlName="passbookimage"  accept="image/jpeg" [(ngModel)]="passbook_image" (change)="selectFileUpload(imageInput)" id="img" #imageInput [ngClass]="{ 'is-invalid': submitted && f['passbookimage'].errors }" *ngIf="this.acc_dis==false">
+                  <div *ngIf="submitted && f['passbookimage'].errors" class="invalid-feedback">
+                    <div *ngIf="f['passbookimage'].errors['required']">Upload Passbook</div> 
+                  </div>
+                </div>
+                <div class=" col-md-12 text-end my-3" >
+                  <!-- <button class="btn btn-template bg-primary btn-sm badge">View Passbook</button> -->
+                  <div class="text-center">
+                    <img src="{{passbook_image}}" width="50%" class="my-3" />
+                  </div>
+  
+                </div>
+                <div class="my-3">
+                  <ul class="small">
+                    <li>Only JPG/JPEG is allowed to upload</li>
+                    <li>Passbook Image is mendatory, Only verified bank account is use for transaction</li>
+                  </ul>
+  
+                </div>
+              </div>
+              <div class="col-12 text-end my-3">
+                <button type="button"  class="btn btn-template bg-danger mx-2" (click)="update_request_delete('DeleteAccount')"  *ngIf="account_verify==1 && request_delete==0">Request For Delete</button>
+                <button type="button"  class="btn btn-template bg-danger mx-2" (click)="update_request_delete('CancelDelete')"  *ngIf="account_verify==1 && request_delete==1">Cancel Delete Request</button>
+                <button type="submit"  class="btn btn-template bg-primary" (click)="save_bank_details()" *ngIf="account_verify==0">Save</button>
+              </div>
+            </div>
+          </form>
+  
+  
+  
+  </div>
+  

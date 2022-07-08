@@ -1,0 +1,149 @@
+<div ng-init="BindData()">
+    <section class="hero hero-page gray-bg padding-small">
+        <div class="container">
+            <div class="row d-flex">
+                <div class="col-lg-9 order-2 order-lg-1">
+                    <h1>Category and Specification Map</h1>
+                </div>
+                <div class="col-lg-3 text-right order-1 order-lg-2">
+                    <ul class="breadcrumb justify-content-lg-end">
+                        <li class="breadcrumb-item"><a>Home</a></li>
+                        <li class="breadcrumb-item active">Category and Specification Map</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="checkout">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <ul class="nav nav-pills">
+                        <li class="nav-item"><a class="nav-link active" >Category and Specification Map</a></li>
+                  
+                    </ul> 
+                </div>
+            </div>
+            <form name="myform" [formGroup]="form">
+                <div class="row">
+                    <div class="col-lg-12">
+
+                        <div class="tab-content">
+                            <div id="item_info" class="active tab-block">
+                                <div class="row">
+
+                                    <div class="col-md-12 d-none">
+                                    </div>
+                                    <div class="col-md-3" [formGroup]="form">
+                                        <label for="acname" class="form-label search">Additional Category</label>
+                                        <!-- (change)="getspecification(additional_cat_id,'list')"  -->
+                                        <select class="form-control" id="acname" name="acname" formControlName="acname"  [(ngModel)]="additional_cat_id" (change)="getspecification(additional_cat_id,'list')" required>
+                                            <option value="" disabled>-- Select Category --</option>
+                                            <option *ngFor="let aclist of additionalcategorylist" [ngValue]="aclist.additionalcat_id">
+                                                {{aclist.additionalcat_name}}
+                                            </option>
+                                        </select>
+                                         <div *ngIf="f['acname'].touched && f['acname'].invalid" class="text-danger">
+                                        <div *ngIf="f['acname'].errors && f['acname'].errors['required']">Additional Category is required.</div>
+                                    </div>
+                                    </div>
+
+
+                                    <div class="col-md-3" [formGroup]="form">
+                                        <label for="specname" class="form-label search">Specification Name</label>
+                                        <!-- (change)="getattribute(specification_id)" -->
+                                        <select class="form-control" id="specname" name="specname" formControlName="Specification"  [(ngModel)]="specification_id"  required>
+                                            <option value="" disabled>-- Select Specification --</option>
+                                            <option *ngFor="let spelist of specificationlist" [ngValue]="spelist.specificationid">
+                                                {{spelist.specificationname}}
+                                            </option>
+                                        </select>
+                                         <div *ngIf="f['Specification'].touched && f['Specification'].invalid" class="text-danger">
+                                        <div *ngIf="f['Specification'].errors && f['Specification'].errors['required']">Specification  Name is required.</div>
+                                    </div>
+                                    </div>
+
+                                 
+                                    <div class="col-md-12 mt-4">
+                                        <div class="text-center">
+                                            <input type="text" [(ngModel)]="cat_spe_map_id" *ngIf="false" />
+                                            <a type="button" class="btn btn-template wide next"  (click)="clear()" >
+                                                Clear<i class="fa fa-angle-right"></i>
+                                            </a> &nbsp;
+                                            <a type="button" class="btn btn-template wide next"  (click)="savedata()" >
+                                                Save<i class="fa fa-angle-right"></i>
+                                            </a>
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <h5 class="my-4"> Category Specification List</h5>
+                        <div class="col-md-4" style="float: right">                    
+                            <input class="form-control form-control-sm" formControlName="v_search" type="text" [(ngModel)]="search" placeholder="search here...">
+                        </div>
+
+                        <div class="tab-content">
+
+                          
+                            
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>SL No</th>
+                                            <th>Additional Category</th>
+                                            <th>Specification</th>
+                                            <th colspan="2" style="text-align:center">Action</th>
+                                          
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                            <tr *ngFor="let mcslist of mastercatspeclist|filter:search| paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index">
+                                                <th>{{tableSize *(page-1)+i+1}}</th>
+                                            <td>{{mcslist.additionalcatname}}</td>
+                                            <td>{{mcslist.specificationname}}</td>
+
+                                            <td>
+                                                <!-- (click)="editcatspecification(mcslist)" -->
+                                                <a class="btn btn-primary btn-sm" (click)="editcatspecification(mcslist)"><i class="fa fa-edit" ></i></a>
+                                            </td>
+                                            <td>
+                                                <!-- (click)="deletecatspecification(mcslist)" -->
+                                                <a class="btn btn-danger btn-sm" (click)="deletecatspecification(mcslist)"><i class="fa fa-trash text-white"></i></a>
+                                            </td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                                <div class="d-flex justify-content-center">
+                                    <pagination-controls
+                                      previousLabel="Prev"
+                                      nextLabel="Next"
+                                      (pageChange)="onTableDataChange($event)"
+                                    >
+                                    </pagination-controls>
+                                  </div>
+                            </div>
+                            
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </form>
+        </div>
+    </section>
+</div>
+
+
+
+
+

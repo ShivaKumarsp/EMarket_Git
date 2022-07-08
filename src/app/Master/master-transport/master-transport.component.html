@@ -1,0 +1,196 @@
+
+
+<section class="hero hero-page gray-bg padding-small">
+          <div class="container">
+              <div class="row d-flex">
+                  <div class="col-lg-9 order-2 order-lg-1">
+                      <h1>Transport Creation</h1>
+                  </div>
+                  <div class="col-lg-3 text-right order-1 order-lg-2">
+                      <ul class="breadcrumb justify-content-lg-end">
+                          <li class="breadcrumb-item"><a >Home</a></li>
+                          <li class="breadcrumb-item active">Add Transport</li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </section>
+      
+      <section class="checkout">
+          <div class="container">            
+          
+                  <div class="row">
+                      
+                      <div class="col-lg-12">
+                          <div class="tab-content">
+                              <div id="product_info" class="active tab-block">
+                                  <form [formGroup]="form"   novalidate>
+                                  <div class="row">
+                                      <div class="col-sm-6 col-md-6">
+                                          <div class="form-group">
+                                              <label class="form-label">Source Hub<b style="color:red">*</b></label>
+                                              <select class="form-control" formControlName="v_source_hub_id" [(ngModel)]="source_hub_id" required 
+                                              [ngClass]="{ 'is-invalid': submitted && f['v_source_hub_id'].errors }">
+                                                  <option value="">-- Select Source Hub --</option>
+                                                  <option *ngFor="let hub of hub_list" value="{{hub.hub_id}}" ng-selected="{{hub.hub_id == source_hub_id}}">
+                                                      {{hub.hub_name}}
+                                                  </option>
+                                              </select>
+                                              <div *ngIf="submitted && f['v_source_hub_id'].errors" class="invalid-feedback">
+                                                  <div *ngIf="f['v_source_hub_id'].errors['required']">Select Source Hub</div> 
+                                                </div>
+                                          </div>
+                                      </div>
+      
+                                      <div class="col-sm-6 col-md-6">
+                                          <div class="form-group">
+                                              <label class="form-label">Transport Mode<b style="color:red">*</b></label>
+                                              <select class="form-control" formControlName="v_tfr_mode" [(ngModel)]="transport_mode_id" required 
+                                              [ngClass]="{ 'is-invalid': submitted && f['v_tfr_mode'].errors }">
+                                                  <option value="">-- Select Transport Mode --</option>
+                                                  <option *ngFor="let tfr of transport_mode_list" [ngValue]="tfr.transport_mode_id">
+                                                      {{tfr.transport_mode_name}}
+                                                  </option>
+                                              </select>
+                                              <div *ngIf="submitted && f['v_tfr_mode'].errors" class="invalid-feedback">
+                                                  <div *ngIf="f['v_tfr_mode'].errors['required']">Select Transport Mode</div> 
+                                                </div>
+                                          </div>
+                                      </div>      
+
+                                      <div class="col-sm-6 col-md-6">
+                                          <div class="form-group">
+                                              <label class="form-label">Transport Person Name<b style="color:red">*</b></label>
+                                              <input type="text" class="form-control" formControlName="v_transport_person_name" [(ngModel)]="transport_person_name"
+                                              placeholder="Enter Transport Person Name" required [ngClass]="{ 'is-invalid': submitted && f['v_transport_person_name'].errors }"/>
+                                              <div *ngIf="submitted && f['v_transport_person_name'].errors" class="invalid-feedback">
+                                                  <div *ngIf="f['v_transport_person_name'].errors['required']">Enter Transport Person Name</div> 
+                                                </div>
+                                          </div>
+                                      </div>
+                                  
+                                      <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Transport Contact Number<b style="color:red">*</b></label>
+                                            <input type="text" class="form-control" formControlName="v_transport_contact_no" [(ngModel)]="transport_contact_no"
+                                            placeholder="Enter Transport Persion Contact" required [ngClass]="{ 'is-invalid': submitted && f['v_transport_contact_no'].errors }" minlength="10" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'/>
+                                            <div *ngIf="submitted && f['v_transport_contact_no'].errors" class="invalid-feedback">
+                                                <div *ngIf="f['v_transport_contact_no'].errors['required']">Enter Transport Contact Number</div> 
+                                              </div>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Transport Contact Email<b style="color:red">*</b></label>
+                                            <input type="text" class="form-control" formControlName="v_transport_contact_email" [(ngModel)]="transport_contact_email"
+                                            placeholder="Enter Transport Contact Email" required [ngClass]="{ 'is-invalid': submitted && f['v_transport_contact_email'].errors }" />
+                                            <div *ngIf="submitted && f['v_transport_contact_email'].errors" class="invalid-feedback">
+                                                <div *ngIf="f['v_transport_contact_email'].errors['required']">Enter Transport Contact Email</div> 
+                                              </div>
+                                        </div>
+                                    </div>
+                                
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Transport Transport Registration Number<b style="color:red">*</b></label>
+                                            <input type="text" class="form-control" formControlName="v_transport_registration_no" [(ngModel)]="transport_registration_no"
+                                            placeholder="Enter Transport Registration Number" required [ngClass]="{ 'is-invalid': submitted && f['v_transport_registration_no'].errors }" />
+                                            <div *ngIf="submitted && f['v_transport_registration_no'].errors" class="invalid-feedback">
+                                                <div *ngIf="f['v_transport_registration_no'].errors['required']">Enter Transport Registration Number</div> 
+                                              </div>
+                                        </div>
+                                    </div>
+                                
+
+                                  </div>
+                              </form>
+                                  </div>
+                          </div>
+                      </div>
+      
+                      <div class="col-lg-12 mt-4">
+                          <div class="text-center">
+                              <input type="text" [(ngModel)]="transport_id" hidden />                       
+                              <a type="button" class="btn btn-template wide next" (click)="Clear()" >
+                                  Clear
+                              </a> &nbsp;
+                              <a type="button" class="btn btn-template wide next"  (click)="savedata()" >
+                                  Save<i class="fa fa-angle-right"></i>
+                              </a>
+      
+                          </div>
+                      </div>
+                  </div>
+                  <div class="row mt-2" *ngFor="let val of validation_list">
+                      <div class="col-md-9" style="color: red;">{{val}}</div>
+                      
+                  </div> 
+          </div> 
+      
+          <div class="container">
+             
+              <div class="row">          
+          
+                      <div class="tab-content">
+          
+                          <h5 class="my-4">Transport List</h5>
+                          <div class="col-md-4" style="float: right">                    
+                              <input class="form-control form-control-sm" type="text" [(ngModel)]="search" placeholder="search here...">
+                          </div>
+                          <table class="table table-hover table-responsive-md small">
+                              <thead>
+                                  <tr>
+                                      <th>SL No</th>
+                                      <th>Hub Name</th>
+                                      <th>Transport Mode</th>
+                                      <th>Person Name</th>
+                                      <th>Person Contact</th>
+                                      <th>Person Email</th>
+                                      <th>Registration No</th>
+                                      <th>Action</th>
+                                  </tr>
+                              </thead>
+                              <tbody>
+                                
+                                      <tr *ngFor="let pro of transport_list|filter:search| paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index">
+                                          <th>{{tableSize *(page-1)+i+1}}</th>
+                                      <td>{{pro.hub_name}}</td>
+                                      <td>{{pro.transport_mode_name}}</td>
+                                      <td>{{pro.transport_person_name}}</td>
+                                      <td>{{pro.transport_contact_no}}</td>
+                                      <td>{{pro.transport_contact_email}}</td>
+                                      <td>{{pro.transport_registration_no}}</td>
+                                      <td>
+                                          <a class="btn btn-primary btn-sm" (click)="edit_data(pro)"><i class="fa fa-edit"></i></a> &nbsp;| &nbsp;
+                                          <a class="btn btn-danger btn-sm" (click)="delete_data(pro)"><i class="fa fa-trash"></i></a>
+                                                   
+                                      </td>
+          
+                                  </tr>
+          
+                              </tbody>
+                          </table>
+          
+                          <div class="d-flex justify-content-center">
+                              <pagination-controls
+                                previousLabel="Prev"
+                                nextLabel="Next"
+                                (pageChange)="onTableDataChange($event)"
+                              >
+                              </pagination-controls>
+                            </div>
+          
+          
+          
+                      </div>
+                
+          
+              </div>
+         
+          </div>
+      </section>
+      
+      
+      
+      

@@ -1,0 +1,688 @@
+
+  <ngx-spinner  bdColor="rgba(51,51,51,0.8)"  size="medium"  color="#fff"  type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner> 
+
+<header class="header fixed-top">
+    <!-- Tob Bar-->
+  
+    <!-- <div class="top-bar">
+        <div class="container-fluid">
+            <div class="row d-flex align-items-center">
+                <div class="col-lg-6 hidden-lg-down text-col">
+                    <ul class="list-inline">
+                        <li class="list-inline-item"><button class="btn rounded-0 btn-sm btn-light" onclick="IncreaseFontSize()">+ A</button></li>
+                        <li class="list-inline-item"><button class="btn rounded-0 btn-sm btn-light" onclick="DecreaseFontSize()">- A</button></li>
+                        <li class="list-inline-item">
+                            <button class="btn rounded-0 btn-sm btn-light" ng-click="color('peachpuff')" style="background-color: peachpuff">
+                            </button>
+                        </li>
+                        <li class="list-inline-item">
+                            <button class="btn rounded-0 btn-sm btn-light" ng-click="color('antiquewhite')" style="background-color: antiquewhite">
+                            </button>
+                        </li>
+                        <li class="list-inline-item">
+                            <button class="btn rounded-0 btn-sm btn-light" ng-click="color('ivory')" style="background-color:ivory">
+                            </button>
+                        </li>
+                        <li class="list-inline-item">
+                            <button class="btn rounded-0 btn-sm btn-light" ng-click="color('skyblue')" style="background-color:skyblue">
+                            </button>
+                        </li>
+                        <li class="list-inline-item">
+                            <button class="btn rounded-0 btn-sm btn-light" ng-click="color('palevioletred')" style="background-color:palevioletred">
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-6 d-flex justify-content-end">
+                 
+                    <div class="dropdown show">
+                        <a style="cursor:pointer" ng-click="changeLanguage('Kan',2)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="img/Flag_of_Karnataka.svg.png" alt="kannada">
+                            ಕನ್ನಡ
+                        </a>
+  
+                        <a style="cursor:pointer" ng-click="changeLanguage('Eng',1)" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <img src="img/united-kingdom.svg" alt="english">
+                            English
+                        </a>
+  
+                    </div>
+  
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="search-area">
+            <div class="search-area-inner d-flex align-items-center justify-content-center">
+                <div class="close-btn"><i class="icon-close"></i></div>
+                <form action="#">
+                    <div class="form-group">
+                        <input type="search" name="search" id="search" placeholder="What are you looking for?">
+                        <button type="submit" class="submit"><i class="fa fa-search"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="container-fluid">
+           <a type="button" (click)="redirect_home()" class="navbar-brand">
+                Market Place
+            </a>
+            <button type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler navbar-toggler-right"><i class="fa fa-bars"></i></button>
+        
+            <div id="navbarCollapse" class="collapse navbar-collapse">
+                <ul class="navbar-nav mx-auto"  *ngIf="homemenu==false">
+                    <li class="nav-item dropdown">
+                        <a data-toggle="dropdown" style="cursor:pointer" aria-haspopup="true" aria-expanded="false" class="nav-link active">Home<i class="fa fa-angle-down"></i></a>
+                        <ul aria-labelledby="navbarDropdownHomeLink" class="dropdown-menu">
+                            <li><a href="index.html" class="dropdown-item">Classic Home</a></li>
+                            <li><a href="index2.html" class="dropdown-item">Parallax sections</a></li>
+                            <li><a href="index3.html" class="dropdown-item">Video background                     </a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a href="category.html" class="nav-link">Shop</a>
+                    </li>
+                   
+                    <li class="nav-item dropdown menu-large">
+                        <a  data-toggle="dropdown" class="nav-link">Template<i class="fa fa-angle-down"></i></a>
+                        <div class="dropdown-menu megamenu">
+                            <div class="row">
+                                <div class="col-lg-9">
+                                    <div class="row">
+                                        <div class="col-lg-3" >
+                                            <input type="text"   >
+                                            <strong class="text-uppercase">Home</strong>
+                                            <ul class="list-unstyled">
+                                                <li><a href="index.html">Classic homepage</a></li>
+                                                <li><a href="index2.html">Parallax sections <span class="badge badge-success ml-2">New</span></a></li>
+                                                <li><a href="index3.html">Video background  <span class="badge badge-success ml-2">New</span></a></li>
+                                            </ul><strong class="text-uppercase">Shop</strong>
+                                            <ul class="list-unstyled">
+                                                <li><a href="category.html">Category - left sidebar</a></li>
+                                                <li><a href="category-right.html">Category - right sidebar</a></li>
+                                                <li><a href="category-full.html">Category - full width</a></li>
+                                                <li><a href="category-masonry.html">Category - Masonry layout <span class="badge badge-success ml-2">New</span> </a></li>
+                                                <li><a href="detail.html">Product detail</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <strong class="text-uppercase">Order process</strong>
+                                            <ul class="list-unstyled">
+                                                <li><a href="cart.html">Shopping cart</a></li>
+                                                <li><a href="checkout1.html">Checkout 1 - Address</a></li>
+                                                <li><a href="checkout2.html">Checkout 2 - Delivery</a></li>
+                                                <li><a href="checkout3.html">Checkout 3 - Payment</a></li>
+                                                <li><a href="checkout4.html">Checkout 4 - Review             </a></li>
+                                                <li><a href="checkout5.html">Checkout 5 - Confirmation             </a></li>
+                                            </ul><strong class="text-uppercase">Blog</strong>
+                                            <ul class="list-unstyled">
+                                                <li><a href="blog.html">Blog</a></li>
+                                                <li><a href="post.html">Post                                                                                           </a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <strong class="text-uppercase">Pages</strong>
+                                            <ul class="list-unstyled">
+                                                <li><a href="contact.html">Contact</a></li>
+                                                <li><a href="about.html">About us</a></li>
+                                                <li><a href="text.html">Text page</a></li>
+                                                <li><a href="faq.html">FAQ  <span class="badge badge-success ml-2">New</span></a></li>
+                                                <li><a href="coming-soon.html">Coming soon  <span class="badge badge-success ml-2">New</span></a></li>
+                                                <li><a href="404.html">Error 404</a></li>
+                                                <li><a href="500.html">Error 500</a></li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <strong class="text-uppercase">Customer</strong>
+                                            <ul class="list-unstyled">
+                                                <li><a href="customer-login.html">Login/sign up</a></li>
+                                                <li><a href="customer-orders.html">Orders</a></li>
+                                                <li><a href="customer-order.html">Order detail</a></li>
+                                                <li><a href="customer-addresses.html">Addresses</a></li>
+                                                <li><a href="customer-account.html">Profile</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="row services-block">
+                                        <div class="col-xl-3 col-lg-6 d-flex">
+                                            <div class="item d-flex align-items-center">
+                                                <div class="icon"><i class="icon-truck text-primary"></i></div>
+                                                <div class="text"><span class="text-uppercase">Free shipping &amp; return</span><small>Free Shipping over $300</small></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-6 d-flex">
+                                            <div class="item d-flex align-items-center">
+                                                <div class="icon"><i class="icon-coin text-primary"></i></div>
+                                                <div class="text"><span class="text-uppercase">Money back guarantee</span><small>30 Days Money Back</small></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-6 d-flex">
+                                            <div class="item d-flex align-items-center">
+                                                <div class="icon"><i class="icon-headphones text-primary"></i></div>
+                                                <div class="text"><span class="text-uppercase">020-800-456-747</span><small>24/7 Available Support</small></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-3 col-lg-6 d-flex">
+                                            <div class="item d-flex align-items-center">
+                                                <div class="icon"><i class="icon-secure-shield text-primary"></i></div>
+                                                <div class="text"><span class="text-uppercase">Secure Payment</span><small>Secure Payment</small></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-3 text-center product-col hidden-lg-down">
+                                    <a href="detail.html" class="product-image"><img src="img/shirt.png" alt="..." class="img-fluid"></a>
+                                    <h6 class="text-uppercase product-heading"><a href="detail.html">Lose Oversized Shirt</a></h6>
+                                    <ul class="rate list-inline">
+                                        <li class="list-inline-item"><i class="fa fa-star-o text-primary"></i></li>
+                                        <li class="list-inline-item"><i class="fa fa-star-o text-primary"></i></li>
+                                        <li class="list-inline-item"><i class="fa fa-star-o text-primary"></i></li>
+                                        <li class="list-inline-item"><i class="fa fa-star-o text-primary"></i></li>
+                                        <li class="list-inline-item"><i class="fa fa-star-o text-primary"></i></li>
+                                    </ul><strong class="price text-primary">$65.00</strong><a  class="btn btn-template wide">Add to cart</a>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+  
+                    <li class="nav-item">
+                        <a href="contact.html" class="nav-link"></a>
+                    </li>
+  
+                </ul>
+                 
+              
+               
+  
+                   <div class="right-col d-flex align-items-lg-center flex-column flex-lg-row" 
+                   style=" margin-left: auto;" >
+                    <div class="search"><i class="fa fa-search"></i></div>
+                                 
+                </div>
+  
+               
+               
+                <!-- Cart Dropdown-->
+  
+                <div class="dropdown show ">
+                  <!-- muliple dropdown -->
+                 
+                    <a id="navbarDropdownMenuLinka"  data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link">Login<i class="fa fa-angle-down"></i></a>
+                      <ul aria-labelledby="navbarDropdownMenuLinka" class="dropdown-menu dropdown-menu-end text-dark">
+                        
+                        <li>
+                          <a class="nav-link" aria-current="page" type="button" (click)="click_login('Customer')">
+                            Customer
+                          </a>
+                        </li>
+                        <li>
+                          <a class="nav-link" aria-current="page" type="button" (click)="click_login('Vendor')">
+                            Vendor
+                          </a>
+                        </li>
+                        <li>
+                          <a class="nav-link" aria-current="page" type="button" (click)="click_login('Admin')">
+                            Admin
+                          </a>
+                        </li>
+                      </ul>
+                
+                </div>
+  
+              
+            </div>
+        </div>
+    </nav>
+  </header>
+  <body>
+      
+    <section class="hero hero-home no-padding">
+
+        <owl-carousel-o [options]="customOptions" >
+          <ng-container *ngFor="let slide of slides" class="owl-carousel owl-theme hero-slider" >
+            <ng-template id="slide.id" carouselSlide  >
+              <div [style.background-image]="'url('+slide.img+')'" class="item d-flex align-items-center">
+                <div class="container">
+                  <div class="row">
+                    <div class="col-lg-6 text-white">
+                      <h1>Sed do eiusmod tempor</h1>
+                      <p class="lead">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><a  class="btn btn-template wide shop-now">Shop Now<i class="icon-bag">           </i></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </ng-container>
+        </owl-carousel-o>
+      </section>
+
+     <!--All product showing-->
+     <section>      
+
+        <main>
+            <div class="container">
+                <div class="row">
+                    <!-- Grid -->
+                    <div class="products-grid col-12 sidebar-none">
+                       
+                        <div class="row">
+                         
+                 
+                            <!-- item-->
+                            <div class="item col-xl-3 col-lg-4 col-md-6" *ngFor="let produ of product_list">
+                  
+                               <div class="product is-gray"> 
+                                    <div class="image d-flex align-items-center justify-content-center">
+                                        <div class="ribbon ribbon-primary text-uppercase">Sale</div>
+                                         <img src="{{produ.imagepath}}">
+                                        <div class="hover-overlay d-flex align-items-center justify-content-center">
+                                            <div class="CTA d-flex align-items-center justify-content-center">
+                                                <a type="button" class="add-to-cart" (click)="add_to_cart(produ)"><i class="fa fa-shopping-cart"></i></a>
+                                                <!-- <a type="button"class="visit-product active" (click)="viewproductdetails(produ)"><i class="fa fa-search"></i>View</a> -->
+                                                <!-- <a type="button"class="visit-product active" [routerLink]="['/app/itemdetails',produ.itemid]"><i class="fa fa-search"></i>View</a> -->
+                                                <a type="button"class="visit-product active" [routerLink]="['/singleitemdetails/',produ.itemid]"><i class="fa fa-search"></i>View</a>
+                                            
+                                                <!-- <a type="button" (click)="short_view(produ)" class="quick-view"><i class="fa fa-arrows-alt"></i></a> -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="title">
+                                       <a href="detail.html">
+                                            <h3 class="h6 text-uppercase no-margin-bottom">{{ produ.itemname  }}{{produ.itemname.length > 20 ? '...' : ''}} </h3>
+                                        </a><span class="price text-muted">{{produ.currencysymbol}} {{produ.listingprice}}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <!-- <dir-pagination-controls max-size="5"
+                                                 direction-links="true"
+                                                 boundary-links="true">
+                        </dir-pagination-controls> -->
+                        <!--<nav aria-label="page navigation example" class="d-flex justify-content-center">
+                            <ul class="pagination pagination-custom">
+                                <li class="page-item"><a  aria-label="Previous" class="page-link"><span aria-hidden="true">Prev</span><span class="sr-only">Previous</span></a></li>
+                                <li class="page-item"><a  class="page-link active">1       </a></li>
+                                <li class="page-item"><a  class="page-link">2       </a></li>
+                                <li class="page-item"><a  class="page-link">3       </a></li>
+                                <li class="page-item"><a  class="page-link">4       </a></li>
+                                <li class="page-item"><a  class="page-link">5 </a></li>
+                                <li class="page-item"><a  aria-label="Next" class="page-link"><span aria-hidden="true">Next</span><span class="sr-only">Next     </span></a></li>
+                            </ul>
+                        </nav>-->
+                    </div>
+                    <!-- / Grid End-->
+                </div>
+            </div>
+        </main>
+    </section>
+
+      <!-- Categories Section-->
+       <section class="categories">
+        <div class="container">
+            <header class="text-center">
+                <h2 class="text-uppercase">All Category</h2>
+            </header>
+            <div class="row text-left">
+                <div class="col-lg-4 mt-4" *ngFor="let ct of category_list">
+                    <a type="button" (click)="get_category_page(ct)">
+                        <div style="background-image: url({{ct.imageurl}});" class="item d-flex align-items-end" >
+                           
+                        </div>
+                          <div class="content">
+                            <h3><span>{{ct.categoryname}}</span></h3>
+                        </div>
+                    </a>
+                    
+                </div>
+
+
+            </div>
+        </div>
+    </section> 
+
+
+  </body>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="exampleMloginMOdal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header border-0">
+          <h5 class="modal-title" id="exampleloginMOdal">
+              
+            </h5>
+          <button type="button" class="btn-close" (click)="doSomething()"></button>
+        </div>
+        <div class="modal-body border-0">
+  
+            <div class="'row">
+              <div class="col-lg-12">
+  
+                <!-- Login -->
+  
+                <div class="block" id="customerLogin"  *ngIf="isVisible == 0">
+                  <div class="block-header">
+                    <h5>Login</h5>
+                </div>
+                  <div class="block-body">
+  
+                    <div > 
+                    
+                      <p class="lead">Already our {{role}}?</p>
+                      <form  [formGroup]="customerLogin" >
+                        <div class="my-2" >
+                          <label for="cemail" class="form-label">Username/Email/Mobile</label>
+                          <input  type="text" class="form-control" formControlName="name" 
+                          [ngClass]="{ 'is-invalid': submitted && f['name'].errors }" required>
+                          <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
+                            <div *ngIf="f['name'].errors['required']">Enter User Name</div> 
+                          </div>
+                        </div>
+                        <div class="my-2"  >
+                          <label for="cpassword" class="form-label">Password</label>
+                          <input [(ngModel)]='pwd' type="password" class="form-control" formControlName="pass"
+                           [ngClass]="{ 'is-invalid': submitted && f['pass'].errors }" required>
+                          <div *ngIf="submitted && f['pass'].errors" class="invalid-feedback">
+                            <div *ngIf="f['pass'].errors['required']">Enter Password</div> 
+                          </div>
+                        </div>
+                        <div class="my-2">
+                          <a (click)="showForm(4)" type="button" class="text-decoration-none">Forget Password?</a>
+                          <a style="float: right" (click)="showForm(10)" type="button" class="text-decoration-none">Login with OTP</a>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                          <button type="submit"   class="btn btn-primary m-2" (click)="userLoginProcess()" [disabled]="btn_dissable==false"><i class="fa fa-sign-in"></i> Log in</button>
+                          <button type="button" class="btn btn-primary m-2" (click)="showForm(1)" [disabled]="btn_dissable==false" *ngIf="role!='Admin'"><i class="fa fa-sign-in" ></i> Register</button>
+                        </div>
+                      </form>
+  
+                    </div>
+                  </div>
+                </div> 
+  
+  
+                <!-- Registration -->
+  
+                <div class="block"  *ngIf="isVisible == 1">
+                  <div class="block-header">
+                    <h5>Registration</h5>
+                  </div>
+                  <div class="block-body"> 
+                    <div >                                      
+                      <p class="lead">Register Yourself.</p>
+                      <form  [formGroup]="customerregister">
+                        <div class="my-2">
+                          <label for="crusername" class="form-label">User Name</label>
+                          <input id="crusername" type="text" class="form-control" formControlName="r_username" 
+                          [ngClass]="{ 'is-invalid': submitted && g['r_username'].errors }" required>
+                          <div *ngIf="submitted && g['r_username'].errors" class="invalid-feedback">
+                            <div *ngIf="g['r_username'].errors['required']">Enter User Name</div> 
+                          </div>
+                        </div>
+                        <div class="my-2">
+                          <label for="cremail" class="form-label">Email</label>
+                          <input id="cremail" type="text" class="form-control" formControlName="r_email" 
+                          [ngClass]="{ 'is-invalid': submitted && g['r_email'].errors }" required>
+                          <div *ngIf="submitted && g['r_email'].errors" class="invalid-feedback">
+                            <div *ngIf="g['r_email'].errors['required']">Enter Email</div> 
+                          </div>
+                        </div>
+                        <div class="my-2" >
+                          <label for="cremail" class="form-label">Phone</label>
+                          <input id="cremail" type="text" class="form-control" formControlName="r_phone" 
+                          minlength="10" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57' [ngClass]="{ 'is-invalid': submitted && g['r_phone'].errors }" required>
+                          <div *ngIf="submitted && g['r_phone'].errors" class="invalid-feedback">
+                            <div *ngIf="g['r_phone'].errors['required']">Enter Phone Number</div> 
+                          </div>
+                        </div>
+  
+                        <div class="my-2">
+                          <label for="crpassword" class="form-label">Password</label>
+                          <input id="crpassword" type="password" class="form-control" formControlName="r_pwd" 
+                          [ngClass]="{ 'is-invalid': submitted && g['r_phone'].errors }" required>
+                          <div *ngIf="submitted && g['r_phone'].errors" class="invalid-feedback">
+                            <div *ngIf="g['r_phone'].errors['required']">Enter Password</div> 
+                          </div>
+                        </div>
+  
+                        <div class="my-2" >
+                          <label for="crpassword0" class="form-label">Confirm Password</label>
+                          <input id="crpassword0" type="password" class="form-control" formControlName="r_repwd" 
+                          [ngClass]="{ 'is-invalid': submitted && g['r_repwd'].errors }" required>
+                          <div *ngIf="submitted && g['r_repwd'].errors" class="invalid-feedback">
+                            <div *ngIf="g['r_repwd'].errors['required']">Enter Confirm Password</div> 
+                          </div>
+                        </div>
+  
+                        <div class="d-flex justify-content-end">
+                          <button type="button" (click)="showForm(0)"  class="btn btn-primary m-2"><i class="fa fa-sign-in"></i> Log in</button>
+                          <button type="button"  (click)="customerRegistration()" class="btn btn-primary m-2"><i class="fa fa-sign-in"></i> Register</button>
+                        </div>
+                      </form>
+  
+                    </div>
+  
+                  </div>
+                </div>  
+  
+                <!-- Forget Password  -->
+                   <div class="block"   *ngIf="isVisible == 4">
+                    <div class="block-header">
+                      <h5>Forgot Password</h5>
+                  </div>
+                    <div class="block-body">
+  
+                      <div > 
+                      
+                        <p class="lead">Enter Your Email/Phone</p>
+                        <form [formGroup]="forgetotp">
+                        
+                        <div class="my-2" >
+                          <label for="fremail" class="form-label">Email/Mobile No</label>
+                          <input id="fremail" type="text" class="form-control" formControlName="f_username" 
+                          [ngClass]="{ 'is-invalid': submitted && i['f_username'].errors }" required>
+                          <div *ngIf="submitted && i['f_username'].errors" class="invalid-feedback">
+                            <div *ngIf="i['f_username'].errors['required']">Enter Email/Mobile No</div> 
+                          </div>
+                        </div>
+                        
+                          <div class="d-flex justify-content-end">
+                            <button (click)="showForm(0)"   class="btn btn-primary m-2"><i class="fa fa-sign-in"></i> Log in</button>
+                            <button type="button" class="btn btn-primary m-2" (click)="Forgot_submitotp()"  ><i class="fa fa-sign-in" ></i> Send OTP</button>
+                          </div>
+                        </form>
+  
+                      </div>
+                    </div>
+                  </div>
+  
+                  <!-- for verify OTP -->
+  
+                  <div class="block"   *ngIf="isVisible == 5">
+                    <div class="block-header">
+                      <h5>Verify OTP</h5>
+                  </div>
+                    <div class="block-body">
+  
+                      <div > 
+                      
+                        <p class="lead">Check Registered Email/Phone No for OTP</p>
+                        <form [formGroup]="VerifyOtp">                        
+                        
+                        <div class="my-2">
+                          <label for="vrotp" class="form-label">VerifyOtp</label>
+                          <input id="vrotp" type="text" class="form-control" formControlName="vrotp" 
+                          minlength="6" maxlength="6" onkeypress='return event.charCode >= 48 && event.charCode <= 57'  [ngClass]="{ 'is-invalid': submitted && j['vrotp'].errors }" required>
+                          <div *ngIf="submitted && j['vrotp'].errors" class="invalid-feedback">
+                            <div *ngIf="j['vrotp'].errors['required']">Enter OTP</div> 
+                          </div>
+                        </div>
+                        
+                          <div class="d-flex justify-content-end">
+                            <button    class="btn btn-primary m-2" (click)="resend_otp()"><i class="fa fa-sign-in"></i> Resend OTP</button>
+                            <button type="button" class="btn btn-primary m-2" (click)="submit_registration()" ><i class="fa fa-sign-in" ></i> Verify OTP</button>
+                          </div>
+                        </form>
+  
+                      </div>
+                    </div>
+                  </div>                 
+                  
+  
+                   <!--Forget for verify OTP  -->
+  
+                   <div class="block"   *ngIf="isVisible == 8">
+                    <div class="block-header">
+                      <h5>Verify OTP</h5>
+                  </div>
+                    <div class="block-body">
+  
+                      <div > 
+                      
+                        <p class="lead">Check Registered Email/Phone No for OTP</p>
+                        <form [formGroup]="VerifyOtp">                        
+                        
+                        <div class="my-2">
+                          <label for="vrotp" class="form-label">VerifyOtp</label>
+                          <input id="vrotp" type="text" class="form-control" formControlName="vrotp" 
+                          minlength="6" maxlength="6" onkeypress='return event.charCode >= 48 && event.charCode <= 57'  [ngClass]="{ 'is-invalid': submitted && j['vrotp'].errors }" required>
+                          <div *ngIf="submitted && j['vrotp'].errors" class="invalid-feedback">
+                            <div *ngIf="j['vrotp'].errors['required']">Enter OTP</div> 
+                          </div>
+                        </div>
+                        
+                          <div class="d-flex justify-content-end">
+                            <button    class="btn btn-primary m-2" (click)="forgetresend_otp()"><i class="fa fa-sign-in"></i> Resend OTP</button>
+                            <button type="button" class="btn btn-primary m-2" (click)="submit_forget_otp()" ><i class="fa fa-sign-in" ></i> Verify OTP</button>
+                          </div>
+                        </form>
+  
+                      </div>
+                    </div>
+                  </div>
+
+                     <!--New Enter Password   -->
+  
+                     <div class="block"   *ngIf="isVisible == 9">
+                      <div class="block-header">
+                        <h5>New Enter Password</h5>
+                    </div>
+                      <div class="block-body">
+    
+                        <div > 
+                        
+                          <p class="lead">New Enter</p>
+                          <form [formGroup]="enterpassword">                        
+                          
+                          <div class="my-2">
+                            <label for="vrotp" class="form-label">New Password</label>
+                            <input id="vrotp" type="password" min="6" class="form-control" formControlName="f_password" 
+                            [ngClass]="{ 'is-invalid': submitted && k['f_password'].errors }" required>
+                            <div *ngIf="submitted && k['f_password'].errors" class="invalid-feedback">
+                              <div *ngIf="k['f_password'].errors['required']">Enter New Password</div> 
+                              <div *ngIf="k['f_password'].errors['minlength']">
+                               Password must be at least 6 characters
+                              </div>
+                            </div>
+                          </div>
+                          <div class="my-2">
+                            <label for="vrotp" class="form-label">Re Enter Password</label>
+                            <input id="vrotp" type="password" class="form-control" formControlName="f_repassword" 
+                            [ngClass]="{ 'is-invalid': submitted && k['f_repassword'].errors }" required>
+                            <div *ngIf="submitted && k['f_repassword'].errors" class="invalid-feedback">
+                              <div *ngIf="k['f_repassword'].errors['required']">Re-Enter Password</div> 
+                            </div>
+                          </div>
+                            <div class="d-flex justify-content-end">
+                            
+                              <button type="button" class="btn btn-primary m-2" (click)="changepassword()" ><i class="fa fa-sign-in" ></i>Change Password</button>
+                            </div>
+                          </form>
+    
+                        </div>
+                      </div>
+                    </div>
+
+
+                      <!-- Login With OTP  -->
+                   <div class="block"   *ngIf="isVisible == 10">
+                    <div class="block-header">
+                      <h5>Login With OTP</h5>
+                  </div>
+                    <div class="block-body">
+  
+                      <div > 
+                      
+                        <p class="lead">Enter Your Email/Phone</p>
+                        <form [formGroup]="loginwithotp">
+                        
+                        <div class="my-2" >
+                          <label for="fremail" class="form-label">Email/Mobile No</label>
+                          <input id="fremail" type="text" class="form-control" formControlName="otp_username" 
+                          [ngClass]="{ 'is-invalid': submitted && l['otp_username'].errors }" required>
+                          <div *ngIf="submitted && l['otp_username'].errors" class="invalid-feedback">
+                            <div *ngIf="l['otp_username'].errors['required']">Enter Email/Mobile No</div> 
+                          </div>
+                        </div>
+                        
+                          <div class="d-flex justify-content-end">
+                            <button (click)="showForm(0)"   class="btn btn-primary m-2"><i class="fa fa-sign-in"></i> Log in</button>
+                            <button type="button" class="btn btn-primary m-2" (click)="get_loginwithotpt()"  ><i class="fa fa-sign-in" ></i> Send OTP</button>
+                          </div>
+                        </form>
+  
+                      </div>
+                    </div>
+                  </div>
+
+                   <!--Login With OTP Verify  -->
+  
+                   <div class="block"   *ngIf="isVisible == 11">
+                    <div class="block-header">
+                      <h5>Verify OTP</h5>
+                  </div>
+                    <div class="block-body">
+  
+                      <div > 
+                      
+                        <p class="lead">Check Registered Email/Phone No for OTP</p>
+                        <form [formGroup]="login_otp">                        
+                        
+                        <div class="my-2">
+                          <label for="vrotp" class="form-label">VerifyOtp</label>
+                          <input id="vrotp" type="text" class="form-control" formControlName="login_otp_enter" 
+                          minlength="6" maxlength="6" onkeypress='return event.charCode >= 48 && event.charCode <= 57'  [ngClass]="{ 'is-invalid': submitted && m['login_otp_enter'].errors }" required>
+                          <div *ngIf="submitted && m['login_otp_enter'].errors" class="invalid-feedback">
+                            <div *ngIf="m['login_otp_enter'].errors['required']">Enter OTP</div> 
+                          </div>
+                        </div>
+                        
+                          <div class="d-flex justify-content-end">
+                            <button    class="btn btn-primary m-2" (click)="get_loginwithotp_resend()"><i class="fa fa-sign-in"></i> Resend OTP</button>
+                            <button type="button" class="btn btn-primary m-2" (click)="submit_loginwithotp()" ><i class="fa fa-sign-in" ></i>Submit</button>
+                          </div>
+                        </form>
+  
+                      </div>
+                    </div>
+                  </div>
+
+              </div>
+            </div>
+        
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
+  
+
+  
+  
+  
+  

@@ -1,0 +1,380 @@
+<section class="min-vh-100 checkout">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-12">
+                <ul class="nav nav-pills">
+                  <li class="nav-item"><a  class="nav-link" href="/app/hub_consignment_list">Consigment Collected</a></li>
+                  <li class="nav-item"><a  class="nav-link"  href="/app/fc_hub_or_hub_fc">FC to HUB and HUB To FC</a></li>
+                  <li class="nav-item"><a  class="nav-link active">Hub To Hub</a></li>
+                  <!-- <li class="nav-item"><a  class="nav-link" href="/app/hub_arrived_destination">Arrived at Destination</a></li> -->
+                </ul>   
+                
+                <br>
+                <div class="row">
+                 <div class="col-md-10">
+                  
+                     <input type="radio" class="btn-check" (click)="change_consignment(0)" name="options-outlined" id="Accept1" autocomplete="off" checked>
+                     <label class="btn btn-outline-success" for="Accept1">Assign Pickup From Hub To Public Transport
+                       &nbsp; <span class="badge bg-primary" alignment="text-left" >{{0}}</span></label> &nbsp;
+                     
+                     <input type="radio" class="btn-check"  (click)="change_consignment(1)" name="options-outlined" id="Accept2" autocomplete="off">
+                     <label class="btn btn-outline-success" for="Accept2">Assign Pickup From Public Transport To Hub 
+                       &nbsp; <span class="badge bg-primary" alignment="text-left" >{{consignment_receive.length}}</span></label>
+                 </div>
+                 <div class="col-md-2"></div>
+                </div>
+<br>
+
+              </div>        
+            </div>
+          </div>
+    
+
+<div class="container" *ngIf="showlist==0">
+  
+          <div [formGroup]="form">
+         <div class=" mb-2 row" >
+          <div class="row">
+                    <div class="col-md-4">
+                      <label  class="form-label">Delivery Executive<b style="color:red ;">*</b></label>
+                      <select  class="form-control"  formControlName="deliveryExecutive" [(ngModel)]="delivery_executive_id" (change)="change_consignment_list(delivery_executive_id)"  [ngClass]="{ 'is-invalid': submitted && f['deliveryExecutive'].errors }">
+                        <option value="">-- Select --</option>
+                        <option *ngFor="let ex of  executive_list_dd" [ngValue]="ex.delivery_executive_id">
+                            {{ex.delivery_executive_id+": "+ex.first_name}}
+                     </option>
+                      </select>
+                      <div *ngIf="submitted && f['deliveryExecutive'].errors" class="invalid-feedback">
+                            <div *ngIf="f['deliveryExecutive'].errors['required']">Select Delivery Executive </div> 
+                          </div>
+                    </div>
+                    <div class="col-md-4" *ngIf="this.vehicle_type==null">
+                              <label  class="form-label">Local Vehicle<b style="color:red ;">*</b></label>
+                              <select  class="form-control" (change)="get_vehicle_details(hub_vehicle_id)"  formControlName="hubvehicle_id" [(ngModel)]="hub_vehicle_id"   [ngClass]="{ 'is-invalid': submitted && f['hubvehicle_id'].errors }">
+                                <option value="">-- Select --</option>
+                                <option *ngFor="let vehicle of  hub_vehicle_list_dd" [ngValue]="vehicle.hub_vehicle_id">
+                                    {{vehicle.vehicle_type+" : "+vehicle.vehicle_reg_number+" : "+vehicle.max_weight+"(kg)"}}
+                             </option>
+                              </select>
+                              <div *ngIf="submitted && f['hubvehicle_id'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['hubvehicle_id'].errors['required']">Select Vehicle </div> 
+                                  </div>
+                            </div>
+
+                    <div class="col-md-4" >
+                      <label  class="form-label">Public Vehice<b style="color:red ;">*</b></label>
+                      <select  class="form-control"  formControlName="route_details" [(ngModel)]="route_id" (change)="change_route_data(route_id)"  [ngClass]="{ 'is-invalid': submitted && f['route_details'].errors }">
+                        <option value="">-- Select --</option>
+                        <option *ngFor="let route of  hub_transport_route" [ngValue]="route.hub_route_id">
+                            {{route.hub_name+": "+route.transport_mode_name+": "+route.transport_registration_no
+                            +": "+route.departure_time}}
+                     </option>
+                      </select>
+                      <div *ngIf="submitted && f['route_details'].errors" class="invalid-feedback">
+                            <div *ngIf="f['route_details'].errors['required']">Select Route </div> 
+                          </div>
+
+                </div>
+
+                   
+                           
+          </div>
+          
+         
+    </div>
+    <br>
+ 
+         <div class="row" *ngIf="consignment_list.length>0">
+          <div class="col-sm-12">
+                    <h5>Assign To DE</h5>
+                    <table class="table table-hover table-responsive table-bordered">
+                              <thead>
+                                  <tr>
+                                      <th><a ><b>Select</b></a></th>
+                                      <th><a ><b>SL.No.</b></a></th>
+                                      <th><a ><b>Hub Name</b></a> </th>   
+                                      <th><a ><b>Hub Address</b></a> </th>  
+                                      <th><a ><b>Hub Contact</b></a> </th>  
+                                      <th><a ><b>Hub Email</b></a> </th>  
+                                      <th><a ><b>Item Name</b></a> </th>   
+                                      <th><a ><b>Con No</b></a> </th>                               
+                                      <th><a ><b>Diminsion(cm)(LBH)</b></a> </th>    
+                                      <th><a ><b>Weight(kg)</b></a> </th>                            
+                                      
+                                  </tr>
+                              </thead>
+                            
+                              <tbody *ngFor="let con of consignment_list| filter:search | paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index; filter:search">
+                                  <tr>  
+                                 <td [attr.rowspan]="con.hub_details_list.length+1">
+                                  <input *ngIf="route_id!=''" class="form-check-input"  type="checkbox" (change)="click_change(con)" formControlName="v_ischeck"  [(ngModel)]="con.is_check"/>
+                              </td>
+                                    <td class="text-center" [attr.rowspan]="con.hub_details_list.length+1" >{{i+1}}</td> 
+                                     
+                                        <td class="text-left" [attr.rowspan]="con.hub_details_list.length+1"><b>{{con.hub_name}}</b>
+                                    </td>
+                                    <td class="text-left" [attr.rowspan]="con.hub_details_list.length+1"><b>{{con.address+", "+con.pincode}}</b>
+                                    </td>
+                                    <td class="text-left" [attr.rowspan]="con.hub_details_list.length+1"><b>{{con.contact_no}}</b>
+                                    </td>
+                                    <td class="text-left" [attr.rowspan]="con.hub_details_list.length+1"><b>{{con.email}}</b>
+                                    </td>
+                                  
+                                  </tr>                          
+                                   <tr *ngFor="let hub of con.hub_details_list">
+                                    <td class="text-left">{{hub.item_name}}</td>  
+                                      <td class="text-left">{{hub.consignment_id}}</td>  
+                                      <td class="text-left">{{hub.consignment_l}}*{{hub.consignment_b}}*{{hub.consignment_b}}</td>    
+                                      <td class="text-left">{{hub.weight}}</td>   
+                                  </tr> 
+                             
+                              </tbody>
+                          </table>
+          <div class="d-flex justify-content-center">
+                    <pagination-controls
+                      previousLabel="Prev"
+                      nextLabel="Next"
+                      (pageChange)="onTableDataChange($event)"
+                    >
+                    </pagination-controls>
+          </div>
+          </div>
+
+         
+
+          </div>
+
+          <div class="col-md-6" *ngIf="consignment_list.length>0">
+                    <button class="btn btn-sm btn-primary ms-2" (click)="assign_data()">Assign</button>
+         </div>
+      
+          </div>
+<br>
+          <div class="row" hidden>
+            <div class="col-sm-12">
+                      <h5>Batch Details</h5>
+                      <table class="table table-hover table-responsive table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th><a ><b>SL.No.</b></a></th>
+                                        <th><a ><b>Batch Id</b></a> </th>   
+                                        <th><a ><b>No of Consignment</b></a> </th>  
+                                        <th><a ><b>Hub Name</b></a> </th>  
+                                        <th><a ><b>DE Name</b></a> </th>  
+                                        <th><a ><b>Mode Of Transport</b></a> </th>   
+                                      <th><a ><b>Registration No</b></a> </th>                               
+                                        <th><a ><b>Departure Time</b></a> </th>    
+                                        <th><a ><b>Action</b></a> </th>                      
+                                        
+                                    </tr>
+                                </thead>
+                              
+                                <tbody *ngFor="let con of batch_print_details;let i = index; ">
+                                    <tr> 
+                                      <td>{{i+1}}</td>                                   
+                                     <td>{{con.batch_id}}</td>
+                                     <td>{{con.no_of_item}}</td>
+                                     <td>{{con.hub_name}}</td>
+                                     <td>{{con.first_name+" "+con.second_name}}</td>
+                                     <td>{{con.transport_mode_name}}</td>
+                                     <td>{{con.transport_registration_no}}</td>
+                                     <td>{{con.departure_time}}</td>
+                                     <td> 
+                                      <button class="btn btn-sm btn-primary" (click)="view_data(con)">View Details</button>
+                                    </td>
+                                    </tr> 
+                               
+                                </tbody>
+                            </table>
+            <div class="d-flex justify-content-center">
+                      <pagination-controls
+                        previousLabel="Prev"
+                        nextLabel="Next"
+                        (pageChange)="onTableDataChange($event)"
+                      >
+                      </pagination-controls>
+            </div>
+            </div>
+  
+           
+  
+            </div>
+
+
+</div>    
+
+<div class="container" *ngIf="showlist==1">
+  
+  <div [formGroup]="form1">
+ <div class=" mb-2 row" >
+  <div class="row">
+            <div class="col-md-4">
+              <label  class="form-label">Delivery Executive<b style="color:red ;">*</b></label>
+              <select  class="form-control"  formControlName="deliveryExecutive1" [(ngModel)]="delivery_executive_id1" (change)="change_consignment_list_two(delivery_executive_id1)"  [ngClass]="{ 'is-invalid': submitted1 && g['deliveryExecutive1'].errors }">
+                <option value="">-- Select --</option>
+                <option *ngFor="let ex1 of  executive_list_dd" [ngValue]="ex1.delivery_executive_id">
+                    {{ex1.delivery_executive_id+": "+ex1.first_name}}
+             </option>
+              </select>
+              <div *ngIf="submitted1 && g['deliveryExecutive1'].errors" class="invalid-feedback">
+                    <div *ngIf="g['deliveryExecutive1'].errors['required']">Select Delivery Executive </div> 
+                  </div>
+            </div>
+            <div class="col-md-4" *ngIf="this.vehicle_type==null">
+                      <label  class="form-label">Local Vehicle<b style="color:red ;">*</b></label>
+                      <select  class="form-control" (change)="get_vehicle_details(hub_vehicle_id1)"  formControlName="hubvehicle_id1" [(ngModel)]="hub_vehicle_id1"   [ngClass]="{ 'is-invalid': submitted1 && g['hubvehicle_id1'].errors }">
+                        <option value="">-- Select --</option>
+                        <option *ngFor="let vehicle of  hub_vehicle_list_dd" [ngValue]="vehicle.hub_vehicle_id">
+                            {{vehicle.vehicle_type+" : "+vehicle.vehicle_reg_number+" : "+vehicle.max_weight+"(kg)"}}
+                     </option>
+                      </select>
+                      <div *ngIf="submitted1 && g['hubvehicle_id1'].errors" class="invalid-feedback">
+                            <div *ngIf="g['hubvehicle_id1'].errors['required']">Select Vehicle </div> 
+                          </div>
+                    </div>
+
+            <!-- <div class="col-md-4" >
+              <label  class="form-label">Public Vehice<b style="color:red ;">*</b></label>
+              <select  class="form-control"  formControlName="route_details" [(ngModel)]="route_id" (change)="change_route_data(route_id)"  [ngClass]="{ 'is-invalid': submitted && f['route_details'].errors }">
+                <option value="">-- Select --</option>
+                <option *ngFor="let pub of  public_vehicle_dd" [ngValue]="pub.hub_route_id">
+                    {{pub.hub_name+": "+pub.transport_mode_name+": "+pub.transport_registration_no
+                    +": "+pub.departure_time}}
+             </option>
+              </select>
+              <div *ngIf="submitted && f['route_details'].errors" class="invalid-feedback">
+                    <div *ngIf="f['route_details'].errors['required']">Select Route </div> 
+                  </div>
+
+        </div> -->
+
+           
+                   
+  </div>
+ 
+</div>
+<br>
+
+ <div class="row" *ngIf="consignment_receive.length>0">
+  <div class="col-sm-12">
+            <h5>Assign To DE</h5>
+            <table class="table table-hover table-responsive table-bordered">
+                      <thead>
+                          <tr>
+                              <th><a ><b>Select</b></a></th>
+                              <th><a ><b>SL.No.</b></a></th>
+                              <th><a ><b>Batch Id</b></a> </th>   
+                              <th><a ><b>Transport Mode</b></a> </th>  
+                              <th><a ><b>Registration No</b></a> </th>  
+                               <th><a ><b>Item Name</b></a> </th>   
+                              <th><a ><b>Con No</b></a> </th>                               
+                              <th><a ><b>Diminsion(cm)(LBH)</b></a> </th>    
+                              <th><a ><b>Weight(kg)</b></a> </th>                            
+                              
+                          </tr>
+                      </thead>
+                    
+                      <tbody *ngFor="let con of consignment_receive| filter:search | paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index; filter:search">
+                          <tr>  
+                         <td [attr.rowspan]="con.hub_receive_details.length+1">
+                          <input  *ngIf="delivery_executive_id1!=''" class="form-check-input"  type="checkbox" (change)="click_change_two(con)" formControlName="v_ischeck1"  [(ngModel)]="con.is_check"/>
+                      </td>
+                            <td class="text-center" [attr.rowspan]="con.hub_receive_details.length+1" >{{i+1}}</td> 
+                             
+                                <td class="text-left" [attr.rowspan]="con.hub_receive_details.length+1"><b>{{con.batch_id}}</b>
+                            </td>
+                            <td class="text-left" [attr.rowspan]="con.hub_receive_details.length+1"><b>{{con.transport_mode_name}}</b>
+                            </td>
+                            <td class="text-left" [attr.rowspan]="con.hub_receive_details.length+1"><b>{{con.transport_registration_no}}</b>
+                            </td>
+                           
+                          
+                          </tr>                          
+                           <tr *ngFor="let hub of con.hub_receive_details">
+                            <td class="text-left">{{hub.item_name}}</td>  
+                              <td class="text-left">{{hub.consignment_id}}</td>  
+                              <td class="text-left">{{hub.consignment_l}}*{{hub.consignment_b}}*{{hub.consignment_b}}</td>    
+                              <td class="text-left">{{hub.weight}}</td>   
+                          </tr> 
+                     
+                      </tbody>
+                  </table>
+  <div class="d-flex justify-content-center">
+            <pagination-controls
+              previousLabel="Prev"
+              nextLabel="Next"
+              (pageChange)="onTableDataChange($event)"
+            >
+            </pagination-controls>
+  </div>
+  </div>
+
+ 
+
+  </div>
+
+  <div class="col-md-6" *ngIf="consignment_receive.length>0">
+            <button class="btn btn-sm btn-primary ms-2" (click)="assign_pickpfrom_pt()">Assign</button>
+ </div>
+
+  </div>
+<br>
+
+
+
+</div>  
+
+</section>
+    
+
+<div class="modal fade"  id="openformModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <h5 class="modal-title" id="exampleModalLabel">
+          Batch Details
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+ 
+      </div>
+      <div class="modal-body border-0">
+
+          <div class="'row">
+            <div class="col-lg-12">
+              
+              <table class="table table-bordered small p-2" >
+                <thead>
+                  <tr>
+                    <th>SNo</th>
+                    <th>Consignment ID</th>
+                    <th>Batch Id</th>
+                    <th>Item Name</th>                        
+                    <th>Tracking Id</th>
+                    <th>Dimension(cm)(LBH)</th>
+                    <th>Weight(kg)</th>
+                   
+                  </tr>
+                </thead>
+                <tbody>
+               <tr *ngFor="let han of hub_to_hub_print_list; let i = index;">
+                    <th>{{i+1}}</th>
+                    <td>{{han.consignment_id}}</td>
+                    <td>{{han.batch_id}}</td>
+                    <td>{{han.item_name}}</td>                           
+                    <td>{{han.tracking_id}}</td>
+                    <td>{{han.consignment_l}}*{{han.consignment_b}}*{{han.consignment_h}}</td>
+                    <td>{{han.weight}}</td>
+                  </tr>
+                
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+

@@ -12,16 +12,16 @@ import Swal from 'sweetalert2';
 })
 export class MasterAttributeNameComponent implements OnInit {
 
-  
+
   constructor(private httpClient: HttpClient,
     private http: HttpClient,
    private router: Router,
    private allapi:AllapiService,
    private formBuilder:FormBuilder)  { this.form = formBuilder.group({
-    attr_name:new FormControl('',[Validators.required]),
+    attr_name:new FormControl('',[Validators.required,Validators.pattern("^[a-zA-Z_ ]*$")]),
     attr_code:new FormControl('',[Validators.required]),
      }); }
- 
+
      page: number = 1;
      count: number = 0;
      tableSize: number = 7;
@@ -36,7 +36,7 @@ export class MasterAttributeNameComponent implements OnInit {
   btn_dissable=false;
   submitted=false;
   search="";
-  
+
   ngOnInit(): void {
     let url='Master_Specification/get_data_attrname/';
     this.allapi.GetDataById(url,1).subscribe(promise=>
@@ -63,8 +63,8 @@ export class MasterAttributeNameComponent implements OnInit {
       {
         if(promise.status=="Insert")
         {
-          this.attribute_name="";
-          this.attribute_code="";
+          this.submitted=false;
+          this.form.reset();
           this.attrname_list=promise.attrname_list;
             Swal.fire({
                 position: 'center',
@@ -73,12 +73,12 @@ export class MasterAttributeNameComponent implements OnInit {
                 showConfirmButton: false,
                 timer: 2000
             })
-           
+
         }
         else if(promise.status=="Update")
         {
-          this.attribute_name="";
-          this.attribute_code="";
+          this.submitted=false;
+          this.form.reset();
           this.attrname_list=promise.attrname_list;
             Swal.fire({
                 position: 'center',
@@ -87,7 +87,7 @@ export class MasterAttributeNameComponent implements OnInit {
                 showConfirmButton: false,
                 timer: 2000
             })
-           
+
         }
         if(promise.status=="Failed")
         {

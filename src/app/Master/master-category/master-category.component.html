@@ -25,13 +25,13 @@
                     <li class="nav-item"><a class="nav-link active">Category</a></li>
                     <li class="nav-item"><a class="nav-link" href="/app/subcategory">Sub Category</a></li>
                     <li class="nav-item"><a class="nav-link" href="/app/additionalcategory" >Additional Category</a></li>
-                   
+
                 </ul>
             </div>
         </div>
-    
+
             <div class="row">
-                
+
                 <div class="col-lg-12">
                     <div class="tab-content">
                         <div id="product_info" class="active tab-block">
@@ -44,9 +44,10 @@
                                         <input type="text" class="form-control" formControlName="categoryname" [(ngModel)]="category_name"
                                         placeholder="Enter Category Name" required [ngClass]="{ 'is-invalid': submitted && f['categoryname'].errors }"/>
                                         <div *ngIf="submitted && f['categoryname'].errors" class="invalid-feedback">
-                                            <div *ngIf="f['categoryname'].errors['required']">Enter Category Name </div> 
+                                            <div *ngIf="f['categoryname'].errors['required']">Enter Category Name </div>
+                                            <div *ngIf="f['categoryname'].errors && f['categoryname'].errors['pattern']">Category Name is invalid!</div>
                                           </div>
-                                       
+
                                     </div>
                                 </div>
 
@@ -56,7 +57,7 @@
                                         <input type="text" class="form-control" name="catname" formControlName="categorycode" [(ngModel)]="category_code"
                                         placeholder="Enter Category Code" required [ngClass]="{ 'is-invalid': submitted && f['categorycode'].errors }" />
                                         <div *ngIf="submitted && f['categorycode'].errors" class="invalid-feedback">
-                                            <div *ngIf="f['categorycode'].errors['required']">Enter Category Code </div> 
+                                            <div *ngIf="f['categorycode'].errors['required']">Enter Category Code </div>
                                           </div>
                                     </div>
                                 </div>
@@ -64,26 +65,29 @@
                                     <div class="form-group">
                                         <label class="form-label">Description</label>
                                         <input type="text" class="form-control" formControlName="descr" [(ngModel)]="description"
-                                        placeholder="Enter Description" />
-                                     
+                                        placeholder="Enter Description" [ngClass]="{ 'is-invalid': submitted && f['descr'].errors }" />
+                                        <div *ngIf="submitted && f['descr'].errors" class="invalid-feedback">
+                                          <div *ngIf="f['descr'].errors['required']">Enter description</div>
+                                        </div>
                                     </div>
                                 </div>
 
                                 <div class="col-sm-6 col-md-6">
                                     <label class="form-label">Image <b style="color:red">*</b></label><br />
 
-                                    <input type="file" formControlName="itemimage"  accept="image/jpeg" [(ngModel)]="s_imageurl" 
+                                    <input type="file" formControlName="itemimage"  accept="image/jpeg" [(ngModel)]="s_imageurl"
                                     (change)="selectFileUpload(imageInput)" id="img" #imageInput>
                                     <!-- <div *ngIf="submitted && f['itemimage'].errors" class="invalid-feedback">
-                                        <div *ngIf="f['itemimage'].errors['required']">Upload Image </div> 
+                                        <div *ngIf="f['itemimage'].errors['required']">Upload Image </div>
                                       </div> -->
                                 </div>
-                                <div class="col-sm-6 col-md-6">
-                                    <div class="item"><img src="{{s_imageurl}}"></div>
-                                  
+                                <div class="col-sm-3 form-group mb-3 p-2">
+                                    <div>
+                                        <img id="productimg" src="{{Url+s_imageurl}}" />
+                                    </div>
                                 </div>
 
-                                
+
 
                                 <div class="col-sm-3 col-md-3">
                                     <div>
@@ -91,34 +95,34 @@
                                     </div>
                                 </div>
                             </div>
-                      
-                      
+
+
                             <div class="col-lg-12 mt-4">
                                 <div class="text-center">
-                                    <input type="text" [(ngModel)]="mc_id" hidden />                       
+                                    <input type="text" [(ngModel)]="mc_id" hidden />
                                     <a type="button" class="btn btn-template wide next" (click)="Clear()" [disabled]="btn_dissable===false">
                                         Clear<i class="fa fa-angle-right"></i>
                                     </a> &nbsp;
                                     <a type="button" class="btn btn-template wide next"  (click)="savedata()" [disabled]="btn_dissable===false">
                                         Save<i class="fa fa-angle-right"></i>
                                     </a>
-            
+
                                 </div>
                             </div>
-                      
+
                         </form>
                             </div>
                     </div>
                 </div>
 
-               
+
             </div>
             <div class="row mt-2" *ngFor="let val of validation_list">
                 <div class="col-md-9">{{val.product_id_ret}}</div>
                 <div class="col-md-9">{{val.sub_category_id_ret}}</div>
                 <div class="col-md-9">{{val.additional_cat_id_ret}}</div>
-                
-            </div> 
+
+            </div>
     </div>
     <div class="container">
         <div class="col-lg-12">
@@ -126,7 +130,7 @@
             <div class="tab-content">
 
                 <h5 class="my-4">Category List</h5>
-                <div class="col-md-4" style="float: right">                    
+                <div class="col-md-4" style="float: right">
                     <input class="form-control form-control-sm" type="text" [(ngModel)]="search" placeholder="search here...">
                 </div>
                 <table class="table table-hover table-responsive-md small">
@@ -136,20 +140,22 @@
                             <th>Category Name</th>
                             <th>Category Code</th>
                             <th>Description</th>
+                            <th style="width: 13%;">Image</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                    
+
                             <tr *ngFor="let pro of category_list| filter:search | paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index; filter:search">
                                 <th>{{tableSize *(page-1)+i+1}}</th>
                             <td>{{pro.categoryname}}</td>
                             <td>{{pro.categorycode}}</td>
                             <td>{{pro.v_description}}</td>
+                            <td><img src="{{Url+pro.imageurl}}" class="img-responsive" style="width: 13%;"></td>
                             <td>
                                 <a class="btn btn-primary btn-sm" (click)="edit_category(pro)"><i class="fa fa-edit"></i></a> &nbsp;| &nbsp;
                                 <a class="btn btn-danger btn-sm" (click)="delete_category(pro)"><i class="fa fa-trash"></i></a>
-                                         
+
                             </td>
 
                         </tr>

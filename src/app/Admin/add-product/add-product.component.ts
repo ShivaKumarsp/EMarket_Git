@@ -22,17 +22,17 @@ export class AddProductComponent implements OnInit {
     sub_cat:new FormControl('',[Validators.required]),
     add_cat:new FormControl('',[Validators.required]),
     producttype: new FormControl('',[Validators.required]),
-    productname_en: new FormControl('',[Validators.required]),
+    productname_en: new FormControl('',[Validators.required,Validators.pattern("^[a-zA-Z0-9_ ]*$")]),
     baseprice:new FormControl('',[Validators.required]),
     hsn:new FormControl('',[Validators.required]),
     ian: new FormControl('', [Validators.required]),
     uom:new FormControl('',[Validators.required]),
     bommm: new FormControl('', [Validators.required]),
     short_desc_en: new FormControl('',[Validators.required]),
-    itemimage: new FormControl('',[Validators.required]), 
+    itemimage: new FormControl('',[Validators.required]),
 
   }); }
- 
+
 
   //manufacturer_details:new FormControl('',[Validators.required,Validators.minLength(10),Validators.maxLength(50)]),
   uom_weight_list:any;
@@ -66,15 +66,16 @@ export class AddProductComponent implements OnInit {
  btn_dissable:boolean=false;
 validation_list:any;
 submitted=false;
-
+base64='data:image/jpeg;base64,';
+imageBaseUrl='http://124.153.106.183:8015/EMarket_Image';
 
   ngOnInit(): void {
-    
-   
+
+
     this.getIPAddress();
 let requestFormUrl = 'AddProduct/get_data/';
     this.allapi.GetDataById(requestFormUrl, 1).subscribe(response=>{
-   
+
       if(response.category_list!="")
       {
           this.uom_weight_list = [];
@@ -100,6 +101,7 @@ let requestFormUrl = 'AddProduct/get_data/';
   }
 
 get_sub_category (mcid:any) {
+
   this.sub_category_list=[];
   this.additional_category_list=[];
     var data = {
@@ -115,6 +117,12 @@ get_sub_category (mcid:any) {
         }
 
     })
+    console.log('subcat',this.form.value.sub_cat.length)
+  if(this.form.value.sub_cat.length==0){
+
+    this.form.controls['sub_cat'].setErrors({'required': true})
+    //return;
+  }
 }
 
 get_spl_category(mcid:any, mscid:any) {
@@ -126,7 +134,7 @@ get_spl_category(mcid:any, mscid:any) {
       "ipAddress":this.ipAddress,
       "apitype":"Web"
   }
- 
+
   let requestFormUrl = 'AddProduct/get_spl_category/';
     this.allapi.PostData(requestFormUrl,data).subscribe(response =>  {
       if (response.additional_category_list != "") {
@@ -138,40 +146,62 @@ get_spl_category(mcid:any, mscid:any) {
 selectFileUpload(imageInput: any) {
   var formData = new FormData();
   const file: File = imageInput.files[0];
+  if (imageInput.files[0].type != "image/jpeg") {
+    Swal.fire({
+      position: 'center',
+      icon: 'warning',
+      title: 'Please Upload the JPEG file',
+      showConfirmButton: false,
+      timer: 3000
+  })
+      return;
+  } else if (imageInput.files[0].size > 2097152) {
+    Swal.fire({
+      position: 'center',
+      icon: 'warning',
+      title: 'Image size should be less than 2MB',
+      showConfirmButton: false,
+      timer: 3000
+  })
+      return;
+  }
+  else if (imageInput.files[0].size < 10000) {
+    Swal.fire({
+      position: 'center',
+      icon: 'warning',
+      title: 'Image size Minimun 10kb',
+      showConfirmButton: false,
+      timer: 3000
+  })
+      return;
+  }
+  this.SelectedFile_Array=imageInput.files[0];
+  formData.append("File", this.SelectedFile_Array);
 
-if (imageInput.files[0].type != "image/jpeg") {
-      Swal.fire({
-        position: 'center',
-        icon: 'warning',
-        title: 'Please Upload the JPEG file',
-        showConfirmButton: false,
-        timer: 3000
-    })
-        return;
-    } else if (imageInput.files[0].size > 2097152) {
-      Swal.fire({
-        position: 'center',
-        icon: 'warning',
-        title: 'mage size should be less than 2MB',
-        showConfirmButton: false,
-        timer: 3000
-    })
-        return;
-    }
-    else
-    {
-      this.SelectedFile_Array=imageInput.files[0];
-      formData.append("File", this.SelectedFile_Array);
-      let url='ImageUpload/DocumentUpload/';
-      return this.http.post('http://192.168.1.200:1305/ImageUpload/DocumentUpload', formData).subscribe((promise:any)=>
-      {
-       this.p_imageurl=promise.path;
-      });
-    }
+ let url='http://localhost:1305/api/ImageUpload/Product_Image_Upload';
+
+ return this.http.post(url, formData).subscribe((promise:any)=>
+ {
+    this.p_imageurl=promise.path;
+
+ })
 }
+
+
 
 savedata  () {
   this.submitted = true;
+  if(this.form.value.productname_en.trim() ==''){
+    this.form.controls['productname_en'].setErrors({'required': true})
+  }
+  if(this.form.value.short_desc_en.trim() ==''){
+    this.form.controls['short_desc_en'].setErrors({'required': true})
+  }
+
+  if(this.form.value.baseprice.length < 8){
+    this.form.controls['baseprice'].setErrors({'required': true})
+  }
+
   if (this.form.invalid) {
     return;
   }
@@ -204,7 +234,7 @@ savedata  () {
           "language_id": 1,
           "apitype":"Web"
       }
-      
+
 let url='AddProduct/Save_Product/'
       this.allapi.PostData(url, data).subscribe(promise=> {
           if (promise.status == "Update") {
@@ -216,16 +246,16 @@ let url='AddProduct/Save_Product/'
                   timer: 3000
               })
               sessionStorage.setItem('productid', promise.ret_product_id);
-              
+
               this.router.navigate(["/app/addproductspecification/"+promise.ret_product_id]);
-             
+
               //window.location.reload();
           }
           else if (promise.status == "Failed") {
               Swal.fire({
                   position: 'center',
                   icon: 'warning',
-                  title: promise.message,
+                  title: 'Failed To Product Insert',
                   showConfirmButton: false,
                   timer: 3000
               })
@@ -245,7 +275,7 @@ let url='AddProduct/Save_Product/'
 
           this.btn_dissable=true;
       })
- 
+
 };
 Clear()
 {
@@ -253,16 +283,16 @@ window.location.reload();
 }
 getIPAddress()
 {
-  
+
   this.http.get("http://api.ipify.org/?format=json").subscribe((res:any)=>{
     this.ipAddress = res.ip;
- 
+
   });
 }
 //validation
 get f(){
     return this.form.controls;
   }
-  
+
 
 }

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit, Pipe } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AllapiService } from 'src/app/apiservice/allapi.service';
 import Swal from 'sweetalert2';
@@ -45,24 +45,27 @@ export class AddProductSpecificationComponent implements OnInit {
   spec_name="";
   attr_name="";
   att_val_id="";
+  tempError=''
+
+
   product_spec = new FormGroup({
     attributevalue_id:new FormControl(''),
- 
-  });  
+
+  });
 
   additional_cat_spec_list_new: any[] | undefined = undefined;
   attribute_value_list_new: any[] | undefined = undefined;
-  
+
   public objectValues(obj:any) {
     return Object.values(obj);
   }
 
-  ngOnInit(): void {   
+  ngOnInit(): void {
     this.getIPAddress();
-   
+
     this.productid=this.activateroute.snapshot.paramMap.get("productid");
-      
-      
+
+
       var data = {
           "language_id": 1,
           "product_id":parseInt(this.productid)
@@ -76,24 +79,27 @@ let url='Product_Specification/get_specification_data/';
           this.attribute_name_list=promise.attribute_name_list;
           this.attribute_value_list = promise.attribute_value_list;
 
-      
+
           this.attribute_value_list_new = this.groupBy(this.attribute_value_list, "attributename_id");
-     
+
           this.additional_cat_spec_list = [];
           this.additional_cat_spec_list_new = [];
-          
+
           this.attribute_name_list.forEach((ss:any)=>
           {
             this.additional_cat_spec_list.push({ 'specificationid': ss.specificationid, 'specificationname': ss.specificationname, 'attributename_id': ss.attributename_id, 'attributename': ss.attributename, 'attributevalue_id': "" })
-          }); 
-     
+          });
+
           this.additional_cat_spec_list_new = this.groupBy(this.additional_cat_spec_list, "specificationname");
       });
-  
+
   }
-  
+
  save_attribute() {
     this.btn_dissable=false;
+    this.tempError=''
+
+    console.log(this.product_spec.controls)
     this.additional_cat_array = [];
     var count1 = this.additional_cat_spec_list.length;
     this.additional_cat_spec_list.forEach((ss:any)=>
@@ -103,10 +109,11 @@ let url='Product_Specification/get_specification_data/';
         this.additional_cat_array.push({ 'specification_id': ss.specificationid, 'specification_name': ss.specificationname, 'attributename_id': ss.attributename_id, 'attribute_name': ss.attributename, 'attributevalue_id': parseInt(ss.attributevalue_id) })
     }
     })
-   
+
     var count2 = this.attribute_value_list_out.length;
-    
-   
+
+   console.log('count1',count1)
+   console.log('count2',count2)
     if (count1 == count2) {
         var data = {
             'additional_cat_array': this.attribute_value_list_out,
@@ -163,14 +170,14 @@ let url='Product_Specification/get_specification_data/';
 edit_specification(ss:any) {
   this.edit = true;
   this.productspecificationid = ss.productspecification_id;
-  this.specificationid = ss.specificationid;  
+  this.specificationid = ss.specificationid;
   this.product_specification_list.forEach((aa:any)=>
     {
        if(aa.specificationid==this.specificationid)
         {
           this.spec_name=aa.specificationname;
         }
-    }) 
+    })
   this.attributenameid = ss.attributename_id;
   this.attributevalue_id = ss.attributevalue_id;
   this.attributename = ss.attributename;
@@ -181,30 +188,44 @@ edit_specification(ss:any) {
 
 changevalue(e:any, ss:any)
 {
+
     if(this.attribute_value_list_out.length>0 || this.attribute_value_list_out!="")
     {
         this.attribute_value_list_out.forEach((element:any,index:any)=>{
             if(element.attributename_id==ss) delete this.attribute_value_list_out[index];
          });
-    }   
-
+    }
+   console.log('list',this.attribute_value_list_out)
     this.attribute_value_list.forEach((ss:any)=>
         {
 if(ss.attributevalue_id==parseInt(e.target.value))
 {
+
 this.attribute_value_list_out.push({ 'specification_id': ss.specificationid, 'specification_name': ss.specificationname, 'attributename_id': ss.attributename_id, 'attribute_name': ss.attributename, 'attributevalue_id': parseInt(ss.attributevalue_id) })
 ;
 }
         })
    console.log(this.attribute_value_list_out)
+   this.tempError=''
+  if(this.attribute_value_list_out.length==0)
+  {
+    this.tempError='Select Valid value'
+    //return
+  }
 }
 changevalue_edit(e:any, ss:any)
 {
-
+  this.tempError=''
   this.att_val_id=e.target.value
+  if(typeof(e.target.value)!='number' && e.target.value=='select')
+  {
+    this.tempError='Select Valid value'
+    return
+  }
+
 }
 update_attribute () {
- 
+
   var data = {
       "product_id":parseInt(this.productid),
       "specification_id": this.specificationid,
@@ -251,14 +272,19 @@ groupBy(list: any[], property: string | number) {
   }, {});
 }
 getIPAddress()
-{  
+{
   this.http.get("http://api.ipify.org/?format=json").subscribe((res:any)=>{
     this.ipAddress = res.ip;
- 
+
   });
 }
 onTableDataChange(event: any) {
   this.page = event;
   this.ngOnInit();
+}
+f()
+{
+  this.product_spec.controls
+
 }
 }

@@ -1,0 +1,9 @@
+.smallest > * {
+  font-size: 0.6em;
+}
+.pfont> *{
+  font-size: 12px !important;
+}
+.pfont{
+  font-size: 12px !important;
+}

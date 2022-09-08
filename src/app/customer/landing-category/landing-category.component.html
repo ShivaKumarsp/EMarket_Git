@@ -1,4 +1,4 @@
-
+<div class="min-vh-100">
     <section class="hero hero-page gray-bg padding-small">
         <div class="container">
             <div class="row d-flex">
@@ -77,7 +77,7 @@
                             <div class="item col-xl-3 col-lg-4 col-md-6" *ngFor="let itm of itemlist" >
                                <div class="product is-gray">
                                     <div class="image d-flex align-items-center justify-content-center">
-                                        <img src="{{itm.itemimage}}" alt="{{itm.itemname}}" class="img-fluid p-3"
+                                        <img src="{{imageBaseUrl+itm.itemimage}}" alt="{{itm.itemname}}" class="img-fluid p-3"
                                              style="max-width: 200px; max-height: 200px">
                                         <div class="hover-overlay d-flex align-items-center justify-content-center">
                                             <div class="CTA d-flex align-items-center justify-content-center">
@@ -124,7 +124,7 @@
 
     </main>
 
-
+</div>
 
 
 

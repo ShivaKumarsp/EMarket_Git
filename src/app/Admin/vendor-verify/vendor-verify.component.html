@@ -1,0 +1,227 @@
+
+<!-- {{allvendor[0]|json}} -->
+<!-- {{statuslist|json}} -->
+<div class="container-fluid min-vh-100">
+  <div class="text-end p-4 my-4">
+      <h6>Vendor Profile Vefification</h6>
+  </div>
+
+  <div class="row">
+    <div class="col-md-2">
+      <ul class="side-ui d-flex flex-wrap">
+        <li type="button" (click)="changevalue(1)"  [class]="{'active': tab==1}">Not Verified</li>
+        <li type="button" (click)="changevalue(2)" [class]="{'active': tab==2}">Verified</li>
+
+      </ul>
+    </div>
+    <div class="col-md-10">
+      <hr class="d-none d-sm-block d-md-none">
+      <div class="container" [ngSwitch]="tab">
+
+        <div class="all-messages my-4" *ngSwitchCase="1">
+          <h4>Pending Profiles</h4>
+          <div class="accordion accordion-flush" id="accordionFlushExample">
+            <div class="accordion-item" *ngFor="let dlist of allvendor;index as i" >
+
+              <h6 class="accordion-header d-flex mb-3" *ngIf="dlist.approvedflg == false">
+
+                <button class="accordion-button small" type="button" data-bs-toggle="collapse"
+                [attr.data-bs-target]="'#collapse' + i" aria-expanded="false"
+                [attr.controls]="'#collapse' + i" >
+                {{dlist.vendorname}}
+                </button>
+              </h6>
+              <div  id="collapse{{i}}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+
+                    <div class="card mt-4">
+                      <div class="card-body border-0 bg-light">
+                        <div class="w-100 d-flex p-2 mb-3">
+                          <table class="table ">
+                            <tr>
+                              <td>Mobile</td>
+                              <td>{{dlist.vendormobile}}</td>
+                            </tr>
+                            <tr>
+                              <td>Email </td>
+                              <td>{{dlist.vendoremail}}</td>
+                            </tr>
+                            <tr>
+                              <td>Dob</td>
+                              <td>{{dlist.vendordob}}</td>
+                            </tr>
+                            <tr>
+                              <td>Vendor Address</td>
+                              <td>{{dlist.vendoraddress}}</td>
+                            </tr>
+                            <tr>
+                              <td>vendor Pincode</td>
+                              <td>{{dlist.vendorpincode}}</td>
+                            </tr>
+                            <tr>
+                              <td>Business Name</td>
+                              <td>{{dlist.vendorbusinessname}}</td>
+                            </tr>
+                            <tr>
+                              <td>Business pincode</td>
+                              <td>{{dlist.businesspincode}}</td>
+                            </tr>
+                            <tr>
+                              <td>Vendor Gst</td>
+                              <td>{{dlist.vendorgstavailable}}</td>
+                            </tr>
+                            <tr>
+                              <td>Legal Name</td>
+                              <td>{{dlist.legalname}}</td>
+                            </tr>
+                            <tr>
+                              <td>Registarion No</td>
+                              <td>{{dlist.registrationno}}</td>
+                            </tr>
+
+                          </table>
+                        <input type="hidden" [(ngModel)]="vendorid">
+                        <div class="p-2 d-none" [style]="{'width':'200px'}">
+                                  <label for="status" class="form-label">Status</label>
+                                  <!-- <select class="form-control" [attr.controls]="'status' + i"
+                                      [(ngModel)]="vdoc_status" required>
+                                      <option value=0>-- Select document --</option>
+                                      <option *ngFor="let status of statuslist" [ngValue]="status.statusid">
+                                          {{status.out_status}}
+                                      </option>
+
+                                  </select> -->
+                                  <select name="status" id="status">
+                                    <option value="Pending">Pending</option>
+                                    <option value="Verified">Verified</option>
+                                  </select>
+                                  <!-- <div *ngIf="f['document'].touched && f['document'].invalid" class="text-danger">
+                                      <div *ngIf="f['document'].errors && f['document'].errors['required']">Please Select document</div>
+                                  </div> -->
+                              </div>
+                      </div>
+                      <div class="card-footer border-0 bg-light text-end">
+                        <button class="btn btn-template bg-primary shadow shadow-sm mx-2" (click)="update(dlist)">Verify<i class="fa fa-check"></i></button>
+                      </div>
+                    </div>
+
+                </div>
+              </div>
+            </div>
+            <div *ngIf="allvendor.length==0">
+              <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                No more messages are available !
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+        </div>
+        <div class="all-documentlist my-4" *ngSwitchCase="2">
+          <h4>Verified  Vendor Profiles</h4>
+          <div class="accordion accordion-flush" id="accordionFlushExample">
+            <div class="accordion-item" *ngFor="let dlist of allvendor;index as i" >
+
+              <h6 class="accordion-header d-flex mb-3" *ngIf="dlist.approvedflg==true">
+
+                <button class="accordion-button small" type="button" data-bs-toggle="collapse"
+                [attr.data-bs-target]="'#collapse' + i" aria-expanded="false"
+                [attr.controls]="'#collapse' + i" >
+                {{dlist.vendorname}}
+                </button>
+              </h6>
+              <div  id="collapse{{i}}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+
+                    <div class="card mt-4">
+                      <div class="card-body border-0 bg-light">
+                        <div class="w-100 d-flex p-2 mb-3">
+                          <table class="table ">
+                            <tr>
+                              <td>Mobile</td>
+                              <td>{{dlist.vendormobile}}</td>
+                            </tr>
+                            <tr>
+                              <td>Email </td>
+                              <td>{{dlist.vendoremail}}</td>
+                            </tr>
+                            <tr>
+                              <td>Dob</td>
+                              <td>{{dlist.vendordob}}</td>
+                            </tr>
+                            <tr>
+                              <td>Vendor Address</td>
+                              <td>{{dlist.vendoraddress}}</td>
+                            </tr>
+                            <tr>
+                              <td>vendor Pincode</td>
+                              <td>{{dlist.vendorpincode}}</td>
+                            </tr>
+                            <tr>
+                              <td>Business Name</td>
+                              <td>{{dlist.vendorbusinessname}}</td>
+                            </tr>
+                            <tr>
+                              <td>Business pincode</td>
+                              <td>{{dlist.businesspincode}}</td>
+                            </tr>
+                            <tr>
+                              <td>Vendor Gst</td>
+                              <td>{{dlist.vendorgstavailable}}</td>
+                            </tr>
+                            <tr>
+                              <td>Legal Name</td>
+                              <td>{{dlist.legalname}}</td>
+                            </tr>
+                            <tr>
+                              <td>Registarion No</td>
+                              <td>{{dlist.registrationno}}</td>
+                            </tr>
+
+                          </table>
+                       <input type="hidden" [(ngModel)]="vendorid">
+
+                        <div class="p-2 d-none" [style]="{'width':'200px'}">
+                                  <label for="status" class="form-label">Status</label>
+                                  <!-- <select class="form-control" [attr.controls]="'status' + i"
+                                      [(ngModel)]="vdoc_status" required>
+                                      <option value=0>-- Select document --</option>
+                                      <option *ngFor="let status of statuslist" [ngValue]="status.statusid">
+                                          {{status.out_status}}
+                                      </option>
+                                  </select> -->
+                                  <select name="status" id="status">
+                                    <option value="Pending">Pending</option>
+                                    <option value="Verified">Verified</option>
+                                  </select>
+                                  <!-- <div *ngIf="f['document'].touched && f['document'].invalid" class="text-danger">
+                                      <div *ngIf="f['document'].errors && f['document'].errors['required']">Please Select document</div>
+                                  </div> -->
+                              </div>
+                      </div>
+                      <div class="card-footer border-0 bg-light text-end">
+                        <button class="btn btn-template bg-primary shadow shadow-sm mx-2" (click)="update(dlist)">Un-Verify<i class="fa fa-Cross"></i></button>
+                      </div>
+                    </div>
+
+                </div>
+              </div>
+            </div>
+            <div *ngIf="allvendor.length==0">
+              <div class="alert alert-primary alert-dismissible fade show" role="alert">
+                No more messages are available !
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+</div>

@@ -1,0 +1,135 @@
+<section class="checkout min-vh-100">
+  <div class="container">
+      <div class="row">
+          <div class="col-12">
+              <ul class="nav nav-pills">
+                <li class="nav-item"><a class="nav-link" href="/app/hub_manager_list" >Hub List</a></li>
+                <li class="nav-item"><a class="nav-link active" >Facilitation Center list</a></li>
+              </ul>
+          </div>
+      </div>
+  </div>
+
+  <div class="container">
+
+      <form>
+          <div class="row">
+              <div class="col-lg-12">
+
+                  <div class="tab-content">
+
+                      <h5 class="my-4">All Facilitationcenter List</h5>
+                      <div class="col-md-4" style="float: right">
+                          <input class="form-control form-control-sm" type="text" [(ngModel)]="search" placeholder="search here...">
+                      </div>
+                      <table class="table table-hover table-responsive-md small">
+                          <thead>
+                              <tr>
+                                  <th>SL No</th>
+                                  <th>Facilitation center</th>
+                                  <th>Email</th>
+                                  <th>Pincode</th>
+                                  <th>Contat No</th>
+                                  <!-- <th>Product Image</th> -->
+                                  <th>Action</th>
+                              </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let hl of facilitymanagerlist|filter:search| paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index">
+
+                                  <th>{{tableSize *(page-1)+i+1}}</th>
+                                  <td>{{hl.faddress}}</td>
+                                  <td>{{hl.femail}}</td>
+                                  <td>{{hl.pin}}</td>
+                                  <td>{{hl.fmobile}}</td>
+                                  <td><button class="btn btn-primary" type="button" (click)="password(hl.userid)">Reset Password</button></td>
+                                  <!-- <td>
+                                      <a style="cursor:pointer" (click)="previewimg(pro.imagepath)" data-toggle="modal" data-target="#staticBackdrop"><i class="fa fa-eye"></i></a>
+
+                                  </td> -->
+                                  <!-- <td>
+                                      <a class="btn btn-primary btn-sm" [routerLink]="['/app/editproduct/',pro.productid]" ><i class="fa fa-edit"></i></a>
+
+                                  </td> -->
+                              </tr>
+
+                          </tbody>
+                      </table>
+                      <div class="d-flex justify-content-center">
+                          <pagination-controls
+                            previousLabel="Prev"
+                            nextLabel="Next"
+                            (pageChange)="onTableDataChange($event)"
+                          >
+                          </pagination-controls>
+                        </div>
+                  </div>
+              </div>
+
+          </div>
+      </form>
+  </div>
+
+  <div class="modal fade" id="passwordModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+      <div class="modal-dialog">
+          <div class="modal-content rounded-0">
+              <div class="modal-header border-0 p-0 ">
+                  <button type="button"  (click)="dismiss()" class="ms-auto btn btn-outline-danger rounded ">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+              </div>
+              <div class="modal-body border-0 rounded-0">
+
+                <div class="col-lg-12 col-xl-12 pl-lg-3">
+                  <div class="block-header mb-5">
+                      <h5>Change Password</h5>
+                  </div>
+                  <form  name="passForm" class="content-block" [formGroup]="passForm">
+                      <div class="row">
+                          <div class="col-md-12">
+                              <div class="form-group mb-3 d-none">
+                                  <label for="password_old" class="form-label">Old Password</label>
+                                  <input id="password_old" name="old_pass" type="password" class="form-control" formControlName="oldpass" [(ngModel)]="old_pass" [ngClass]="{ 'is-invalid': submitted && p['oldpass'].errors }">
+                                  <div *ngIf="submitted && p['oldpass'].errors" class="invalid-feedback">
+                                    <div *ngIf="p['oldpass'].errors['required']">Enter Old Password</div>
+                                    <!-- <div *ngIf="f['oldpass'].errors['pattern']">Old Passw is invalid!</div> -->
+                                  </div>
+                              </div>
+                              <div class="form-group mb-3">
+                                <label for="password_1" class="form-label">New Password</label>
+                                <input id="password_1" name="new_pass" type="password" class="form-control" formControlName="newpass" [(ngModel)]="new_pass" [ngClass]="{ 'is-invalid': submitted && p['newpass'].errors }">
+                                <div *ngIf="submitted && p['newpass'].errors" class="invalid-feedback">
+                                  <div *ngIf="p['newpass'].errors['required']">Enter New Password</div>
+                                  <div *ngIf="p['newpass'].errors['pattern']">Password should conatin 8 min character with uppecase,digit and speccial character!</div>
+                                </div>
+                            </div>
+                            <div class="form-group mb-3">
+                              <label for="password_2" class="form-label">Re-Enter Password</label>
+                              <input id="password_2" name="retype_pass" type="password" class="form-control" formControlName="repass" [(ngModel)]="retype_pass" [ngClass]="{ 'is-invalid': submitted && p['repass'].errors }">
+                              <div *ngIf="submitted && p['repass'].errors" class="invalid-feedback">
+                                <div *ngIf="p['repass'].errors['required']">Re-enter New Password</div>
+                                <div *ngIf="p['repass'].errors['pattern']">Password should conatin 8 min character with uppecase,digit and speccial character!</div>
+                              </div>
+                          </div>
+
+                          </div>
+                      </div>
+                      <div class="text-center p-2">
+                          <input type="text" hidden [(ngModel)]="user_id">
+                          <button type="submit" class="btn btn-primary" (click)="change_password()"><i class="fa fa-save"></i>Change Password</button>
+                      </div>
+                  </form>
+                </div>
+
+
+              </div>
+          </div>
+      </div>
+
+
+
+  </div>
+
+</section>
+

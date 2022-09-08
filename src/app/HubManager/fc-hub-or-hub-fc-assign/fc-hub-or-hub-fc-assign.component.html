@@ -1,0 +1,314 @@
+<section class="min-vh-100 checkout">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-12">
+                <ul class="nav nav-pills">
+                  <li class="nav-item"><a  class="nav-link" href="/app/hub_consignment_list">Consigment Collected</a></li>
+                  <li class="nav-item"><a  class="nav-link active">FC to HUB and HUB To FC</a></li>
+                  <li class="nav-item"><a  class="nav-link" href="/app/hub_to_hub">Hub To Hub</a></li>
+                  <!-- <li class="nav-item"><a  class="nav-link" href="/app/hub_arrived_destination">Arrived at Destination</a></li> -->
+                </ul>            
+              </div>        
+            </div>
+          </div>
+    
+
+<div class="container">
+  
+          <div [formGroup]="formvalid">
+         <div class=" mb-2 row" >
+          <div class="row">
+                  
+            <div class="col-md-6">
+              <label  class="form-label">Storewise</label>
+              <select class="form-select" multiple formControlName="selectOpt" (change)="get_data()">
+                <option value=0>Select All</option>
+                <option *ngFor="let fc of facilitation_list"  [ngValue]="fc.first_facilitation_id">
+                   {{ fc.facilitation_name }}</option>                    
+              </select>
+            </div>
+
+                    <div class="col-md-3">
+                      <br>
+                      <br>
+                      <label>Pickup From Facilitation</label>
+                    <div>
+                      <span> Weight(kg) = {{count_weight|number}} </span>
+                  </div>
+                  <div>
+                   <span> Volume = {{count_vol_weight|number}} </span>
+                  </div>
+                </div>
+                <div class="col-md-3">
+                  <br>
+                  <br>
+                  <label>Drop To Facilitation</label>
+                <div>
+                  <span> Weight(kg) = {{count_weight1|number}} </span>
+              </div>
+              <div>
+               <span> Volume = {{count_vol_weight1|number}} </span>
+              </div>
+            </div>
+
+                    <!-- <div class="col-md-4">
+                      <label  class="form-label">Order By</label>
+                      <select  class="form-control"  formControlName="v_order_by" [(ngModel)]="order_by" (change)="change_order_by(order_by)">
+                        <option value="">-- Select --</option>
+                        <option value="Store">Store</option>
+                      </select>
+                     
+                    </div> -->
+                           
+          </div>
+
+         
+    </div>
+    <br>
+    <div class="row"></div>
+         <div class="row">
+          <div class="col-sm-6">
+                    <h5>Pickup From Facilitation</h5>
+                    <table class="table table-hover table-responsive table-bordered">
+                              <thead>
+                                  <tr>
+                                      <th><a ><b>Select</b></a></th>
+                                      <th><a ><b>SL.No.</b></a></th>
+                                      <th><a ><b>View</b></a> </th>
+                                      <th><a ><b>Facilitation</b></a> </th>                              
+                                      <th><a ><b>Consignment</b></a> </th>    
+                                                                 
+                                      
+                                  </tr>
+                              </thead>
+                            
+                              <tbody *ngFor="let user of consignmentid| filter:search | paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index; filter:search">
+                                  <tr>  
+                                 <td [attr.rowspan]="user.plannerdetails.length+1">
+                                  <input  class="form-check-input"  type="checkbox" (change)="click_change(user)" formControlName="v_ischeck"  [(ngModel)]="user.is_check"/>
+                              </td>
+                                    <td class="text-center" [attr.rowspan]="user.plannerdetails.length+1" >{{i+1}}</td> 
+                                    <td class="text-left" [attr.rowspan]="user.plannerdetails.length+1"> <a  (click)="view_consignment_from_fc(user)" style="cursor: pointer;"  type="button"><span  class="badge bg-warning" >View</span></a>
+                                    </td>                        
+                                    
+                                        <td class="text-left" [attr.rowspan]="user.plannerdetails.length+1"><b>{{user.address}}</b>
+                                    </td>
+                                  
+                                  </tr>                          
+                                   <tr *ngFor="let planner of user.plannerdetails">
+                                      <td class="text-left">{{planner.consignment_id}}</td>     
+                                    
+                                  </tr> 
+                             
+                              </tbody>
+                          </table>
+          <div class="d-flex justify-content-center">
+                    <pagination-controls
+                      previousLabel="Prev"
+                      nextLabel="Next"
+                      (pageChange)="onTableDataChange($event)"
+                    >
+                    </pagination-controls>
+          </div>
+          <div>
+            <b style="color: red;">{{errormessage}}</b>
+          </div>
+          </div>
+
+          <div class="col-sm-6">
+                    <h5>Drop To Facilitation</h5>
+                    <table class="table table-hover table-responsive table-bordered">
+                              <thead>
+                                  <tr>
+                                        <th><a ><b>Select</b></a></th>
+                                      <th><a ><b>SL.No.</b></a></th>  
+                                      <th><a ><b>View</b></a> </th>                                     
+                                      <th><a ><b>Facilitation</b></a> </th>                              
+                                      <th><a ><b>Consignment</b></a> </th>  
+                                                                
+                                      
+                                  </tr>
+                              </thead>
+                            
+                              <tbody *ngFor="let user1 of consignmentid1| filter:search | paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index; filter:search">
+                                  <tr>  
+                                        <td [attr.rowspan]="user1.plannerdetails1.length+1">
+                                                  <input  class="form-check-input"  type="checkbox" (change)="click_change_two(user1)" formControlName="v_ischeck"  [(ngModel)]="user1.is_check"/>
+                                              </td>
+
+                                    <td class="text-center" [attr.rowspan]="user1.plannerdetails1.length+1" >{{i+1}}</td>                         
+                                   
+                                    <td class="text-center" [attr.rowspan]="user1.plannerdetails1.length+1">
+                                      <a  (click)="view_consignment_to_fc(user1)" style="cursor: pointer;"  type="button"><span  class="badge bg-warning" >View</span></a>
+                                    </td>
+
+                                        <td class="text-left" [attr.rowspan]="user1.plannerdetails1.length+1"><b>{{user1.address}}</b>
+                                    </td>
+                                  </tr>                          
+                                   <tr *ngFor="let planner1 of user1.plannerdetails1">
+                                      <td class="text-left">{{planner1.consignment_id}}</td>     
+                                    
+                                  </tr> 
+                             
+                              </tbody>
+                          </table>
+                    <div class="d-flex justify-content-center">
+                              <pagination-controls
+                                previousLabel="Prev"
+                                nextLabel="Next"
+                                (pageChange)="onTableDataChange($event)"
+                              >
+                              </pagination-controls>
+                    </div>
+                    <div>
+                      <b style="color: red;">{{errormessage1}}</b>
+                    </div>
+                    </div>
+                   
+          </div>
+
+          <div class="row">
+            <div class="col-md-4">
+              <label  class="form-label">Delivery Executive<b style="color:red ;">*</b></label>
+              <select  class="form-control"  formControlName="deliveryExecutive" [(ngModel)]="delivery_executive_id" (change)="change_consignment_list(delivery_executive_id)"  [ngClass]="{ 'is-invalid': submitted && f['deliveryExecutive'].errors }">
+                <option value="">-- Select --</option>
+                <option *ngFor="let ex of  delivery_exe_dd" [ngValue]="ex.delivery_executive_id">
+                    {{ex.delivery_executive_id+": "+ex.first_name}}
+             </option>
+              </select>
+              <div *ngIf="submitted && f['deliveryExecutive'].errors" class="invalid-feedback">
+                    <div *ngIf="f['deliveryExecutive'].errors['required']">Select Delivery Executive </div> 
+                  </div>
+            </div>
+            <div class="col-md-4" *ngIf="this.vehicle_type==null">
+                      <label  class="form-label">Vehicle<b style="color:red ;">*</b></label>
+                      <select  class="form-control" (change)="get_vehicle_details(hub_vehicle_id)"  formControlName="hubvehicle_id" [(ngModel)]="hub_vehicle_id"   [ngClass]="{ 'is-invalid': submitted && f['hubvehicle_id'].errors }">
+                        <option value="">-- Select --</option>
+                        <option *ngFor="let vehicle of  hub_vehicle_list_dd" [ngValue]="vehicle.hub_vehicle_id">
+                            {{vehicle.vehicle_type+" : "+vehicle.vehicle_reg_number+" : "+vehicle.max_weight+"(kg)"}}
+                     </option>
+                      </select>
+                      <div *ngIf="submitted && f['hubvehicle_id'].errors" class="invalid-feedback">
+                            <div *ngIf="f['hubvehicle_id'].errors['required']">Select Vehicle </div> 
+                          </div>
+                    </div>
+                    <div class="col-md-4">
+                    <button class="btn btn-sm btn-primary ms-2" (click)="onLogClick()">Assign</button>
+         </div>
+        </div>
+          </div>
+</div>    
+</section>
+        
+<div class="modal fade"  id="formModal_from_fc" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <h5 class="modal-title" id="exampleModalLabel">
+          Consignment Details
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+ 
+      </div>
+      <div class="modal-body border-0">
+
+          <div class="'row">
+            <div class="col-lg-12">
+              
+              <table class="table table-bordered small p-2" >
+                <thead>
+                  <tr>
+                    <th>SNo</th>   
+                    <th>Consignment ID</th>
+                    <th>Batch Id</th>
+                    <th>Product Name</th>                        
+                    <th>Tracking Id</th>
+                    <th>Facilitation</th>
+                    <th>Address</th>
+                   <th>Pincode</th>
+                   <th>Dimension(cm)(LBH)</th>
+         
+                   
+                  </tr>
+                </thead>
+                <tbody>
+               <tr *ngFor="let han of pickup_from_fc_view| filter:search | paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index; filter:search">
+                    <th>{{tableSize *(page-1)+i+1}}</th>
+                    <td>{{han.consignment_id}}</td>
+                    <td>{{han.batch_id}}</td>
+                    <td>{{han.item_name}}</td>                           
+                    <td>{{han.tracking_id}}</td>
+                    <td>{{han.facilitation_name}}</td>
+                    <td>{{han.address}}</td>
+                    <td>{{han.pincode}}</td>
+                    <td>{{han.consignment_l}}*{{han.consignment_b}}*{{han.consignment_h}}</td>
+                  </tr>
+                
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="modal fade"  id="formModal_to_fc" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <h5 class="modal-title" id="exampleModalLabel">
+          Consignment Details
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+ 
+      </div>
+      <div class="modal-body border-0">
+
+          <div class="'row">
+            <div class="col-lg-12">
+
+              <table class="table table-bordered small p-2" >
+                <thead>
+                  <tr>
+                    <th>SNo</th>
+                    <th>Consignment ID</th>                  
+                    <th>Product Name</th>                        
+                    <th>Tracking Id</th>
+                    <th>Facilitation</th>
+                    <th>Address</th>
+                   <th>Pincode</th>
+                   <th>Dimension(cm)(LBH)</th>
+          
+                   
+                  </tr>
+                </thead>
+                <tbody>
+               <tr *ngFor="let han of drop_to_fc_view| filter:search | paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index; filter:search">
+                    <th>{{tableSize *(page-1)+i+1}}</th>
+                    <td>{{han.consignment_id}}</td>                   
+                    <td>{{han.item_name}}</td>                           
+                    <td>{{han.tracking_id}}</td>
+                    <td>{{han.facilitation_name}}</td>
+                    <td>{{han.address}}</td>
+                    <td>{{han.pincode}}</td>
+                    <td>{{han.consignment_l}}*{{han.consignment_b}}*{{han.consignment_h}}</td>
+                                           
+                        
+                  </tr>
+                
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+            
+
+

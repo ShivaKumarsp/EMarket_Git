@@ -13,11 +13,11 @@ declare var window:any;
 })
 export class MasterCountryComponent implements OnInit {
 
- 
+
   constructor(private allapi:AllapiService) { }
 
    countrydata = new FormGroup({
-    v_country: new FormControl('',[Validators.required]),
+    v_country: new FormControl('',[Validators.required,Validators.pattern("^[a-zA-Z ]+$")]),
      });
  //validation
  get f(){
@@ -45,23 +45,27 @@ export class MasterCountryComponent implements OnInit {
 this.allapi.GetDataById(url,1).subscribe(promise=>
   {
     this.country_list=JSON.parse(promise.country_list).Table;
- 
+
   })
-  } 
+  }
 
   save_country()
   {
+
     this.submitted = true;
+    if(this.countrydata.value.v_country.trim() ==''){
+      this.countrydata.controls['v_country'].setErrors({'required': true})
+    }
     if (this.countrydata.invalid) {
       return;
     }
-   
+
     var data={
      "country_id":this.country_id,
-    "country_name":this.country_name,
+    "country_name":this.country_name.trim(),
     "activeflg":true,
     "language_id":1,
-    
+
     }
     let url='Master_Country/save_country/';
     this.allapi.PostData(url,data).subscribe(promise=>
@@ -75,9 +79,9 @@ this.allapi.GetDataById(url,1).subscribe(promise=>
             showConfirmButton: false,
             timer: 2000
         })
-        this.country_id=0;
-        this.country_name='';
-        this.country_list=JSON.parse(promise.country_list).Table;       
+        this.submitted=false;
+        this.countrydata.reset();
+        this.country_list=JSON.parse(promise.country_list).Table;
         this.closeform.hide();
         this.add_status=true;
         }
@@ -91,7 +95,7 @@ this.allapi.GetDataById(url,1).subscribe(promise=>
             timer: 2000
         })
         }
-        
+
       })
   }
   edit_country(ss:any)
@@ -113,14 +117,14 @@ this.allapi.GetDataById(url,1).subscribe(promise=>
           confirmButtonText: 'Yes, delete it!'
       }).then((result) => {
           if (result.isConfirmed) {
-    
+
               var data = {
                 "country_id":ss.country_id,
                   "language_id": 1
               }
               let url='Master_Country/delete_country/';
               this.allapi.PostData(url, data).subscribe(promise=> {
-    
+
                   if (promise.status == "Delete") {
                     this.country_list=JSON.parse(promise.country_list).Table;
                       Swal.fire({
@@ -130,9 +134,9 @@ this.allapi.GetDataById(url,1).subscribe(promise=>
                           showConfirmButton: false,
                           timer: 3000
                       });
-    
+
                   }
-                  else if(promise.status == "Failed"){ 
+                  else if(promise.status == "Failed"){
                       Swal.fire({
                           position: 'center',
                           icon: 'warning',
@@ -142,16 +146,16 @@ this.allapi.GetDataById(url,1).subscribe(promise=>
                       })
                   }
               })
-    
+
           }
       })
-    
+
     };
     public openModal(){
       this.add_status=true;
-      this.submitted=false;  
+      this.submitted=false;
      this.country_id=0;
-      this.country_name="";     
+      this.country_name="";
       this.closeform.show();
     }
 

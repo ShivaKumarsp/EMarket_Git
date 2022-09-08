@@ -61,7 +61,7 @@
                                     </div>
                                 </div>
                             </div>-->
-                          
+
                             <div class="card">
                                 <div id="headingTwo" role="tab" class="card-header">
                                     <h6><a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="true"
@@ -77,26 +77,29 @@
                             </div>
                             <div class="card">
                                 <div id="headingThree" role="tab" class="card-header">
-                                    <h6><a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true" 
+                                    <h6><a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="true"
                                            aria-controls="collapseThree" class="collapsed">Pay on Delivery</a></h6>
-                                           
+
                                 </div>
                                 <div id="collapseThree" role="tabpanel" aria-labelledby="headingThree" class="collapse show">
                                     <div class="card-body">
                                         <input type="radio" name="shippping" id="payment-method-2" class="radio-template" value="POD" [(ngModel)]="shippping">
- 
+
                                         <label for="payment-method-2"><strong>Pay on Delivery</strong><br>
                                         <span class="label-description"></span></label>
                                     </div>
-                                    
+
 
                                 </div>
                             </div>
                         </div>
-                        <div class="CTAs d-flex justify-content-between flex-column flex-lg-row"><a  (click)="continue_to_orderview()" class="btn btn-template-outlined wide prev"><i class="fa fa-angle-left"></i>Back to Address</a>
-         <button type="submit" class="btn btn-template wide next" (click)="order_review()">Continue to order review <i class="fa fa-angle-right"></i></button>
-                            
-</div>
+
+                        <div class="CTAs d-flex justify-content-between flex-column flex-lg-row">
+                          <!-- <a  (click)="continue_to_orderview()" class="btn btn-template-outlined wide prev"><i class="fa fa-angle-left"></i>Back to Address</a> -->
+                          <a routerLink="/app/cart/address" class="btn btn-template-outlined wide prev">
+                            <i class="fa fa-angle-left"></i>Back to Address</a>
+                        <button type="submit" class="btn btn-template wide next" (click)="order_review()">Continue to order review <i class="fa fa-angle-right"></i></button>
+                        </div>
                     </div>
                 </form>
                 </div>
@@ -107,9 +110,9 @@
                     <p>Shipping and additional costs are calculated based on values you have entered</p>
                     <ul class="order-menu list-unstyled">
                         <li class="d-flex justify-content-between"><span>Order Subtotal </span><strong>₹ {{total}}</strong></li>
-                        <li class="d-flex justify-content-between"><span>Shipping and handling</span><strong>₹ 10</strong></li>
-                        <li class="d-flex justify-content-between"><span>Tax</span><strong>16 %</strong></li>
-                        <li class="d-flex justify-content-between"><span>Discount</span><strong>₹ 100</strong></li>
+                        <li class="d-flex justify-content-between d-none"><span>Shipping and handling</span><strong>₹ 10</strong></li>
+                        <li class="d-flex justify-content-between d-none"><span>Tax</span><strong>16 %</strong></li>
+                        <li class="d-flex justify-content-between d-none"><span>Discount</span><strong>₹ 100</strong></li>
                         <li class="d-flex justify-content-between"><span>Total</span><strong class="text-primary price-total">₹ {{payableamount| number}}</strong></li>
                     </ul>
                 </div>

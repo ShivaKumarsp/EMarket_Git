@@ -18,14 +18,7 @@
       <section class="checkout">
           <div class="container">
               <div class="row">
-                  <!-- <div class="col-12 mb-4">
-                      <ul class="nav nav-pills">
-                        
-                          <li class="nav-item"><a class="nav-link active">Verify Item</a></li>
-                          <li class="nav-item"><a class="nav-link">Item Specification </a></li>
-                      <li class="nav-item"><a class="nav-link">Item Feature</a></li>
-                      </ul>
-                  </div> -->
+                  
                   <div class="col-md-8">
       
                       <div class="tab-content">
@@ -105,35 +98,35 @@
                                           <textarea name="manufacturer_details" disabled="true" id="manufacturer_details" class="form-control" [(ngModel)]="manufacture_details"></textarea>
                                          
                                       </div>
-                                      <div class="col-md-6  mb-3 p-2">
+                                      <div class="col-md-6  mb-3 p-2" *ngIf="edit_item_list[0].manufacture_date!='0001-01-01T00:00:00'">
                                           <label for="manufacturing_date">Manufacturing Date</label>
                                           <label class="form-control">{{edit_item_list[0].manufacture_date|date}}</label>
                                       </div>
-                                      <div class="col-md-6  mb-3 p-2">
+                                      <div class="col-md-6  mb-3 p-2" *ngIf="edit_item_list[0].expiry_date!='0001-01-01T00:00:00'">
                                           <label for="product_expiry">Expiry Date</label>
                                           <label class="form-control">{{edit_item_list[0].expiry_date|date}}</label>
                                       </div>
       
-                                      <div class="col-md-6  mb-3 p-2">
+                                      <div class="col-md-6  mb-3 p-2" *ngIf="edit_item_list[0].country_name!= null">
                                           <label for="country">Country of Origin</label>
                                           <label class="form-control">{{edit_item_list[0].country_name}}</label>
                                       </div>
       
-                                      <div class="col-12  mb-3">
+                                      <div class="col-12  mb-3" *ngIf="edit_item_list[0].warranty!= 0">
                                           <h6 class="my-3">Warrenty Details</h6>
                                       </div>
-                                      <div class="col-md-6  mb-3 p-2">
+                                      <div class="col-md-6  mb-3 p-2" *ngIf="edit_item_list[0].warranty!= 0">
                                           <label for="product_warrent">Product Warrenty</label>
                                           <label class="form-control">{{edit_item_list[0].warranty}}</label>
                                       </div>
-                                      <div class="col-md-6  mb-3 p-2">
+                                      <div class="col-md-6  mb-3 p-2" *ngIf="edit_item_list[0].warranty_name!= null">
                                           <label for="warrantyumo">Warranty Type</label>
                                           <label class="form-control">{{edit_item_list[0].warranty_name}}</label>
                                       </div>
       
                                        <div class="col-md-6  mb-3 p-2">
                                           <div>
-                                              <img id="productimg" src="{{edit_item_list[0].item_image}}" class="img-responsive" style="width:20%; height:50%" />
+                                              <img id="productimg" src="{{base64+edit_item_list[0].item_image}}" class="img-responsive" style="width:20%; height:50%" />
                                           </div>
                                        </div>
                                   </div>      
@@ -155,7 +148,7 @@
                                   <span><strong>Rs {{verify_product[0].baseprice}}</strong></span>
                               </li>
                               <li class="d-flex justify-content-between">
-                                  <img src={{verify_product[0].imagepath}} width="100%" height="auto" />
+                                  <img src={{base64+verify_product[0].imagepath}} width="100%" height="auto" />
                               </li> 
                           </ul>
                       </div> 
@@ -230,7 +223,7 @@
                                                       <select class="form-control"   [(ngModel)]="verify_status" formControlName="v_status"
                                                         [ngClass]="{ 'is-invalid': submitted && f['v_status'].errors }" required>
                                                           <option value="">-- Select--</option>
-                                                          <option value="Accept">Accept</option>
+                                                          <option value="Verified">Verified</option>
                                                           <option value="Reject">Reject</option>
                                                         </select>
                                                         <div *ngIf="submitted && f['v_status'].errors" class="invalid-feedback">

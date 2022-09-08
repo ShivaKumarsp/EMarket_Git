@@ -1,0 +1,59 @@
+
+<!-- {{batchlist|json}} -->
+<section class="min-vh-100 checkout">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <ul class="nav nav-pills">
+            <li class="nav-item"><a  class="nav-link" href="/app/hubtofacilitationcenter" >Collected Consignment</a></li>
+            <li class="nav-item"><a  class="nav-link active" >Consigment Assigned to Pick Up</a></li>
+            <!-- <li class="nav-item"><a  class="nav-link" href="hub_consignmentsfor_drop">Consigment Assigned for Drop</a></li> -->
+            <li class="nav-item"><a  class="nav-link" href="/app/hub_arrived_destination">Arrived at Destination</a></li>
+        </ul>
+        <div class="tab-content">
+          <div  class="active tab-block">
+            <div class="d-flex justify-content-between">
+             <h5>batch list</h5>
+            </div>
+            <table class="table table-bordered my-4 p-1  shadow shadow-sm border-0">
+              <thead>
+                <tr>
+                  <!-- <th *ngIf="!showCheckbox">S No</th>
+                  <th *ngIf="showCheckbox">Select</th> -->
+                  <th>Batch NO</th>
+                  <th>Vehicle Reg No</th>
+                  <th>Send to</th>
+                  <!-- <th>Weight (Kg)</th>
+                  <th>Adress</th>
+                  <th>Pincode</th> -->
+                </tr>
+              </thead>
+              <tbody [formGroup]="assignedform">
+                <tr  *ngFor="let batch of batchlist;index as i">
+                  <!-- <td *ngIf="!showCheckbox">{{i+1}}</td>
+                  <td *ngIf="showCheckbox">
+                    <input  type="checkbox" (click)="onRowClick(consignment.consignmentid)"/>
+                  </td> -->
+                  <td>{{batch.batchid}}</td>
+                  <td>{{batch.vehicle_registrationno}}</td>
+                  <td>{{batch.receiveing_hubname}}</td>
+                  <!-- <td>{{batch.weightt}}</td>
+                  <td>{{batch.address_line1}}
+                  <br/>{{batch.address_line2}}
+                  <br/><b>Land Mark:</b>{{batch.landmark}}
+                  </td>
+                  <td>{{batch.pin}}</td> -->
+
+                </tr>
+              </tbody>
+            </table>
+
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+</section>
+

@@ -29,7 +29,8 @@ export class ProductCategoryComponent implements OnInit {
    attributenamelist_1:any;
    addcategoryname="";
    filter_value="";
-
+   base64='data:image/jpeg;base64,';
+   imageBaseUrl='http://124.153.106.183:8015/EMarket_Image';
   ngOnInit(): void {
 let url='itemsview/get_data_addcat/';
 this.addcat_id=this.activateroute.snapshot.paramMap.get("addcatid");

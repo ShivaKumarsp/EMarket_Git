@@ -32,18 +32,18 @@
                         <owl-carousel-o [options]="customOptions">
                           <ng-container *ngFor="let slide of slides">
                             <ng-template carouselSlide >
-                              <img [src]="item_list.imagepath" [id]="slide.id">
+                              <img [src]="imageBaseUrl+imagepath" [id]="slide.id">
                             </ng-template>
                           </ng-container>
                           </owl-carousel-o>
                       </div>
-
-                    <div data-slider-id="1" class="owl-thumbs">
-                        <button class="owl-thumb-item"><img src="{{item_list.imagepath}}" alt="shirt"></button>
-                        <button class="owl-thumb-item active"><img src="{{item_list.imagepath}}" alt="shirt"></button>
-                        <button class="owl-thumb-item"><img src="{{item_list.imagepath}}" alt="shirt"></button>
-                        <button class="owl-thumb-item"><img src="{{item_list.imagepath}}" alt="shirt"></button>
-                    </div>
+                      <div >
+                     <div class="product-images" style="display: inline-block;" *ngFor="let image of multiple_image_list">
+                        <button class="owl-thumb-item" (click)="change_image(image)">
+                            <img src="{{imageBaseUrl+image.image_url}}" alt="shirt">
+                        </button>
+                    </div> 
+                </div>
                 </div>
                 <div class="details col-lg-6">
                     <div class="d-flex align-items-center justify-content-between flex-column flex-sm-row">
@@ -116,7 +116,7 @@
                             </a>
 
                         </li>
-                        <li class="list-inline-item"><a  class="btn btn-template-outlined wide"> <i class="fa fa-heart-o"></i>Add to wishlist</a></li> 
+                        <li class="list-inline-item d-none" ><a  class="btn btn-template-outlined wide"> <i class="fa fa-heart-o"></i>Add to wishlist</a></li> 
                     </ul>
                    
                     <ul class="CTAs list-inline">
@@ -139,23 +139,6 @@
                     </div> 
 
                    
-                        <!-- <div class="form-group mt-3 text-start" style="display: inline-flex;" *ngFor="let item  of all_product_variant_one_new |keyvalue">                        
-                        <label for=" {{item.key}}" class=""> {{item.key}}</label>
-                        <br /> <br />
-                        <div *ngFor="let dd of item.value" class="my-3 d-flex d-flex-wrap" style="display: contents;">
-                         <a *ngIf="objectValues(dd)[0]!=itm_id"  (click)="change_relatedvalue(dd)" type="button"
-                              class="btn btn-outline-primary btn-attr-val btn-sm me-2">{{dd.attribute_value}}</a>
-                        </div>                       
-                    </div> 
-<br>
-                    <div class="form-group mt-3 text-start" style="display: inline-flex;" *ngFor="let item  of all_product_variant_two_new |keyvalue">                        
-                        <label for=" {{item.key}}" class=""> {{item.key}}</label>
-                        <br /> <br />
-                        <div *ngFor="let dd of item.value" class="my-3 d-flex d-flex-wrap" style="display: contents;">
-                         <a *ngIf="objectValues(dd)[0]!=itm_id"  (click)="change_relatedvalue(dd)" type="button"
-                              class="btn btn-outline-primary btn-attr-val btn-sm me-2">{{dd.attribute_value}}</a>
-                        </div>                       
-                    </div>  -->
 
 
                     <br>
@@ -270,7 +253,7 @@
                 <div class="item col-lg-3" *ngFor="let item of similar_item_list">
                     <div class="product is-gray">
                         <div class="image d-flex align-items-center justify-content-center">
-                            <img src={{item.itemimage}} alt="..." class="img-fluid">
+                            <img src={{imageBaseUrl+item.itemimage}} alt="..." class="img-fluid">
                             <div class="hover-overlay d-flex align-items-center justify-content-center">
                                 <div class="CTA d-flex align-items-center justify-content-center"><a (click)="add_to_cart(item)" class="add-to-cart"><i class="fa fa-shopping-cart"></i></a>
                                     <a type="button" (click)="get_item_details(item.itemid)" class="visit-product active"><i class="icon-search"></i>View</a>
@@ -300,7 +283,7 @@
                 <div class="col-xl-12">
                   <div class="row review" *ngFor="let r of rating_list">
                     <div class="col-3 text-center">
-                      <img src={{r.image_url}} alt="Han Solo" class="review-image">
+                      <img src={{imageBaseUrl+r.image_url}} alt="Han Solo" class="review-image">
                       <span class="text-uppercase text-muted text-small">{{r.customername}}</span>
       
                     </div>

@@ -47,7 +47,8 @@ export class AdditemComponent implements OnInit {
   currency_id = "";
   warranty = "";
   expiry_date: any;
-
+base64='data:image/jpeg;base64,';
+imageBaseUrl='http://124.153.106.183:8015/EMarket_Image';
   item_id = 0;
   item_code = "";
   item_name = "";
@@ -65,7 +66,7 @@ export class AdditemComponent implements OnInit {
   qtypat = "^[+]?[0-9]+([0-9]+)?$";
   //  btn_dissable:boolean=false;
   validation_list: any;
-
+  dub_show=false;
   In_the_box=""
 
   constructor(private httpClient: HttpClient,
@@ -78,16 +79,17 @@ export class AdditemComponent implements OnInit {
       storename: new FormControl('', [Validators.required]),
       item_type: new FormControl('', [Validators.required]),
       productname: new FormControl('', [Validators.required]),
-      itemname: new FormControl('', [ Validators.required]),
-      item_mrp: new FormControl('', [Validators.required]),
-      item_list_price: new FormControl('', [Validators.required]),
-      itemquantity: new FormControl(''),
-      minquantity: new FormControl('', [Validators.required]),
+      itemname: new FormControl('', [Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/),Validators.minLength(5),Validators.maxLength(40)]),
+      item_mrp: new FormControl('', [Validators.required,Validators.min(1),Validators.max(1000000)]),
+      item_list_price: new FormControl('', [Validators.required,Validators.min(1),Validators.max(1000000)]),
+      itemquantity: new FormControl('',[Validators.required,Validators.min(1),Validators.max(1000)]),
+      minquantity: new FormControl('', [Validators.required,Validators.min(1),Validators.max(1000)]),
       itemimage: new FormControl('', [Validators.required]),
       currencyid: new FormControl('', [Validators.required]),
-      sku_id: new FormControl('', [Validators.required]),
+      sku_id: new FormControl('', [Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/), Validators.minLength(3)]),
       durability_duration: new FormControl(),
       manufacturer_details: new FormControl(),
+      v_checkdurability: new FormControl(),
       manufacturing_date: new FormControl(),
       product_expiry: new FormControl(),
       product_warrent: new FormControl(),     
@@ -95,13 +97,50 @@ export class AdditemComponent implements OnInit {
       country: new FormControl(),     
       warrantyumo: new FormControl(),
       In_Box:new FormControl(),
-
+      v_durability_duration:new FormControl(null),
+      v_durableumo:new FormControl(null),
     });
   }
-
   letObservable: any
+  get item_mrp() {
+    return this.form.get('item_mrp')!;
+  }
+  get item_list_price() {
+    return this.form.get('item_list_price')!;
+  }
+  get itemquantity() {
+    return this.form.get('itemquantity')!;
+  }
+  get minquantity() {
+    return this.form.get('minquantity')!;
+  }
+
+  get itemname() {
+    return this.form.get('itemname')!;
+  }
+
   get f() {
     return this.form.controls;
+  }
+  keyPressname(event:any) {
+    var inp = String.fromCharCode(event.keyCode);
+    // (/[a-zA-Z0-9-_ ]/.test(inp))
+    if (/[a-zA-Z-_ 0-9]/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+  keyPressSpace(event:any) {
+    if(event.target.selectionStart===0 && event.code==='Space')
+    {
+      event.preventDefault();       
+    }
+  }
+
+  get v_durability_duration() {
+    return this.form.get('v_durability_duration')!;
   }
    //get data
    ngOnInit(): void {
@@ -133,8 +172,33 @@ this.spinner.show();
 
 
      }
-
+     checkdub()
+     {       this.submitted=false; 
+       this.dub_show=this.check_durability;
+       if(this.dub_show==true)
+       {
+        this.form.controls["v_durableumo"].setValidators([Validators.required]);
+        this.form.controls["v_durableumo"].updateValueAndValidity();
+        this.form.controls["v_durability_duration"].setValidators([Validators.required,Validators.min(1)]);
+        this.form.controls["v_durability_duration"].updateValueAndValidity();
+       }
+       else if(this.dub_show==false)
+       {
+        this.form.controls["v_durableumo"].setValidators(null);
+        this.form.controls["v_durableumo"].updateValueAndValidity();
+        this.form.controls["v_durability_duration"].setValidators(null);
+        this.form.controls["v_durability_duration"].updateValueAndValidity();
+       }
+     }
   saveForm() {
+ 
+    if(this.form.value.itemname.trim().length<5){
+      this.form.controls['itemname'].setErrors({'minlength': true})
+    }
+    if(this.form.value.sku_id.trim().length<3){
+      this.form.controls['sku_id'].setErrors({'minlength': true})
+    }
+
     this.submitted = true;
     if (this.form.invalid) {
       return;
@@ -176,14 +240,46 @@ this.spinner.show();
       this.durability_uom="0"
     }
 
+    if(this.check_durability==true)
+    {
+      if(this.durability=="" ||this.durability=="0")
+      {
+        Swal.fire({
+          position: 'center',
+          icon: 'warning',
+          title: 'Enter Durable Till',
+          showConfirmButton: false,
+          timer: 3000
+        })
+        return
+      }
+      if(this.durability_uom=="")
+      {
+        Swal.fire({
+          position: 'center',
+          icon: 'warning',
+          title: 'Select Durable Type',
+          showConfirmButton: false,
+          timer: 3000
+        })
+        return
+      }
+    }
+    if(this.check_durability==false)
+    {
+      this.durability_uom="0";
+     
+    }
+   
+
     let itemcode = this.item_name;
     let sid = 1;
     var data =
     {
       "item_id": this.item_id,
-      "item_name": this.item_name,
-      "item_code": itemcode,
-      "sku": this.sku,
+      "item_name": this.item_name.trim(),
+      "item_code": itemcode.trim(),
+      "sku": this.sku.trim(),
       "item_type_id": parseInt(this.item_type_id),
       "currency_id": parseInt(this.currency_id),
       "product_id": parseInt(this.product_id),
@@ -203,7 +299,7 @@ this.spinner.show();
       "language_id": sid,
       "item_image": this.p_imageurl,
       "quantity": parseInt(this.quantity),
-      "In_the_box":this.In_the_box,
+      "In_the_box":this.In_the_box.trim(),
     }
   
     let url2 = 'Vendor_Add_Item/saveproductitem/';
@@ -305,7 +401,7 @@ window.location.reload();
     
     this.selectItemImageUpload = imageInput.files[0];
     formData.append("File", this.selectItemImageUpload);
-    let url = 'http://192.168.1.200:1305/api/ImageUpload/DocumentUpload';
+    let url = 'http://localhost:1305/api/ImageUpload/Item_Image_Upload';
     return this.http.post(url, formData).subscribe((promise: any) => {
       this.p_imageurl = promise.path;
       console.log(this.p_imageurl)

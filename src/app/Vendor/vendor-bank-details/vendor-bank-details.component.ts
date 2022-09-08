@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { AllapiService } from 'src/app/apiservice/allapi.service';
 import Swal from 'sweetalert2';
 
@@ -13,14 +14,15 @@ export class VendorBankDetailsComponent implements OnInit {
 
   constructor(private httpClient: HttpClient,
        private formBuilder: FormBuilder,
-    private allapi: AllapiService) { }
+    private allapi: AllapiService,
+    private spinner:NgxSpinnerService) { }
 
     vendorbank = new FormGroup({
-      accountholdername: new FormControl('',[Validators.required]),
-      bankaccount: new FormControl('',[Validators.required]),
-      ifsccode: new FormControl('',[Validators.required]),
+      accountholdername: new FormControl('',[Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/), Validators.minLength(5)]),
+      bankaccount: new FormControl('',[Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/),Validators.minLength(5)]),
+      ifsccode: new FormControl('',[Validators.required,Validators.pattern('^[A-Z]{4}0[0-9]{6}$'),Validators.minLength(7)]),
       accounttype: new FormControl('',[Validators.required]),
-      passbookimage: new FormControl()
+      passbookimage: new FormControl('')
    
     });
     vendor_bank:any;    
@@ -38,9 +40,19 @@ export class VendorBankDetailsComponent implements OnInit {
   account_verify=0;
 acc_dis:boolean=false;
 request_delete=0;
+validation_list:any;
+base64='data:image/jpeg;base64,';
+imageBaseUrl='http://124.153.106.183:8015/EMarket_Image';
+
    //validation
    get f(){
     return this.vendorbank.controls;
+  }
+  keyPressSpace(event:any) {
+    if(event.target.selectionStart===0 && event.code==='Space')
+    {
+      event.preventDefault();       
+    }
   }
 
   ngOnInit(): void {
@@ -69,16 +81,48 @@ request_delete=0;
 
   save_bank_details()
   {
+    this.vendorbank.controls["passbookimage"].setValidators(null);
+    this.vendorbank.controls["passbookimage"].updateValueAndValidity();
+   
+    this.spinner.show();
+    if(this.vendorbank.value.accountholdername.trim().length<5){
+      this.vendorbank.controls['accountholdername'].setErrors({'minlength': true})
+    }
+    if(this.vendorbank.value.bankaccount.trim().length<5){
+      this.vendorbank.controls['bankaccount'].setErrors({'minlength': true})
+    }
+    if(this.vendorbank.value.ifsccode.trim().length<7){
+      this.vendorbank.controls['ifsccode'].setErrors({'minlength': true})
+    }
+
     this.submitted = true;
     if (this.vendorbank.invalid) {
+      this.spinner.hide();
       return;
     }
+    if(this.passbook_image=='' || this.passbook_image==null)
+    {
+      this.submitted = true;
+      this.vendorbank.controls["passbookimage"].setValidators([Validators.required]);
+      this.vendorbank.controls["passbookimage"].updateValueAndValidity();
+
+      Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: 'Please Upload Bank Passbook',
+        showConfirmButton: false,
+        timer: 3000
+    })
+    this.spinner.hide();
+    return
+    }
+
 
     var data={
       "vendor_bank_id":this.vendor_bank_id,
-      "account_holder_name":this.account_holder_name,
-      "bank_account":this.bank_account,
-      "ifsc_code":this.ifsc_code,
+      "account_holder_name":this.account_holder_name.trim(),
+      "bank_account":this.bank_account.trim(),
+      "ifsc_code":this.ifsc_code.trim(),
       "account_type":this.account_type,
       "passbook_image":this.passbook_image
     }
@@ -119,8 +163,20 @@ request_delete=0;
         }
         }   
       }
+        else if(promise.status=="Validation")
+        {
+          this.validation_list=promise.validation_list;
+          Swal.fire({
+            position: 'center',
+            icon: 'warning',
+            title: 'Enter/Update All Mandatory Field',
+            showConfirmButton: false,
+            timer: 2000
+        })
+        }
         else if(promise.status=="Failed")
         {
+          this.validation_list=promise.validation_list;
           Swal.fire({
             position: 'center',
             icon: 'warning',
@@ -129,8 +185,12 @@ request_delete=0;
             timer: 2000
         })
         }
+        this.spinner.hide();
       })
+      this.spinner.hide();
   }
+
+ 
   update_request_delete(ss:any)
   {
     var data={
@@ -181,45 +241,52 @@ this.allapi.PostData(url,data).subscribe(promise=>
     }
   })
   }
+
   selectFileUpload(imageInput: any) {
     var formData = new FormData();
     const file: File = imageInput.files[0];
-  
-    var reader = new FileReader();      
-    reader.readAsDataURL(imageInput.files[0]);      
-    reader.onload = (event) => {
-           this.imageUrl=event.target
-         this.passbook_image=this.imageUrl.result;
+    if (imageInput.files[0].type != "image/jpeg") {
+      this.passbook_image="";
+      Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: 'Please Upload the JPEG file',
+        showConfirmButton: false,
+        timer: 3000
+    })
+        return; 
     }
-
-  if (imageInput.files[0].type != "image/jpeg") {
-        Swal.fire({
-          position: 'center',
-          icon: 'warning',
-          title: 'Please Upload the JPEG file',
-          showConfirmButton: false,
-          timer: 3000
-      })
-          return;
-      } else if (imageInput.files[0].size > 2097152) {
-        Swal.fire({
-          position: 'center',
-          icon: 'warning',
-          title: 'mage size should be less than 2MB',
-          showConfirmButton: false,
-          timer: 3000
-      })
-          return;
-      }
-      else
-      {
-        this.SelectedFile_Array=imageInput.files[0];
-        formData.append("File", this.SelectedFile_Array);
-        let url='ImageUpload/DocumentUpload/';
-        this.allapi.PostData_login(url,formData).subscribe(promise=>
-          {
-            this.passbook_image=promise.path;            
-          })           
-      }
+     else if (imageInput.files[0].size > 2097152) {
+      this.passbook_image="";
+      Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: 'Image size should be less than 2MB',
+        showConfirmButton: false,
+        timer: 3000
+    })
+        return;
+    }
+    else if (imageInput.files[0].size < 10000) {
+      this.passbook_image="";
+      Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: 'Image size Minimun 10kb',
+        showConfirmButton: false,
+        timer: 3000
+    })
+        return;
+    }
+    
+    this.SelectedFile_Array = imageInput.files[0];
+    formData.append("File", this.SelectedFile_Array);
+    let url = 'http://localhost:1305/api/ImageUpload/Vendor_Details_Image_Upload';
+    return this.httpClient.post(url, formData).subscribe((promise: any) => {
+      this.passbook_image=promise.path;  
+   
+    })
   }
+
+ 
 }

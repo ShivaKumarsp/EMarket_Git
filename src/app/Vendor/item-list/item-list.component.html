@@ -1,4 +1,4 @@
-<div ng-init="BindData()">
+<div class="min-vh-100">
     <section class="hero hero-page gray-bg padding-small">
         <div class="container">
             <div class="row d-flex">
@@ -20,7 +20,7 @@
             <div class="row">
 
             </div>
-           
+
                 <div class="row">
                     <div class="col-lg-12">
 
@@ -30,7 +30,7 @@
                                     <h5 class="my-4">All Items List total Items {{totalItem}}</h5>
                                 </div>
                                 <div class="col-md-4"> </div>
-                               
+
                                 <div class="col-md-4">
                                     <input class="form-control form-control-sm" type="text" [(ngModel)]="search" placeholder="search here...">
                                 </div>
@@ -47,20 +47,22 @@
                                         <th>Listing Price</th>
                                         <th>Store Name</th>
                                         <th>Created Date</th>
+                                        <th>Verify</th>
                                         <th>Image</th>
                                         <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let itm of all_item_list|filter:search| paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index">
-                                     <th>{{tableSize *(page-1)+i+1}}</th>                                 
+                                     <th>{{tableSize *(page-1)+i+1}}</th>
                                         <td>{{itm.itemname}}</td>
                                         <td>{{itm.itemcode}}</td>
-                                        <td>{{itm.v_mrp}}</td>
+                                        <td>{{itm.v_mrp |currency:'INR'}}</td>
                                         <td>{{itm.v_quantity}}</td>
-                                        <td>{{itm.listingprice}}</td>
+                                        <td>{{itm.listingprice|currency:'INR'}}</td>
                                         <td>{{itm.storename}}</td>
                                          <td>{{itm.createdon|date}}</td>
+                                         <td>{{itm.verify_status}}</td>
                                         <td>
                                             <a style="cursor:pointer" (click)="previewimg(itm.itemimage)" data-toggle="modal" data-target="#staticBackdrop"><i class="fa fa-eye"></i></a>
 
@@ -86,7 +88,7 @@
                     </div>
 
                 </div>
-          
+
         </div>
         <div class="modal fade" id="staticBackdrop" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 
@@ -98,8 +100,8 @@
                         </button>
                     </div>
                     <div class="modal-body border-0 rounded-0">
-                        <img src="{{imagepreview}}" class="img-responsive" [style]="{'max-width':'80%'}"/>
-                    </div>                   
+                        <img src="{{imageBaseUrl+imagepreview}}" class="img-responsive" [style]="{'max-width':'80%'}"/>
+                    </div>
                 </div>
             </div>
 

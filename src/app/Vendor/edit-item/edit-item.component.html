@@ -38,15 +38,17 @@
                             <div class="row" >
                               
                                     <div class="col-md-6 p-2">
-                                        <label class="form-label"> Select Products<b style="color: red;">*</b></label>
-                                    <select class="form-control" formControlName="v_productid"  [(ngModel)]="product_id" (change)="getimg(product_id)" [ngClass]="{ 'is-invalid': submitted && f['v_productid'].errors }">
+                                        <label class="form-label">Product Name<b style="color: red;">*</b></label>
+                                    <select  class="form-control" formControlName="v_productid"  [(ngModel)]="product_id" (change)="getimg(product_id)" [ngClass]="{ 'is-invalid': submitted && f['v_productid'].errors }">
                                       <option value="">--Select Product Name--</option>
-                                      <option *ngFor="let product of productlist"  value="{{product.productid}}" selected="product.productid == product_id">
+                                      <option  *ngFor="let product of productlist"  value="{{product.productid}}" selected="product.productid == product_id">
                                         {{product.productname}}
                                       </option>
-                                    </select> 
+                                    </select>
+                                 
+
                                     <div *ngIf="submitted && f['v_productid'].errors" lass="invalid-feedback">
-                                     <div *ngIf="f['v_productid'].errors['v_productid']">Select Products</div>
+                                     <div *ngIf="f['v_productid'].errors['required']">Select Products</div>
                                      </div>                                 
                                   </div>
 
@@ -59,16 +61,20 @@
                                         </option>
                                     </select> 
                                     <div *ngIf="submitted && f['v_item_type'].errors" class="invalid-feedback">
-                                        <div *ngIf="f['v_item_type'].errors['v_item_type']">Select Item Type</div>
+                                        <div *ngIf="f['v_item_type'].errors['required']">Select Item Type</div>
                                          </div>                                 
                                 </div>
                                
                                 
                             <div class="col-md-6  mb-3 p-2">
                                 <label class="form-label">Item Name<b style="color: red;">*</b></label>
-                                    <input type="text"  formControlName="v_itemname" class="form-control" [(ngModel)]="item_name" placeholder="Enter Item Name" [ngClass]="{ 'is-invalid': submitted && f['v_itemname'].errors }"> 
+                                    <input type="text"  formControlName="v_itemname" class="form-control" [(ngModel)]="item_name" minlength="5" maxlength="300"   (keypress)="keyPressSpace($event)" placeholder="Enter Item Name" [ngClass]="{ 'is-invalid': submitted && f['v_itemname'].errors }"> 
                                     <div *ngIf="submitted && f['v_itemname'].errors" class="invalid-feedback">
-                                        <div *ngIf="f['v_itemname'].errors['v_itemname']">Enter Item Name</div>
+                                        <div *ngIf="f['v_itemname'].errors['required']">Enter Item Name</div>
+                                    
+                                        <div style="color: red;" *ngIf="v_itemname.errors?.['minlength']">
+                                            Minimum  5 Character
+                                          </div>
                                          </div>
                                 </div> 
                                                               
@@ -82,23 +88,29 @@
                                         </option>
                                     </select>
                                      <div *ngIf="submitted && f['v_storename'].errors" class="invalid-feedback">
-                                        <div *ngIf="f['v_storename'].errors['v_storename']">Select Store Name</div>
+                                        <div *ngIf="f['v_storename'].errors['required']">Select Store Name</div>
                                          </div>
                                  </div>
 
                                 <div class="col-md-6  mb-3 p-2">
                                     <label class="form-label">MRP<b style="color: red;">*</b></label>
-                                    <input  formControlName="v_item_mrp" type="text" placeholder="Set MRP" class="form-control"  [(ngModel)]="mrp" [ngClass]="{ 'is-invalid': submitted && f['v_item_mrp'].errors }" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                                    <input  formControlName="v_item_mrp" type="number" placeholder="Set MRP" class="form-control" min="1"  [(ngModel)]="mrp" [ngClass]="{ 'is-invalid': submitted && f['v_item_mrp'].errors }" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                                     <div *ngIf="submitted && f['v_item_mrp'].errors" class="invalid-feedback">
-                                        <div *ngIf="f['v_item_mrp'].errors['v_item_mrp']">Set MRP</div>
+                                        <div *ngIf="f['v_item_mrp'].errors['required']">Set MRP</div>
+                                        <div style="color: red;" *ngIf="v_item_mrp.errors?.['min']">
+                                            Minimum  1 Rupee
+                                          </div>
                                          </div>
                                  </div>
 
                                 <div class="col-md-6  mb-3 p-2">
                                     <label  class="form-label">Listing Price<b style="color: red;">*</b></label>
-                                    <input  formControlName="v_item_list_price" type="text"  placeholder="Set Listing Price" class="form-control"  [(ngModel)]="listing_price" [ngClass]="{ 'is-invalid': submitted && f['v_item_list_price'].errors }" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                                    <input  formControlName="v_item_list_price" type="number"  placeholder="Set Listing Price" class="form-control" min="1" [(ngModel)]="listing_price" [ngClass]="{ 'is-invalid': submitted && f['v_item_list_price'].errors }" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                                     <div *ngIf="submitted && f['v_item_list_price'].errors" class="invalid-feedback">
-                                        <div *ngIf="f['v_item_list_price'].errors['v_item_list_price']">Set Listing Price</div>
+                                        <div *ngIf="f['v_item_list_price'].errors['required']">Set Listing Price</div>
+                                        <div style="color: red;" *ngIf="v_item_list_price.errors?.['min']">
+                                            Minimum  1 Rupee
+                                          </div>
                                          </div>
                                   </div>
 
@@ -111,50 +123,68 @@
                                         </option>
                                     </select>
                                     <div *ngIf="submitted && f['v_currencyid'].errors" class="invalid-feedback">
-                                        <div *ngIf="f['v_currencyid'].errors['v_currencyid']">Enter Currency</div>
+                                        <div *ngIf="f['v_currencyid'].errors['required']">Enter Currency</div>
                                          </div>
                                  </div>
                                 <div class="col-md-6  mb-3 p-2">
                                     <label  class="form-label">Quantity<b style="color: red;">*</b></label>
-                                    <input formControlName="v_quantity" type="text" class="form-control" [(ngModel)]="quantity" [ngClass]="{ 'is-invalid': submitted && f['storename'].errors }" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                                    <input formControlName="v_quantity" min="1" type="number" class="form-control" [(ngModel)]="quantity" [ngClass]="{ 'is-invalid': submitted && f['v_quantity'].errors }" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                                     <div *ngIf="submitted && f['v_quantity'].errors" class="invalid-feedback">
-                                        <div *ngIf="f['v_quantity'].errors['v_quantity']">Enter Quantity</div>
+                                        <div *ngIf="f['v_quantity'].errors['required']">Enter Quantity</div>
+                                        <div style="color: red;" *ngIf="v_quantity.errors?.['min']">
+                                            Minimum  Quantity 1
+                                          </div>
                                          </div>
                                   </div>
 
                                 <div class="col-md-6  mb-3 p-2">
                                     <label  class="form-label">Set Low Inventory<b style="color: red;">*</b></label>
-                                    <input  formControlName="v_min_quantity" type="text" class="form-control" [(ngModel)]="min_quantity" [ngClass]="{ 'is-invalid': submitted && f['v_min_quantity'].errors }" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
+                                    <input  formControlName="v_min_quantity" type="number" class="form-control" [(ngModel)]="min_quantity" min="1" [ngClass]="{ 'is-invalid': submitted && f['v_min_quantity'].errors }" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
                                     <div *ngIf="submitted && f['v_min_quantity'].errors" class="invalid-feedback">
-                                        <div *ngIf="f['v_min_quantity'].errors['v_min_quantity']">Set Low Inventory</div>
+                                        <div *ngIf="f['v_min_quantity'].errors['required']">Set Low Inventory</div>
+                                        <div style="color: red;" *ngIf="v_min_quantity.errors?.['min']">
+                                            Minimum  Quantity 1
+                                          </div>
                                          </div>
                                  </div>
                                  <div class="col-md-6  mb-3 p-2">
                                     <label  class="form-label">SKU<b style="color: red;">*</b></label>
-                                    <input  formControlName="v_sku_id" type="text" class="form-control" [(ngModel)]="sku" [ngClass]="{ 'is-invalid': submitted && f['v_sku_id'].errors }">
+                                    <input  formControlName="v_sku_id" type="text" class="form-control" [(ngModel)]="sku"   (keypress)="keyPressSpace($event)" [ngClass]="{ 'is-invalid': submitted && f['v_sku_id'].errors }" >
                                     <div *ngIf="submitted && f['v_sku_id'].errors" class="invalid-feedback">
-                                        <div *ngIf="f['v_sku_id'].errors['v_sku_id']">Enter SKU</div>
+                                        <div *ngIf="f['v_sku_id'].errors['required']">Enter SKU</div>
+                                        <div *ngIf="f['sku_id'].errors && f['sku_id'].errors['pattern']">Enter SKU</div>
+                                   
                                          </div>
                                  </div>
 
                                 <div class="col-12 mt-3 ml-3  mb-3 p-2" >
-                                    <input id="is_perisable" type="checkbox" class="checkbox-template" [(ngModel)]="check_durability" formControlName="v_checkdurability">
+                                    <input id="is_perisable" type="checkbox" class="checkbox-template" [(ngModel)]="check_durability" (change)="checkdub()" formControlName="v_checkdurability">
                                     <label for="is_perisable" data-bs-toggle="collapse" data-bs-target="#checkdurable" aria-expanded="false" aria-controls="checkdurable">Durable</label>
                                 </div>
-                                <div id="checkdurable" aria-expanded="false" class="collapse col-12">
+                                <div *ngIf="dub_show==true">
                                     <div class="row">
                                         <div class="col-md-6  mb-3 p-2">
-                                            <label for="durability_duration" class="form-label">Durable till</label>
-                                            <input id="durability_duration" formControlName="v_durability_duration" type="text" name="durability_duration" class="form-control" [(ngModel)]="durability">
+                                            <label for="durability_duration" class="form-label">Durable till<b style="color:red ;">*</b></label>
+                                            <input id="durability_duration" formControlName="v_durability_duration" type="text" name="durability_duration" class="form-control" [(ngModel)]="durability" [ngClass]="{ 'is-invalid': submitted && f['v_durability_duration'].errors }">
+                                            <div *ngIf="submitted && f['v_durability_duration'].errors" class="invalid-feedback">
+                                                <div *ngIf="f['v_durability_duration'].errors['required']">Enter Durability</div>
+                                                <div style="color: red;" *ngIf="v_durability_duration.errors?.['min']">
+                                                    Minimum Value 1
+                                                  </div>
+                                                 </div>
+
                                         </div>
                                         <div class="col-md-6  mb-3 p-2">
-                                            <label  class="form-label">Durable type</label>
-                                            <select class="form-select" formControlName="v_durableumo" [(ngModel)]="durability_uom">
+                                            <label  class="form-label">Durable type<b style="color:red ;">*</b></label>
+                                            <select class="form-select" formControlName="v_durableumo" [(ngModel)]="durability_uom" [ngClass]="{ 'is-invalid': submitted && f['v_durableumo'].errors }">
                                                 <option value="">-- Select Durable type --</option>
                                                 <option *ngFor="let wtype of warrantytypelist" [ngValue]="wtype.warrantyid">
                                                     {{wtype.warrantyname}}
                                                 </option>
                                             </select>
+                                            <div *ngIf="submitted  && f['v_durableumo'].errors" class="invalid-feedback">
+                                                <div *ngIf="f['v_durableumo'].errors['required']">Select Durable type</div>
+                                              </div>
                                         </div>
                                     </div>
                                 </div>
@@ -166,7 +196,7 @@
                                   <div>
                                     <div class="form-group col-md-12 my-3">
                                       <label class="form-label">If this item is containing any accessories along with it, Please mention here.</label>
-                                      <input type="text"  [(ngModel)]="In_the_box" formControlName="v_inthebox" class="form-control">
+                                      <input type="text"  [(ngModel)]="In_the_box" formControlName="v_inthebox" class="form-control"  (keypress)="keyPressSpace($event)">
                                       <p><small><b>Example</b> Mouse, Keyboard, Adapter</small></p>
                                     </div>
                                   </div>
@@ -176,7 +206,7 @@
                                 </div>
                                 <div class="col-md-6  mb-3 p-2">
                                     <label  class="form-label">Manufacturer</label>
-                                    <textarea formControlName="v_manufacturer_details" class="form-control" [(ngModel)]="manufacture_details"></textarea>
+                                    <textarea formControlName="v_manufacturer_details" class="form-control" [(ngModel)]="manufacture_details" placeholder="Manufacturing Details" oninput="if(!this.value.match('^[a-zA-Z][a-z A-Z 0-9]*$'))this.value='';"  (keypress)="keyPressSpace($event)"></textarea>
                                   </div>
                                 <div class="col-md-6  mb-3 p-2">
                                     <label class="form-label">Manufacturing Date</label>
@@ -204,10 +234,10 @@
                                     <label class="form-label">Product Warrenty</label>
                                     <input  formControlName="v_product_warrent" type="text" placeholder="Product Warrent" class="form-control" [(ngModel)]="warranty" >
                                  </div>
-                                <div class="col-md-6  mb-3 p-2">
-                                    <label class="form-label">Warranty Type</label>
+                                <div class="col-md-6  mb-3 p-2 ">
+                                    <label class="form-label">&nbsp;</label>
                                     <select class="form-select" formControlName="v_warrantyumo"  [(ngModel)]="warranty_uom_id">
-                                        <option value="">-- Select Type of Warranty --</option>
+                                        <option value="" selected>-- Select--</option>
                                         <option *ngFor="let wtype of warrantytypelist" [ngValue]="wtype.warrantyid">
                                             {{wtype.warrantyname}}
                                         </option>
@@ -221,7 +251,7 @@
                                  </div>
                                  <div class="col-md-6 form-floating mb-3 p-2">
                                     <div>
-                                        <img style="width: 25%;" id="productimg" src="{{p_imageurl}}" class="img-responsive" />
+                                        <img style="width: 25%;"  src="{{imageBaseUrl+p_imageurl}}" class="img-responsive" />
                                     </div>
                                  </div>
                             </div>
@@ -234,6 +264,9 @@
                               
                                 <a type="submit" class="btn btn-template wide next"  (click)="editForm()">
                                     Update<i class="fa fa-angle-right"></i>
+                                </a> &nbsp;
+                                <a type="submit" class="btn btn-template wide next"  (click)="nextForm()">
+                                    Next<i class="fa fa-angle-right"></i>
                                 </a>
                             </div>
                         </div>
@@ -261,7 +294,7 @@
                         </li>
 
                         <li class="d-flex justify-content-between">
-                            <img src={{product_details[0].imagepath}} width="100%" height="auto" />
+                            <img src={{imageBaseUrl+product_details[0].imagepath}} width="100%" height="auto" />
                         </li> 
                     </ul>
                 </div>

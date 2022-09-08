@@ -25,7 +25,7 @@ import { LandingComponent } from './customer/landing/landing.component';
 import { OrderConfirmComponent } from './customer/order-confirm/order-confirm.component';
 import { OrderItemDetailsComponent } from './customer/order-item-details/order-item-details.component';
 import { ProductCategoryComponent } from './customer/product-category/product-category.component';
-import { ShoppingCartComponent } from './customer/shopping-cart/shopping-cart.component';
+
 import { DocumentverificationComponent } from './Admin/documentverification/documentverification.component';
 import { AppHomeComponent } from './home/app-home/app-home.component';
 
@@ -75,8 +75,11 @@ import { DeliverLoginCreationComponent } from './Admin/deliver-login-creation/de
 import { PublicCartComponent } from './customer/cart_without_login/public-cart/public-cart.component';
 import { PublicDirectCartComponent } from './customer/cart_without_login/public-direct-cart/public-direct-cart.component';
 import { VendorReassignComponent } from './Vendor/vendor-reassign/vendor-reassign.component';
+import { DashboardComponent } from './logistics/dashboard/dashboard.component';
+import { HubprofileComponent } from './logistics/hubprofile/hubprofile.component';
 import { MasterPincodeComponent } from './Master/master-pincode/master-pincode.component';
 import { HubRouteComponent } from './Admin/hub-route/hub-route.component';
+import { VendortohubComponent } from './logistics/vendortohub/vendortohub.component';
 import { MasterTransportComponent } from './Master/master-transport/master-transport.component';
 import { MasterCountryComponent } from './Master/master-country/master-country.component';
 import { MasterStateComponent } from './Master/master-state/master-state.component';
@@ -84,6 +87,46 @@ import { MasterCityComponent } from './Master/master-city/master-city.component'
 import { ConsignmentComponent } from './Vendor/consignment/consignment.component';
 import { ItemHandoverComponent } from './Vendor/item-handover/item-handover.component';
 import { ItemHandoverListComponent } from './Vendor/item-handover-list/item-handover-list.component';
+import { ManagefacilitationcenterComponent } from './logistics/managefacilitationcenter/managefacilitationcenter.component';
+
+import { TestPageComponent } from './Master/test-page/test-page.component';
+import { HubConsignmentListComponent } from './HubManager/hub-consignment-list/hub-consignment-list.component';
+
+import { HubShippingListComponent } from './HubManager/hub-shipping-list/hub-shipping-list.component';
+import { HubShippedComponent } from './HubManager/hub-shipped/hub-shipped.component';
+import { HubArrivedDestinationComponent } from './HubManager/hub-arrived-destination/hub-arrived-destination.component';
+
+import { AssignItemFromVendorComponent } from './Facilitation/assign-item-from-vendor/assign-item-from-vendor.component';
+import { FcConsignmentListComponent } from './Facilitation/fc-consignment-list/fc-consignment-list.component';
+import { NewOrderListComponent } from './Vendor/new-order-list/new-order-list.component';
+import { FcFacilitationToCustomerComponent } from './Facilitation/fc-facilitation-to-customer/fc-facilitation-to-customer.component';
+import { FcFacilitationToHubComponent } from './Facilitation/fc-facilitation-to-hub/fc-facilitation-to-hub.component';
+import { DeliveryToCustomerComponent } from './Delivery/delivery-to-customer/delivery-to-customer.component';
+
+import { HubtofacilitationcenterComponent } from './HubManager/hubtofacilitationcenter/hubtofacilitationcenter.component';
+import { FacilitationcenterRouteComponent } from './HubManager/facilitationcenter-route/facilitationcenter-route.component';
+
+import { VendorVerifyComponent } from './Admin/vendor-verify/vendor-verify.component';
+import { CreateHubVehicleComponent } from './HubManager/create-hub-vehicle/create-hub-vehicle.component';
+import { MasterVehicleTypeComponent } from './Master/master-vehicle-type/master-vehicle-type.component';
+import { AssignedBatchListComponent } from './HubManager/assigned-batch-list/assigned-batch-list.component';
+import { FcHubOrHubFcAssignComponent } from './HubManager/fc-hub-or-hub-fc-assign/fc-hub-or-hub-fc-assign.component';
+import { FcToHubDeliveryComponent } from './Delivery/fc-to-hub-delivery/fc-to-hub-delivery.component';
+import { HubToFcDeliveryComponent } from './Delivery/hub-to-fc-delivery/hub-to-fc-delivery.component';
+import { MasterFacilitationComponent } from './Master/master-facilitation/master-facilitation.component';
+import { MapFacilitationPincodeComponent } from './Master/map-facilitation-pincode/map-facilitation-pincode.component';
+import { HubToHubAssignComponent } from './HubManager/hub-to-hub-assign/hub-to-hub-assign.component';
+import { ShoppingCartComponent } from './customer/shopping-cart/shopping-cart.component';
+import { AddMultipleimageComponent } from './Vendor/add-multipleimage/add-multipleimage.component';
+import { HubManagerListComponent } from './Admin/hub-manager-list/hub-manager-list.component';
+import { FacilitationManagerListComponent } from './Admin/facilitation-manager-list/facilitation-manager-list.component';
+import { SendHubToHubComponent } from './Delivery/send-hub-to-hub/send-hub-to-hub.component';
+import { ReceiveHubToHubComponent } from './Delivery/receive-hub-to-hub/receive-hub-to-hub.component';
+import { HubManagerLoginCreationComponent } from './Admin/hub-manager-login-creation/hub-manager-login-creation.component';
+import { CreateFacilitationComponent } from './Admin/create-facilitation/create-facilitation.component';
+import { FacilitationConsignmentComponent } from './Facilitation/facilitation-consignment/facilitation-consignment.component';
+
+
 
 
 
@@ -98,7 +141,7 @@ const routes: Routes = [
   //{path: 'search-result/:search', component: SearchresultComponent},
 
 // Super Admin
-   {path:'admindashboard',component:AdminDashboardComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
+ {path:'admindashboard',component:AdminDashboardComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
  {path:'addproduct', component:AddProductComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
  {path:'addproductspecification/:productid', component:AddProductSpecificationComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
  {path:'productquestionset/:productid', component:ItemSpecificationForVendorComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
@@ -116,9 +159,21 @@ const routes: Routes = [
  {path:'vendor_list',component:VendorListComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
  {path:'customer_list',component:CustomerListComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
  {path:'item_list',component:ShowAllItemListComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
- {path:'create_delivery_executive',component:DeliverLoginCreationComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
+
  {path:'hub_route',component:HubRouteComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
  {path:'master_transport',component:MasterTransportComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
+ {path:'logistics/dashboard',component:DashboardComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
+ {path:'logistics/Managehub',component:HubprofileComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
+ {path:'logistics/Vendortohub',component:VendortohubComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
+ {path:'logistics/Managefacilitationcenter/:hub_id',component:ManagefacilitationcenterComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
+ {path:'hub_manager_login',component:HubManagerLoginCreationComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
+ {path:'create_falilitation_login',component:CreateFacilitationComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
+ {path:'verify_vendor',component:VendorVerifyComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
+ {path:'master_vehicle_type',component:MasterVehicleTypeComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
+ {path:'hub_manager_list',component:HubManagerListComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
+ {path:'facilitation_manager_list',component:FacilitationManagerListComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
+
+
  // Vendor
  {path:'vendordashboard', component:VendorDashboardComponent,canActivate: [AuthGuard],data: {role: 'Vendor'}},
  {path:'additemspecification/:itemid', component:AddItemSpecificationComponent,canActivate: [AuthGuard],data: {role: 'Vendor'}},
@@ -137,14 +192,16 @@ const routes: Routes = [
  {path:'consignment',component:ConsignmentComponent,canActivate: [AuthGuard],data: {role: 'Vendor'}},
  {path:'item_handover',component:ItemHandoverComponent,canActivate: [AuthGuard],data: {role: 'Vendor'}},
  {path:'item_handover_list',component:ItemHandoverListComponent,canActivate: [AuthGuard],data: {role: 'Vendor'}},
- 
+ {path:'new_order_list',component:NewOrderListComponent,canActivate: [AuthGuard],data: {role: 'Vendor'}},
+ {path:'add_image/:itemid',component:AddMultipleimageComponent,canActivate: [AuthGuard],data: {role: 'Vendor'}},
+
 // Customer
 
 {path:'landingcategory',component:LandingCategoryComponent},
 {path:'productcategory/:addcatid',component:ProductCategoryComponent},
 {path:'home/itemdetails1/:itemid', component:LandingItemDetailsComponent},
 {path:'home/itemdetails/:itemid', component:LandingItemDetailsComponent},
-{path: 'search-result/:search', component: SearchresultComponent},
+{path:'search-result/:search', component: SearchresultComponent},
  {path:'cart',component:ShoppingCartComponent},
  {path:'cart/address',component:CartCheckOutAddressComponent},
  {path:'cart/payment',component:CartCheckOutPaymentComponent,canActivate: [AuthGuard],data: {role: 'Customer'}},
@@ -164,10 +221,41 @@ const routes: Routes = [
  {path:'public_direct_cart', component:PublicDirectCartComponent},
 
  // Delivery
- {path:'accept_delivery', component:AcceptDeliveryComponent,canActivate: [AuthGuard],data: {role: 'Delivery'}},
+ {path:'vendor_to_facilitation', component:AcceptDeliveryComponent,canActivate: [AuthGuard],data: {role: 'Delivery'}},
+ {path:'deliver_to_customer', component:DeliveryToCustomerComponent,canActivate: [AuthGuard],data: {role: 'Delivery'}},
+  {path:'fc_to_hub_delivery', component:FcToHubDeliveryComponent,canActivate: [AuthGuard],data: {role: 'Delivery'}},
+  {path:'hub_to_fc_delivery', component:HubToFcDeliveryComponent,canActivate: [AuthGuard],data: {role: 'Delivery'}},
+  {path:'send_hub_to_hub', component:SendHubToHubComponent,canActivate: [AuthGuard],data: {role: 'Delivery'}},
+  {path:'receive_hub_to_hub', component:ReceiveHubToHubComponent,canActivate: [AuthGuard],data: {role: 'Delivery'}},
+
+  // Hub Manager
+  {path:'hub_consignment_list', component:HubConsignmentListComponent,canActivate: [AuthGuard],data: {role: 'HubManager'}},
+
+  {path:'hub_shipping_list', component:HubShippingListComponent,canActivate: [AuthGuard],data: {role: 'HubManager'}},
+  {path:'hub_shipped', component:HubShippedComponent,canActivate: [AuthGuard],data: {role: 'HubManager'}},
+  {path:'hub_arrived_destination', component:HubArrivedDestinationComponent,canActivate: [AuthGuard],data: {role: 'HubManager'}},
+  {path:'create_delivery_executive',component:DeliverLoginCreationComponent,canActivate: [AuthGuard],data: {role: 'HubManager'}},
+
+  {path:'hubtofacilitationcenter', component:HubtofacilitationcenterComponent,canActivate: [AuthGuard],data: {role: 'HubManager'}},
+  {path:'facilitationcenter_route', component:FacilitationcenterRouteComponent,canActivate: [AuthGuard],data: {role: 'HubManager'}},
+  {path:'assignedbatchlist', component:AssignedBatchListComponent,canActivate: [AuthGuard],data: {role: 'HubManager'}},
+  {path:'create_hub_vehicle', component:CreateHubVehicleComponent,canActivate: [AuthGuard],data: {role: 'HubManager'}},
+  {path:'fc_hub_or_hub_fc', component:FcHubOrHubFcAssignComponent,canActivate: [AuthGuard],data: {role: 'HubManager'}},
+  {path:'hub_to_hub', component:HubToHubAssignComponent,canActivate: [AuthGuard],data: {role: 'HubManager'}},
+
+
+
+// Facilitation
+{path:'assign_item_from_vendor',component:AssignItemFromVendorComponent,canActivate: [AuthGuard],data: {role: 'FacilitationCenter'}},
+{path:'fc_consignment_list',component:FcConsignmentListComponent,canActivate: [AuthGuard],data: {role: 'FacilitationCenter'}},
+{path:'fc_facilitation_to_customer',component:FcFacilitationToCustomerComponent,canActivate: [AuthGuard],data: {role: 'FacilitationCenter'}},
+{path:'fc_facilitation_to_hub',component:FcFacilitationToHubComponent,canActivate: [AuthGuard],data: {role: 'FacilitationCenter'}},
+{path:'facilitation_consignment',component:FacilitationConsignmentComponent,canActivate: [AuthGuard],data: {role: 'FacilitationCenter'}},
+
 
 // Master
 {path:'test',component:TestComponent},
+{path:'testpage',component:TestPageComponent},
 {path:'masterbanner',component:ContentmanagementComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
 {path:'mastercategory',component:MasterCategoryComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
 {path:'subcategory',component:MasterSubcategoryComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
@@ -185,6 +273,10 @@ const routes: Routes = [
 {path:'master_country',component:MasterCountryComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
 {path:'master_state',component:MasterStateComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
 {path:'master_city',component:MasterCityComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
+{path:'master_facilitation',component:MasterFacilitationComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
+{path:'map_facilitation_pincode',component:MapFacilitationPincodeComponent,canActivate: [AuthGuard],data: {role: 'SuperAdmin'}},
+
+
 
 
  {path: '**', pathMatch: 'full',component:Error404Component},

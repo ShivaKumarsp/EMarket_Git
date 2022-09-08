@@ -58,7 +58,7 @@ public attributevalue="";
 public itm_id=0;
 public item_list:any;
 public specification_list:any;
-
+imagepath:any;
 public gen="";
 formModel:any;
 public usrnme="";
@@ -101,7 +101,10 @@ public usrnme="";
   all_product_variant_one:any;
   all_product_variant_two:any;
   all_product_variant_two1:any;
+  multiple_image_list:any;
   rating_list:any;
+  base64="data:image/jpeg;base64,";
+  imageBaseUrl='http://124.153.106.183:8015/EMarket_Image';
   all_product_variant_one_new:any[] | undefined = undefined;
   all_product_variant_two_new:any[] | undefined = undefined;
   variant_name1="";
@@ -160,6 +163,7 @@ this.item=this.activateroute.snapshot.paramMap.get("itemid");
     this.allapi.PostData_login(requestFormUrl,data).subscribe(response => {   
       this.similar_item_list=JSON.parse(response.similar_item_list).Table;
       this.specification_list = response.specification_list;
+      this.multiple_image_list = response.multiple_image_list;
       this.rating_list = response.rating_list;
       var rating=0;
       var totalrating=0;
@@ -207,7 +211,8 @@ this.edittemplatesList=this.all_variant_attr_list
       var spec=this.specification_list[0].specificationname;
 
       if (response.item_list != "") {
-          this.item_list = response.item_list[0];         
+          this.item_list = response.item_list[0]; 
+          this.imagepath= this.item_list.imagepath;      
           this.specification= aa(this.specification_list, 'specificationname');
           this.gen = 'active';        
         }
@@ -298,7 +303,8 @@ this.edittemplatesList=this.all_variant_attr_list
         var spec=this.specification_list[0].specificationname;
   
         if (response.item_list != "") {
-            this.item_list = response.item_list[0];         
+            this.item_list = response.item_list[0];   
+            this.imagepath= this.item_list.imagepath;           
             this.specification= aa(this.specification_list, 'specificationname');
             this.gen = 'active';        
           }
@@ -306,7 +312,7 @@ this.edittemplatesList=this.all_variant_attr_list
             if (spec == aa.specificationname) {
             this.spe_details.push(aa);
             }
-        });
+        });    
   
   
       });
@@ -366,7 +372,8 @@ this.edittemplatesList=this.all_variant_attr_list
         var spec=this.specification_list[0].specificationname;
   
         if (response.item_list != "") {
-            this.item_list = response.item_list[0];         
+            this.item_list = response.item_list[0];   
+            this.imagepath= this.item_list.imagepath;           
             this.specification= aa(this.specification_list, 'specificationname');
             this.gen = 'active';        
           }
@@ -398,7 +405,11 @@ get_specification_details (ss:any) {
   
 }
 
+change_image(ss:any)
+{
+  this.imagepath=ss.image_url;
 
+}
 
 add_to_cart_old(_ss:any)
 {
@@ -544,6 +555,7 @@ else
 
       single_checkout(_ss:any)
       {
+     
         let userid=Number(localStorage.getItem('userid'));
                if(userid==0)
         {  
@@ -599,7 +611,9 @@ else
         }    
        
         } 
-    userLogin = () => {      
+
+    userLogin = () => {   
+      alert(123)   
       this.templateformdata.UserName = this.userName;
       this.templateformdata.Password = this.password;  
       this.templateformdata.role ='Customer';  

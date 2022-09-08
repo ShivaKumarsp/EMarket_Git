@@ -12,21 +12,21 @@ import Swal from 'sweetalert2';
 })
 export class MasterAttributeValueComponent implements OnInit {
 
-  
+
   constructor(private httpClient: HttpClient,
     private router: Router,
     private allapi:AllapiService,
     private formBuilder:FormBuilder)  { this.form = formBuilder.group({
      attr_name:new FormControl('',[Validators.required]),
-     attr_value:new FormControl('',[Validators.required]),
+     attr_value:new FormControl('',[Validators.required,Validators.pattern("^[a-zA-Z_ ]*$")]),
      attr_value_code:new FormControl('',[Validators.required]),
       }); }
-  
+
       page: number = 1;
       count: number = 0;
       tableSize: number = 7;
       tableSizes: any = [3, 6, 9, 12];
- 
+
     public form: FormGroup;
    validation_list:any;
    attrname_dd:any
@@ -49,6 +49,10 @@ export class MasterAttributeValueComponent implements OnInit {
    savedata()
    {
     this.submitted = true;
+    if(this.form.value.attr_value.trim() ==''){
+      this.form.controls['attr_value'].setErrors({'required': true})
+      return ;
+    }
     if (this.form.invalid) {
       return;
     }
@@ -66,9 +70,8 @@ export class MasterAttributeValueComponent implements OnInit {
        {
          if(promise.status=="Insert")
          {
-           this.attribute_name_id="";
-           this.attribute_value="";
-           this.attribute_code="";
+           this.submitted=false;
+           this.form.reset();
            this.attrname_dd=promise.attrname_dd;
            this.attrvalue_list=promise.attrvalue_list;
              Swal.fire({
@@ -78,13 +81,12 @@ export class MasterAttributeValueComponent implements OnInit {
                  showConfirmButton: false,
                  timer: 2000
              })
-            
+
          }
          else if(promise.status=="Update")
          {
-           this.attribute_name_id="";
-           this.attribute_value="";
-           this.attribute_code="";
+          this.submitted=false;
+          this.form.reset();
            this.attrname_dd=promise.attrname_dd;
            this.attrvalue_list=promise.attrvalue_list;
              Swal.fire({
@@ -94,7 +96,7 @@ export class MasterAttributeValueComponent implements OnInit {
                  showConfirmButton: false,
                  timer: 2000
              })
-            
+
          }
          if(promise.status=="Failed")
          {
@@ -107,7 +109,7 @@ export class MasterAttributeValueComponent implements OnInit {
          })
          }
        })
- 
+
    }
    Clear()
    {
@@ -118,7 +120,7 @@ export class MasterAttributeValueComponent implements OnInit {
     this.submitted=false;
     this.form.reset();
    }
- 
+
    edit_specidfication(ss:any)
    {
     this.attribute_value_id=ss.attribute_value_id,
@@ -129,7 +131,7 @@ export class MasterAttributeValueComponent implements OnInit {
 
    delete_specidfication(ss:any)
    {
- 
+
    }
    //validation
  get f(){
@@ -140,4 +142,3 @@ export class MasterAttributeValueComponent implements OnInit {
    this.ngOnInit();
  }
  }
- 

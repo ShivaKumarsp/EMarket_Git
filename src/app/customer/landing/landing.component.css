@@ -1,0 +1,17 @@
+a.btn.btn-template.wide.shop-now {
+          background-color: darkmagenta;
+      }
+
+   
+
+.btn.btn-template.wide.next{
+    background-color: darkmagenta;
+    padding: 1%;
+    margin-left: 4%;
+}
+
+.btn.btn-template.wide.next.check{
+    background-color: white;
+    padding: 1%;
+    margin-left: 4%;
+}

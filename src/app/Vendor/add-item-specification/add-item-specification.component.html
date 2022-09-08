@@ -1,3 +1,7 @@
+<ngx-spinner  bdColor="rgba(51,51,51,0.8)"  size="medium"  color="#fff"  type="ball-scale-multiple">
+    <p style="font-size: 20px; color: white">Loading...</p>
+  </ngx-spinner>
+
 <section class="hero hero-page gray-bg padding-small">
     <div class="container">
         <div class="row d-flex">
@@ -24,6 +28,7 @@
                     <li class="nav-item"><a class="nav-link active"
                             [routerLink]="['/app/additemspecification/',itemid]">Item Specification </a></li>
                     <li class="nav-item"><a class="nav-link">Add Item Feature</a></li>
+                    <li class="nav-item"><a class="nav-link">Add Item Images</a></li>
                 </ul>
             </div>
         </div>
@@ -31,21 +36,24 @@
         <!-- {{additional_cat_spec_list_new|keyvalue|json}} -->
         <form  [formGroup]="attribute_select">
             <div class="text-end">
-                <h6 class="my-3">{{itemname}}</h6> 
+                <h6 class="my-3">{{itemname}}</h6>
         </div>
 
-           
+
             <!-- Save Specification -->
             <div *ngIf="edititem == false">
             <div class="my-2 container" *ngFor="let a of additional_cat_spec_list_new|keyvalue" >
-
+                <!-- {{additional_cat_spec_list_new|json}} -->
                 <h3 class="text-primary">{{a.key}} </h3>
                 <div class="card card-body my-3 p-2" *ngFor="let b of a.value">
 
                     <div class="row">
                         <div class="col-sm-6 col-md-6">
                             <h6>{{b.attributename}} <b style="color: red;">*</b></h6>
-                            <input class="form-control" type="text" 
+                            <input class="form-control" type="text"
+
+
+
                             *ngIf="b.enablevalue==true"
                                 (change)="changevalue($event,b.attributename_id,b.enablevalue, b.specificationid)">
 
@@ -54,14 +62,17 @@
                                 <ng-template [ngIf]="match.key == b.attributename_id">
                                     <div class="form-floating" *ngIf="b.enablevalue==false"
                                        > <select class="form-select"
-                                            aria-label="Floating label select" formControlName="att_select_val_id"
-                                            (change)="changevalue($event,b.attributename_id,b.enablevalue,b.specificationid)">
-                                            <option value="" selected>select</option>
+                                            aria-label="Floating label select"  formControlName="att_select_val_id"
+                                            (change)="changevalue($event,b.attributename_id,b.enablevalue,b.specificationid)" >
+                                            <option value="">select</option>
                                             <option *ngFor="let matchs of match.value"
                                                 value="{{matchs.attributevalue_id}}">
-                                                {{matchs.attributevalue}}                                             
+                                                {{matchs.attributevalue}}
                                             </option>
                                         </select>
+                                          <!-- <div *ngIf="submitted && match.value && f['att_select_val_id'].errors" class="invalid-feedback">
+                                            <div *ngIf="f['att_select_val_id'].errors['required']">Enter/Select Required Field</div>
+                                          </div>  -->
                                     </div>
                                 </ng-template>
 
@@ -69,8 +80,8 @@
                         </div>
 
                     </div>
-                    
-                   
+
+
                 </div>
             </div>
         </div>
@@ -83,21 +94,21 @@
                         <div class="col-sm-6 col-md-6">
                             <h6>{{attributename}}<b style="color: red;">*</b></h6>
             <input class="form-control" type="text" formControlName="customedata" [(ngModel)]="custon_data" *ngIf="enablecuston==true"
-                (change)="changeeditvalue(specificationid,attributenameid,enablecuston,$event)">      
-                                   
+                (change)="changeeditvalue(specificationid,attributenameid,enablecuston,$event)">
+
                                         <div class="form-floating" *ngIf="enablecuston==false"
                                            > <select class="form-select"
                                                 aria-label="Floating label select" formControlName="att_select_val_id"
                                                 (change)="changeeditvalue(specificationid,attributenameid,enablecuston,$event)">
                                                 <option value="" selected>select</option>
-                                                <option *ngFor="let matchs of attribute_value_list_edit" 
+                                                <option *ngFor="let matchs of attribute_value_list_edit"
                                                     value="{{matchs.attributevalue_id}}" [selected]="matchs.attributevalue_id==attributevalueid">
-                                                    {{matchs.attributevalue}}                                             
+                                                    {{matchs.attributevalue}}
                                                 </option>
                                             </select>
                                         </div>
-                                 
-                           
+
+
                         </div>
 
                     </div>
@@ -126,7 +137,7 @@
                     <div class="tab-content">
 
                         <h5 class="my-4">Specification Details</h5>
-                        <div class="col-md-4" style="float: right">                    
+                        <div class="col-md-4" style="float: right">
                             <input class="form-control form-control-sm" formControlName="v_search" type="text" [(ngModel)]="search" placeholder="search here...">
                         </div>
                         <table class="table table-hover table-responsive-md small">
@@ -148,7 +159,7 @@
                                     <td>
                                         <a class="btn btn-primary btn-sm" (click)="edit_specification(item)"><i
                                                 class="fa fa-edit"></i></a>
-                                       
+
                                     </td>
                                 </tr>
 

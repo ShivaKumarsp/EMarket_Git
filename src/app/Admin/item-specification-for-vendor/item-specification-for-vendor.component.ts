@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { requiredTrue } from '@rxweb/reactive-form-validators';
 import { AllapiService } from 'src/app/apiservice/allapi.service';
 import Swal from 'sweetalert2';
 
@@ -15,7 +16,7 @@ export class ItemSpecificationForVendorComponent implements OnInit {
   count: number = 0;
   tableSize: number = 7;
   tableSizes: any = [3, 6, 9, 12];
-
+  submitted=false
   public form: FormGroup;
   constructor(private httpClient: HttpClient,
     private http: HttpClient,
@@ -23,7 +24,8 @@ export class ItemSpecificationForVendorComponent implements OnInit {
    private allapi:AllapiService,
    private formBuilder:FormBuilder,
    private activateroute:ActivatedRoute) { this.form = formBuilder.group({
-    acname:new FormControl('',[Validators.required]), 
+    acname:new FormControl('',[Validators.required]),
+    attname:new FormControl('',[Validators.required]),
     specname:new FormControl('',[Validators.required])
 
   }); }
@@ -50,7 +52,7 @@ productname="";
 
   ngOnInit(): void {
     this.productid=this.activateroute.snapshot.paramMap.get("productid");
-    
+
     this.initSigup();
     //this.productid=165;//window.sessionStorage.getItem('productid');
     var data = {
@@ -73,8 +75,8 @@ productname="";
 
   }
 
-  onCheckboxChange(e:any) { 
-   
+  onCheckboxChange(e:any) {
+
     if (e.target.checked) {
       this.enable_custom=true;
     } else {
@@ -82,8 +84,8 @@ productname="";
     }
   }
 
-  onCheckboxChange_second(e:any) { 
-   
+  onCheckboxChange_second(e:any) {
+
     if (e.target.checked) {
       this.is_variant_attribute=true;
     } else {
@@ -105,11 +107,16 @@ let url='AddProduct/getproductattributelist/';
 
     this.allapi.PostData(url, data).subscribe(promise=> {
         this.productattributelist = promise.productattributelist;
-       
+
     });
 }
 
 savedata() {
+  this.submitted=true
+  //console.log('error',this.form.invalid)
+  if(this.form.invalid){
+    return
+  }
   this.btn_dissable=false;
   var data = {
       "product_specid":this.product_specification_id,
@@ -153,7 +160,9 @@ savedata() {
           })
       }
 
-
+// this.form.reset()
+// this.submitted=true
+window.location.reload()
   })
 this.btn_dissable=true;
   //}
@@ -165,10 +174,10 @@ this.btn_dissable=true;
 }
 initSigup() {
   this.form = new FormGroup({
-    specname:new FormControl('',[Validators.required]),
+      specname:new FormControl('',[Validators.required]),
       attname:new FormControl('',[Validators.required]),
-      customvalue:new FormControl(),  
-      variantvalue:new FormControl()    
+      customvalue:new FormControl(),
+      variantvalue:new FormControl()
   });
 }
 editmasterproductspec (ss:any) {
@@ -194,9 +203,9 @@ editgetattribute (sub:any) {
 let url='AddProduct/edit_getproductattributelist/';
 
     this.allapi.PostData(url, data).subscribe(promise=> {
-      
+
         this.productattributelist = promise.productattributelist;
-      
+
     });
 }
 

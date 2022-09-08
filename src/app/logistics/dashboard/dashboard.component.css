@@ -1,0 +1,6 @@
+.dash-card > .card :hover{
+  background-color: slateblue;
+}
+.dash-card > .card{
+  border:5px solid white;
+}

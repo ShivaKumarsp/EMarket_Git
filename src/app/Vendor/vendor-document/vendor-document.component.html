@@ -31,6 +31,7 @@
             <div class="my-4 p-4">
               <ul>
                 <li>Kindly Skip the field which you don't want to update.</li>
+                <li>For sole proprietorship Business, <b>Business  Pancard is not Mandatory</b></li>
               </ul>
 
             </div>
@@ -41,14 +42,20 @@
 
                 {{addform(other.mdid,other.mddocumentname,other)}}
                 <label for="exampleInputEmail1" class="form-label p-0 m-0">{{other.mddocumentname}} <br/> <span [id]="'old'+other.mdid">{{tempModel}}</span></label>
-                <input type="text" formControlName="control{{other.mdid}}"  [pattern]="other.mdpattern" class="form-control" [id]="'ids'+other.mdid"  [attr.aria-describedby]="'test'+other.md_id" aria-describedby="emailHelp" >
+                <input type="text" formControlName="control{{other.mdid}}"  [pattern]="other.mdpattern"
+                class="form-control" [id]="'ids'+other.mdid"  [attr.aria-describedby]="'test'+other.md_id" aria-describedby="emailHelp" [ngClass]="{ 'is-invalid': submitted && f['tempController'].errors }" required="">
                 <div [id]="'test'+other.mdid" class="form-text">
+                  <div >
+
+                    <!-- {{tempController}} -->
+                    <div class="small text-danger" *ngIf="returnError(tempController)">Please enter the valid details</div>
+                  </div>
                 </div>
 
               </div>
               <div class="text-center my-2">
                 <!-- <p (click)="checkForm()">Click</p> -->
-                <button class="btn btn-sm btn-primary" [disabled]="!forms.valid"> Save </button>
+                <button class="btn btn-primary" [disabled]="!forms.valid"> Save </button>
             </div>
             </form>
           </div>
@@ -88,7 +95,6 @@
                                         <td>{{data.status}}</td>
                                         <td>{{data.approveorrejectdescription}}</td>
                                         <td>
-
                                             <a class="btn btn-success btn-sm text-decoration-none" role="button"  *ngIf="data.status=='Verified'" ><i class="fa fa-check"></i></a>
                                             <a class="btn btn-warning btn-sm text-decoration-none" role="button"  *ngIf="data.status=='Pending'" ><i class="fa fa-clock-o"></i></a>
                                             <a class="btn btn-danger btn-sm text-decoration-none" role="button"  *ngIf="data.status=='Reject'" ><i class="fa fa-times"></i></a>
@@ -100,6 +106,17 @@
 
 
                         </div>
+
+                        <div class="card-header bg-light" *ngIf="is_doc_verify==0 || is_profile_verify==false">
+                          <div class="d-flex justify-content-around">
+                            <h6>
+                              <p *ngIf="is_doc_verify==0" style="color:red;">Please Upload Document(If document Uploded Please Wait Admin Will Verify)</p>
+                              <p *ngIf="is_profile_verify==false" style="color:red;">Please Update Profile
+                                 <b style="color:blue;"><a href="/app/vendorprofile">click Here</a></b></p>
+                                </h6>
+                                </div>
+
+                      </div>
                     </div>
                 </div>
 

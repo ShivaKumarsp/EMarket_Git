@@ -1,7 +1,10 @@
+<!-- <ngx-spinner  bdColor="rgba(51,51,51,0.8)"  size="medium"  color="#fff"  type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>  -->
 <header class="header fixed-top">
 
   <nav class="navbar navbar-expand-lg">
-      <div class="search-area">
+      <!-- <div class="search-area">
           <div class="search-area-inner d-flex align-items-center justify-content-center">
               <div class="close-btn"><i class="icon-close"></i></div>
               <form >
@@ -11,14 +14,14 @@
                   </div>
               </form>
           </div>
-      </div>
+      </div> -->
       <div class="container-fluid">
          <a type="button" (click)="redirect_home()"  class="navbar-brand">
               Market Place
           </a>
           <button type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" class="navbar-toggler navbar-toggler-right"><i class="fa fa-bars"></i></button>
-      
-          <div id="navbarCollapse" class="collapse navbar-collapse">  
+
+          <div id="navbarCollapse" class="collapse navbar-collapse">
 
               <ul class="navbar-nav mb-2 mb-lg-0 dropdown show" style="cursor:pointer">
                 <li class="nav-item" *ngFor="let cat of category_list">
@@ -29,18 +32,18 @@
                       <a id="lvl2" class="dropdown-item" (click)="get_addcategory(sub)">{{sub.subcategory_name}}</a>
                       <ul aria-labelledby="lvl2" class="dropdown-menu">
                         <li *ngFor="let add of addcategory_list_new">
-                          <a  class="dropdown-item">{{add.additionalcatname}}</a>    
-                        </li> 
+                          <a  class="dropdown-item">{{add.additionalcatname}}</a>
+                        </li>
                       </ul>
-                    </li>    
+                    </li>
                   </ul>
-                </li>               
+                </li>
             </ul>
-          
+
 
           <!-- Vendor And Admin Start -->
          <ul class="navbar-nav mb-2 mb-lg-0 dropdown show" style="cursor:pointer"
-         *ngIf="role!='Customer'"> 
+         *ngIf="role!='Customer'">
               <li class="nav-item dropdown" *ngFor="let menu of module_list" >
                   <a id="navbarDropdownMenuLinka" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link" (click)="get_page(menu)">
                     <i class="fa fa-angle-down" style="font-size: 11px;"> {{menu.mmname}}</i></a>
@@ -50,13 +53,13 @@
                       </li>
 
                   </ul>
-              </li>                                     
-             </ul> 
+              </li>
+             </ul>
           <!-- Vendor And Admin End -->
 
-             
+
 <!-- Customer and Public Start -->
-                 <div class="right-col d-flex align-items-lg-center flex-column flex-lg-row" 
+                 <div class="right-col d-flex align-items-lg-center flex-column flex-lg-row"
                  style=" margin-left: auto;" >
                   <div class="search" *ngIf="role=='Customer' || role_v=='Public'">
                     <i class="fa fa-search" style="font-size: 11px;" (click)="openModal()"></i>
@@ -65,9 +68,9 @@
                       <a type="button" id="cartdetails" (click)="show_add_to_cart()"   aria-haspopup="true" aria-expanded="false" >
                         <div class="cart-no" *ngIf="cartcount>0">{{cartcount}}</div>
                           <i  class="fa fa-shopping-cart"></i>
-                      </a>                            
-                         
-                  </div>                 
+                      </a>
+
+                  </div>
               </div>
 <!-- Customer and Public End -->
                <div class="user" *ngIf="v_role!='Customer' && v_role!='Public'">
@@ -77,13 +80,13 @@
               <div class="user" *ngIf="role_v!='Public' && role!='Customer'">
                 <a type="button" aria-haspopup="true" style="cursor:pointer" aria-expanded="false" class="nav-link active" style="font-size: 11px;" (click)="logout()">LogOut</a>
               </div>
-             
+
             <div class="dropdown show" *ngIf="role_v=='Public'">
                 <!-- muliple dropdown -->
-               
+
                   <a id="navbarDropdownMenuLinka"  data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link" style="font-size: 11px;" type="button">Login<i class="fa fa-angle-down"></i></a>
                     <ul aria-labelledby="navbarDropdownMenuLinka" class="dropdown-menu dropdown-menu-end text-dark">
-                      
+
                       <li>
                         <a class="nav-link" aria-current="page" type="button" (click)="click_login('Customer')">
                           Customer
@@ -104,8 +107,18 @@
                           Delivery
                         </a>
                       </li>
+                      <li>
+                        <a class="nav-link" aria-current="page" type="button" (click)="click_login('HubManager')">
+                          Hub Manager
+                        </a>
+                      </li>
+                      <li>
+                        <a class="nav-link" aria-current="page" type="button" (click)="click_login('FacilitationCenter')">
+                          Facilitation
+                        </a>
+                      </li>
                     </ul>
-              
+
               </div>
          <!-- Customer And Public Start -->
               <ul class="navbar-nav mb-2 mb-lg-0 dropdown show" style="cursor:pointer"
@@ -121,12 +134,12 @@
                         <a type="button" aria-haspopup="true" style="cursor:pointer" aria-expanded="false" class="nav-link" style="font-size: 11px;" (click)="logout()">LogOut</a>
                       </li>
                     </ul>
-                </li>                                     
+                </li>
             </ul>
  <!-- Customer And Public End -->
-            
 
-            
+
+
           </div>
       </div>
   </nav>
@@ -141,42 +154,43 @@
       <div class="modal-content">
         <div class="modal-header border-0">
           <h5 class="modal-title" id="exampleModalLabel">
-              
+
             </h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           <!-- <button type="button" class="btn-close" (click)="doSomething()"></button>  -->
         </div>
         <div class="modal-body border-0">
-  
+
             <div class="'row">
               <div class="col-lg-12">
-  
+
                 <!-- Login -->
-  
+
                 <div class="block" id="customerLogin"  *ngIf="isVisible == 0">
                   <div class="block-header">
                     <h5>Login</h5>
                 </div>
                   <div class="block-body">
-  
-                    <div > 
-                    
-                      <p class="lead">Already our {{getrole}}?</p>
+
+                    <div>
+
+                      <p class="lead">Already our {{getrole}}? </p>
+
                       <form  [formGroup]="customerLogin" >
                         <div class="my-2" >
                           <label for="cemail" class="form-label">Username/Email/Mobile</label>
-                          <input  type="text" class="form-control" formControlName="name" 
+                          <input  type="text" (keypress)="keyPressSpace($event)" class="form-control" formControlName="name"
                           [ngClass]="{ 'is-invalid': submitted && f['name'].errors }" required>
                           <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
-                            <div *ngIf="f['name'].errors['required']">Enter User Name</div> 
+                            <div *ngIf="f['name'].errors['required']">Enter User Name</div>
                           </div>
                         </div>
                         <div class="my-2"  >
                           <label for="cpassword" class="form-label">Password</label>
-                          <input [(ngModel)]='pwd' type="password" class="form-control" formControlName="pass"
+                          <input (paste)="(false)" (keypress)="keyPressSpace($event)" [(ngModel)]='pwd' type="password" class="form-control" formControlName="pass"
                            [ngClass]="{ 'is-invalid': submitted && f['pass'].errors }" required>
                           <div *ngIf="submitted && f['pass'].errors" class="invalid-feedback">
-                            <div *ngIf="f['pass'].errors['required']">Enter Password</div> 
+                            <div *ngIf="f['pass'].errors['required']">Enter Password</div>
                           </div>
                         </div>
                         <div class="my-2">
@@ -185,194 +199,232 @@
                         </div>
                         <div class="d-flex justify-content-end">
                           <button type="submit"   class="btn btn-primary m-2" (click)="userLoginProcess()" ><i class="fa fa-sign-in"></i> Log in</button>
-                          <button type="button" class="btn btn-primary m-2" (click)="showForm(1)"  *ngIf="getrole!='Admin'"><i class="fa fa-sign-in" ></i> Register</button>
+                          <button type="button" class="btn btn-primary m-2" (click)="showForm(1)"  *ngIf="getrole!='Admin' && getrole!='Delivery' && getrole!='HubManager'  && getrole!='FacilitationCenter'"><i class="fa fa-sign-in" ></i> Register</button>
                         </div>
                       </form>
-  
+
                     </div>
                   </div>
-                </div> 
-  
-  
+                </div>
+
+
                 <!-- Registration -->
-  
+
                 <div class="block"  *ngIf="isVisible == 1">
                   <div class="block-header">
                     <h5>Registration</h5>
                   </div>
-                  <div class="block-body"> 
-                    <div >                                      
+                  <div class="block-body">
+                    <div >
                       <p class="lead">Register Yourself.</p>
                       <form  [formGroup]="customerregister">
                         <div class="my-2">
                           <label for="crusername" class="form-label">User Name</label>
-                          <input id="crusername" type="text" class="form-control" formControlName="r_username" 
+                          <input id="crusername" (keypress)="keyPressSpace($event)" type="text" class="form-control" formControlName="r_username"
                           [ngClass]="{ 'is-invalid': submitted && g['r_username'].errors }" required>
                           <div *ngIf="submitted && g['r_username'].errors" class="invalid-feedback">
-                            <div *ngIf="g['r_username'].errors['required']">Enter User Name</div> 
+                            <div *ngIf="g['r_username'].errors['required']">Enter User Name</div>
+                            <div *ngIf="g['r_username'].errors && g['r_username'].errors['minlength']">User Name Minimun 3 Character</div>
                           </div>
                         </div>
                         <div class="my-2">
-                          <label for="cremail" class="form-label">Email</label>
-                          <input id="cremail" type="text" class="form-control" formControlName="r_email" 
+                          <label for="cremail"  class="form-label">Email</label>
+                          <input id="cremail" (keypress)="keyPressSpace($event)" type="text" class="form-control" formControlName="r_email"
                           [ngClass]="{ 'is-invalid': submitted && g['r_email'].errors }" required>
                           <div *ngIf="submitted && g['r_email'].errors" class="invalid-feedback">
-                            <div *ngIf="g['r_email'].errors['required']">Enter Email</div> 
+                            <div *ngIf="g['r_email'].errors['required']">Enter Email</div>
+                            <div *ngIf="g['r_email'].errors && g['r_email'].errors['pattern']">Please Enter Valid Email</div>
                           </div>
                         </div>
                         <div class="my-2" >
                           <label for="cremail" class="form-label">Phone</label>
-                          <input id="cremail" type="text" class="form-control" formControlName="r_phone" 
-                          minlength="10" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57' [ngClass]="{ 'is-invalid': submitted && g['r_phone'].errors }" required>
+                          <input id="cremail" (keypress)="keyPressSpace($event)" type="text" class="form-control" formControlName="r_phone"
+                          minlength="10" maxlength="10" pattern="^[6-9][0-9]*$" oninput="if(!this.value.match('^[6-9][0-9]*$'))this.value='';" [ngClass]="{ 'is-invalid': submitted && g['r_phone'].errors }" required>
                           <div *ngIf="submitted && g['r_phone'].errors" class="invalid-feedback">
-                            <div *ngIf="g['r_phone'].errors['required']">Enter Phone Number</div> 
+                            <div *ngIf="g['r_phone'].errors['required']">Enter Phone Number</div>
                           </div>
                         </div>
-  
+
                         <div class="my-2">
                           <label for="crpassword" class="form-label">Password</label>
-                          <input id="crpassword" type="password" class="form-control" formControlName="r_pwd" 
-                          [ngClass]="{ 'is-invalid': submitted && g['r_phone'].errors }" required>
-                          <div *ngIf="submitted && g['r_phone'].errors" class="invalid-feedback">
-                            <div *ngIf="g['r_phone'].errors['required']">Enter Password</div> 
+                          <input id="crpassword" (keypress)="keyPressSpace($event)" type="password" class="form-control" formControlName="r_pwd"
+                          [ngClass]="{ 'is-invalid': submitted && g['r_pwd'].errors }" required>
+                          <div *ngIf="submitted && g['r_pwd'].errors" class="invalid-feedback">
+                            <div *ngIf="g['r_pwd'].errors['required']">Enter Password</div>
+                            <div *ngIf="g['r_pwd'].errors && g['r_pwd'].errors['minlength']">Minimun Length 8 Character</div>
+
                           </div>
                         </div>
-  
+
                         <div class="my-2" >
                           <label for="crpassword0" class="form-label">Confirm Password</label>
-                          <input id="crpassword0" type="password" class="form-control" formControlName="r_repwd" 
+                          <input id="crpassword0" (keypress)="keyPressSpace($event)" type="password" class="form-control" formControlName="r_repwd"
                           [ngClass]="{ 'is-invalid': submitted && g['r_repwd'].errors }" required>
                           <div *ngIf="submitted && g['r_repwd'].errors" class="invalid-feedback">
-                            <div *ngIf="g['r_repwd'].errors['required']">Enter Confirm Password</div> 
+                            <div *ngIf="g['r_repwd'].errors['required']">Enter Confirm Password</div>
                           </div>
                         </div>
-  
+
                         <div class="d-flex justify-content-end">
                           <button type="button" (click)="showForm(0)"  class="btn btn-primary m-2"><i class="fa fa-sign-in"></i> Log in</button>
                           <button type="button"  (click)="customerRegistration()" class="btn btn-primary m-2"><i class="fa fa-sign-in"></i> Register</button>
                         </div>
                       </form>
-  
+
                     </div>
-  
+
                   </div>
-                </div>  
-  
+                </div>
+
+                  <!-- for register verify OTP -->
+
+                  <div class="block"   *ngIf="isVisible == 2">
+                    <div class="block-header">
+                      <h5>Verify OTP</h5>
+                  </div>
+                    <div class="block-body">
+
+                      <div >
+
+                        <p class="lead">Check Registered Email/Phone No for OTP</p>
+                        <form [formGroup]="VerifyOtp">
+
+                        <div class="my-2">
+                          <label for="vrotp" class="form-label">VerifyOtp</label>
+                          <input id="vrotp" (keypress)="keyPressSpace($event)" (paste)="(false)" type="text" class="form-control" formControlName="vrotp"
+                          minlength="6" maxlength="6" onkeypress='return event.charCode >= 48 && event.charCode <= 57'  [ngClass]="{ 'is-invalid': submitted && j['vrotp'].errors }" required>
+                          <div *ngIf="submitted && j['vrotp'].errors" class="invalid-feedback">
+                            <div *ngIf="j['vrotp'].errors['required']">Enter OTP</div>
+                          </div>
+                        </div>
+
+                          <div class="d-flex justify-content-end">
+                            <button    class="btn btn-primary m-2" (click)="resend_registration_otp()"><i class="fa fa-sign-in"></i> Resend OTP</button>
+                            <button type="button" class="btn btn-primary m-2" (click)="submit_registration()" ><i class="fa fa-sign-in" ></i> Verify OTP</button>
+                          </div>
+                        </form>
+
+                      </div>
+                    </div>
+                  </div>
+
+
+
                 <!-- Forget Password  -->
                    <div class="block"   *ngIf="isVisible == 4">
                     <div class="block-header">
                       <h5>Forgot Password</h5>
                   </div>
                     <div class="block-body">
-  
-                      <div > 
-                      
+
+                      <div >
+
                         <p class="lead">Enter Your Email/Phone</p>
                         <form [formGroup]="forgetotp">
-                        
+
                         <div class="my-2" >
                           <label for="fremail" class="form-label">Email/Mobile No</label>
-                          <input id="fremail" type="text" class="form-control" formControlName="f_username" 
+                          <input id="fremail" (keypress)="keyPressSpace($event)"  type="text" class="form-control" formControlName="f_username"
                           [ngClass]="{ 'is-invalid': submitted && i['f_username'].errors }" required>
                           <div *ngIf="submitted && i['f_username'].errors" class="invalid-feedback">
-                            <div *ngIf="i['f_username'].errors['required']">Enter Email/Mobile No</div> 
+                            <div *ngIf="i['f_username'].errors['required']">Enter Email/Mobile No</div>
                           </div>
                         </div>
-                        
+
                           <div class="d-flex justify-content-end">
                             <button (click)="showForm(0)"   class="btn btn-primary m-2"><i class="fa fa-sign-in"></i> Log in</button>
                             <button type="button" class="btn btn-primary m-2" (click)="Forgot_submitotp()"  ><i class="fa fa-sign-in" ></i> Send OTP</button>
                           </div>
                         </form>
-  
+
                       </div>
                     </div>
                   </div>
-  
+
                   <!-- for verify OTP -->
-  
+
                   <div class="block"   *ngIf="isVisible == 5">
                     <div class="block-header">
                       <h5>Verify OTP</h5>
                   </div>
                     <div class="block-body">
-  
-                      <div > 
-                      
+
+                      <div >
+
                         <p class="lead">Check Registered Email/Phone No for OTP</p>
-                        <form [formGroup]="VerifyOtp">                        
-                        
+                        <form [formGroup]="VerifyOtp">
+
                         <div class="my-2">
                           <label for="vrotp" class="form-label">VerifyOtp</label>
-                          <input id="vrotp" type="text" class="form-control" formControlName="vrotp" 
+                          <input id="vrotp" (keypress)="keyPressSpace($event)" (paste)="(false)" type="text" class="form-control" formControlName="vrotp"
                           minlength="6" maxlength="6" onkeypress='return event.charCode >= 48 && event.charCode <= 57'  [ngClass]="{ 'is-invalid': submitted && j['vrotp'].errors }" required>
                           <div *ngIf="submitted && j['vrotp'].errors" class="invalid-feedback">
-                            <div *ngIf="j['vrotp'].errors['required']">Enter OTP</div> 
+                            <div *ngIf="j['vrotp'].errors['required']">Enter OTP</div>
                           </div>
                         </div>
-                        
+
                           <div class="d-flex justify-content-end">
                             <button    class="btn btn-primary m-2" (click)="resend_otp()"><i class="fa fa-sign-in"></i> Resend OTP</button>
                             <button type="button" class="btn btn-primary m-2" (click)="submit_registration()" ><i class="fa fa-sign-in" ></i> Verify OTP</button>
                           </div>
                         </form>
-  
+
                       </div>
                     </div>
-                  </div>                 
-                  
-  
+                  </div>
+
+
                    <!--Forget for verify OTP  -->
-  
+
                    <div class="block"   *ngIf="isVisible == 8">
                     <div class="block-header">
                       <h5>Verify OTP</h5>
                   </div>
                     <div class="block-body">
-  
-                      <div > 
-                      
+
+                      <div >
+
                         <p class="lead">Check Registered Email/Phone No for OTP</p>
-                        <form [formGroup]="VerifyOtp">                        
-                        
+                        <form [formGroup]="VerifyOtp">
+
                         <div class="my-2">
                           <label for="vrotp" class="form-label">VerifyOtp</label>
-                          <input id="vrotp" type="text" class="form-control" formControlName="vrotp" 
+                          <input id="vrotp" (keypress)="keyPressSpace($event)" (paste)="(false)" type="text" class="form-control" formControlName="vrotp"
                           minlength="6" maxlength="6" onkeypress='return event.charCode >= 48 && event.charCode <= 57'  [ngClass]="{ 'is-invalid': submitted && j['vrotp'].errors }" required>
                           <div *ngIf="submitted && j['vrotp'].errors" class="invalid-feedback">
-                            <div *ngIf="j['vrotp'].errors['required']">Enter OTP</div> 
+                            <div *ngIf="j['vrotp'].errors['required']">Enter OTP</div>
                           </div>
                         </div>
-                        
+
                           <div class="d-flex justify-content-end">
                             <button    class="btn btn-primary m-2" (click)="forgetresend_otp()"><i class="fa fa-sign-in"></i> Resend OTP</button>
                             <button type="button" class="btn btn-primary m-2" (click)="submit_forget_otp()" ><i class="fa fa-sign-in" ></i> Verify OTP</button>
                           </div>
                         </form>
-  
+
                       </div>
                     </div>
                   </div>
 
                      <!--New Enter Password   -->
-  
+
                      <div class="block"   *ngIf="isVisible == 9">
                       <div class="block-header">
                         <h5>New Enter Password</h5>
                     </div>
                       <div class="block-body">
-    
-                        <div > 
-                        
+
+                        <div >
+
                           <p class="lead">New Enter</p>
-                          <form [formGroup]="enterpassword">                        
-                          
+                          <form [formGroup]="enterpassword">
+
                           <div class="my-2">
                             <label for="vrotp" class="form-label">New Password</label>
-                            <input id="vrotp" type="password" min="6" class="form-control" formControlName="f_password" 
+                            <input id="vrotp" (keypress)="keyPressSpace($event)" (paste)="(false)" type="password" min="6" class="form-control" formControlName="f_password"
                             [ngClass]="{ 'is-invalid': submitted && k['f_password'].errors }" required>
                             <div *ngIf="submitted && k['f_password'].errors" class="invalid-feedback">
-                              <div *ngIf="k['f_password'].errors['required']">Enter New Password</div> 
+                              <div *ngIf="k['f_password'].errors['required']">Enter New Password</div>
                               <div *ngIf="k['f_password'].errors['minlength']">
                                Password must be at least 6 characters
                               </div>
@@ -380,18 +432,18 @@
                           </div>
                           <div class="my-2">
                             <label for="vrotp" class="form-label">Re Enter Password</label>
-                            <input id="vrotp" type="password" class="form-control" formControlName="f_repassword" 
+                            <input id="vrotp" (keypress)="keyPressSpace($event)" type="password" class="form-control" formControlName="f_repassword"
                             [ngClass]="{ 'is-invalid': submitted && k['f_repassword'].errors }" required>
                             <div *ngIf="submitted && k['f_repassword'].errors" class="invalid-feedback">
-                              <div *ngIf="k['f_repassword'].errors['required']">Re-Enter Password</div> 
+                              <div *ngIf="k['f_repassword'].errors['required']">Re-Enter Password</div>
                             </div>
                           </div>
                             <div class="d-flex justify-content-end">
-                            
+
                               <button type="button" class="btn btn-primary m-2" (click)="changepassword()" ><i class="fa fa-sign-in" ></i>Change Password</button>
                             </div>
                           </form>
-    
+
                         </div>
                       </div>
                     </div>
@@ -403,68 +455,101 @@
                       <h5>Login With OTP</h5>
                   </div>
                     <div class="block-body">
-  
-                      <div > 
-                      
+
+                      <div >
+
                         <p class="lead">Enter Your Email/Phone</p>
                         <form [formGroup]="loginwithotp">
-                        
+
                         <div class="my-2" >
                           <label for="fremail" class="form-label">Email/Mobile No</label>
-                          <input id="fremail" type="text" class="form-control" formControlName="otp_username" 
+                          <input id="fremail" (keypress)="keyPressSpace($event)"  type="text" class="form-control" formControlName="otp_username"
                           [ngClass]="{ 'is-invalid': submitted && l['otp_username'].errors }" required>
                           <div *ngIf="submitted && l['otp_username'].errors" class="invalid-feedback">
-                            <div *ngIf="l['otp_username'].errors['required']">Enter Email/Mobile No</div> 
+                            <div *ngIf="l['otp_username'].errors['required']">Enter Email/Mobile No</div>
                           </div>
                         </div>
-                        
+
                           <div class="d-flex justify-content-end">
                             <button (click)="showForm(0)"   class="btn btn-primary m-2"><i class="fa fa-sign-in"></i> Log in</button>
                             <button type="button" class="btn btn-primary m-2" (click)="get_loginwithotpt()"  ><i class="fa fa-sign-in" ></i> Send OTP</button>
                           </div>
                         </form>
-  
+
                       </div>
                     </div>
                   </div>
 
                    <!--Login With OTP Verify  -->
-  
+
                    <div class="block"   *ngIf="isVisible == 11">
                     <div class="block-header">
                       <h5>Verify OTP</h5>
                   </div>
                     <div class="block-body">
-  
-                      <div > 
-                      
+
+                      <div >
+
                         <p class="lead">Check Registered Email/Phone No for OTP</p>
-                        <form [formGroup]="login_otp">                        
-                        
+                        <form [formGroup]="login_otp">
+
                         <div class="my-2">
                           <label for="vrotp" class="form-label">VerifyOtp</label>
-                          <input id="vrotp" type="text" class="form-control" formControlName="login_otp_enter" 
+                          <input id="vrotp" (keypress)="keyPressSpace($event)" (paste)="(false)" type="text" class="form-control" formControlName="login_otp_enter"
                           minlength="6" maxlength="6" onkeypress='return event.charCode >= 48 && event.charCode <= 57'  [ngClass]="{ 'is-invalid': submitted && m['login_otp_enter'].errors }" required>
                           <div *ngIf="submitted && m['login_otp_enter'].errors" class="invalid-feedback">
-                            <div *ngIf="m['login_otp_enter'].errors['required']">Enter OTP</div> 
+                            <div *ngIf="m['login_otp_enter'].errors['required']">Enter OTP</div>
                           </div>
                         </div>
-                        
+
                           <div class="d-flex justify-content-end">
                             <button    class="btn btn-primary m-2" (click)="get_loginwithotp_resend()"><i class="fa fa-sign-in"></i> Resend OTP</button>
                             <button type="button" class="btn btn-primary m-2" (click)="submit_loginwithotp()" ><i class="fa fa-sign-in" ></i>Submit</button>
                           </div>
                         </form>
-  
+
+                      </div>
+                    </div>
+                  </div>
+
+
+                   <!--register for verify OTP  -->
+
+                   <div class="block"   *ngIf="isVisible == 12">
+                    <div class="block-header">
+                      <h5>Verify OTP</h5>
+                  </div>
+                    <div class="block-body">
+
+                      <div >
+
+                        <p class="lead">Check Registered Email/Phone No for OTP</p>
+                        <form [formGroup]="VerifyOtp">
+
+                        <div class="my-2">
+                          <label for="vrotp" class="form-label">VerifyOtp</label>
+                          <input id="vrotp" (keypress)="keyPressSpace($event)" (paste)="(false)" type="text" class="form-control" formControlName="vrotp"
+                          minlength="6" maxlength="6" onkeypress='return event.charCode >= 48 && event.charCode <= 57'  [ngClass]="{ 'is-invalid': submitted && j['vrotp'].errors }" required>
+                          <div *ngIf="submitted && j['vrotp'].errors" class="invalid-feedback">
+                            <div *ngIf="j['vrotp'].errors['required']">Enter OTP</div>
+                          </div>
+                        </div>
+
+                          <div class="d-flex justify-content-end">
+                            <button    class="btn btn-primary m-2" (click)="forgetresend_otp()"><i class="fa fa-sign-in"></i> Resend OTP</button>
+                            <button type="button" class="btn btn-primary m-2" (click)="submit_forget_otp()" ><i class="fa fa-sign-in" ></i> Verify OTP</button>
+                          </div>
+                        </form>
+
                       </div>
                     </div>
                   </div>
 
               </div>
             </div>
-        
+
         </div>
-        
+
       </div>
     </div>
   </div>
@@ -477,7 +562,7 @@
           <button type="button" class="btn-close" (click)="doSomethings()"></button>
         </div>
         <div class="modal-body border-0">
-          
+
           <form [formGroup]="SearchForm" >
             <div class="row p-2">
               <div class="col-10">
@@ -486,12 +571,12 @@
               <div class="col-2">
                 <button type="button" class="btn btn-primary " (click)="onSubmit()">Search</button>
               </div>
-              
+
             </div>
           </form>
-          
-        </div>  
-        
+
+        </div>
+
       </div>
     </div>
   </div>
@@ -500,7 +585,7 @@
 
 
 
-  
+
 
 
 

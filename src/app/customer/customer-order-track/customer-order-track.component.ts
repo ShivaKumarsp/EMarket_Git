@@ -28,6 +28,10 @@ export class CustomerOrderTrackComponent implements OnInit {
   first_name="";
   second_name="";
   customer_order_details:any;
+  payableamount=0;
+  base64="data:image/jpeg;base64,";
+  imageBaseUrl='http://124.153.106.183:8015/EMarket_Image';
+  
   ngOnInit(): void {
     this.orderid=sessionStorage.getItem('orderid');
     let url = 'Customer_Order_Track/get_item_data/';
@@ -37,6 +41,8 @@ var data={
 }
     this.allapi.PostData(url,data).subscribe(response => {
       this.customer_order_details=JSON.parse(response.customer_order_details).Table;
+     this.payableamount=this.customer_order_details[0].payable_amount;
+
    if(response.customer_order_item_list!="")
    {
          this.customer_order_item_list=response.customer_order_item_list;

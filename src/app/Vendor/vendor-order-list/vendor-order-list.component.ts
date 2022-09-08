@@ -13,14 +13,18 @@ declare var window:any;
 })
 export class VendorOrderListComponent implements OnInit {
 
-  
+
   constructor(private httpClient: HttpClient,
     private formBuilder: FormBuilder,
    private allapi:AllapiService,
    private activateroute:ActivatedRoute) { }
    orderGroup = new FormGroup({
     orderStatus: new FormControl('',[Validators.required]),
-    orderRemark: new FormControl('',[Validators.required]),
+    orderRemark: new FormControl('',[Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/), Validators.minLength(5)]),
+    v_item_l:new FormControl('',[Validators.required]),
+    v_item_b:new FormControl('',[Validators.required]),
+    v_item_h:new FormControl('',[Validators.required]),
+    v_item_w:new FormControl('',[Validators.required])
   });
 
   submitted=false;
@@ -38,24 +42,74 @@ export class VendorOrderListComponent implements OnInit {
    order_accept_comment="";
    accept_order_count:any;
    reject_order_count:any;
+   item_l="";
+   item_b="";
+   item_h="";
+   item_w="";
+   item_lbh_list:any;
+   first_last_hub:any;
+    first_hub_id="";
+   last_hub_id="";
+   i_show=false;
   //validation
+  validation_list:any;
   get f(){
     return this.orderGroup.controls;
   }
+  keyPressnumber(event:any) {
+    var inp = String.fromCharCode(event.keyCode);
+    // (/[a-zA-Z0-9-_ ]/.test(inp))
+    if (/[0-9.0-9]/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+
+  keyPressSpace(event:any) {
+    if(event.target.selectionStart===0 && event.code==='Space')
+    {
+      event.preventDefault();
+    }
+  }
+
   ngOnInit(): void {
     this.formModel = new window.bootstrap.Modal(
-      document.getElementById("allOrderModal")
+      document.getElementById("allOrderModal123")
     );
 
     let url='Vendor_All_Order_List/get_all_order/';
     this.allapi.GetDataById(url,1).subscribe(promise=>
       {
         this.vendor_order_list=JSON.parse(promise.vendor_order_list).Table;
-      
+
       })
   }
- 
+
   openModal(ss:any){
+    this.submitted = false;
+    this.formModel.show();
+    this.first_hub_id="";
+    this.last_hub_id="";
+    var data={
+      "order_item_id":ss.order_item_id,
+      "order_id":ss.order_id,
+      "item_id":ss.item_id
+    }
+    let url='Vendor_All_Order_List/get_item_lbh/';
+ this.allapi.PostData(url, data).subscribe(promise=>
+  {
+
+    this.item_lbh_list=JSON.parse(promise.item_lbh_list).Table;
+    if(this.item_lbh_list!="")
+    {
+       this.item_l=this.item_lbh_list[0].length;
+       this.item_b=this.item_lbh_list[0].width;
+       this.item_h=this.item_lbh_list[0].height;
+       this.item_w=this.item_lbh_list[0].weight;
+    }
+
     this.order_accept_status="";
     this.order_accept_comment="";
     if(ss.order_accept_status!='Pending')
@@ -66,8 +120,11 @@ export class VendorOrderListComponent implements OnInit {
    this.order_item_id=ss.order_item_id;
    this.order_id=ss.order_id;
   this.item_id=ss.item_id;
-    this.formModel.show();
+
+  })
   }
+
+
   closeModal(){
     this.formModel.hide();
   }
@@ -78,18 +135,60 @@ export class VendorOrderListComponent implements OnInit {
   }
 
   update_order(){
+    if(this.i_show==false)
+    {
+      this.item_l="1";
+     this.item_b="1";
+      this.item_h="1";
+      this.item_w="1";
+      this.orderGroup.value.v_item_l=1;
+      this.orderGroup.value.v_item_b=1;
+      this.orderGroup.value.v_item_h=1;
+      this.orderGroup.value.v_item_w=1;
+    }
     this.submitted = true;
     if (this.orderGroup.invalid) {
       return;
     }
-var data={
-"order_item_id":this.order_item_id,
-"order_id":this.order_id,
-"item_id":this.item_id,
-"order_accept_status":this.order_accept_status,
-"order_accept_comment":this.order_accept_comment,
-"language_id":1
-}
+    // Mukta 30-08-2022
+    if(this.orderGroup.value.v_item_w==0)
+    {
+      this.orderGroup.controls['v_item_w'].setErrors({'required': true});
+      return
+    }
+    var data={};
+    if(this.i_show==true)
+    {
+      data={
+       "order_item_id":this.order_item_id,
+       "order_id":this.order_id,
+       "item_id":this.item_id,
+       "order_accept_status":this.order_accept_status,
+       "order_accept_comment":this.order_accept_comment,
+       "item_l":parseInt(this.item_l),
+        "item_b":parseInt(this.item_b),
+        "item_h":parseInt(this.item_h),
+        "item_w":parseFloat(this.item_w),
+       "language_id":1
+       }
+    }
+    else if(this.i_show==false)
+    {
+      data={
+       "order_item_id":this.order_item_id,
+       "order_id":this.order_id,
+       "item_id":this.item_id,
+       "order_accept_status":this.order_accept_status,
+       "order_accept_comment":this.order_accept_comment,
+       "item_l":1,
+        "item_b":1,
+        "item_h":1,
+        "item_w":1,
+       "language_id":1
+       }
+    }
+
+//console.log('update',data)
 let url='Vendor_All_Order_List/update_order/';
 this.allapi.PostData(url,data).subscribe(promise=>
   {
@@ -102,12 +201,36 @@ this.allapi.PostData(url,data).subscribe(promise=>
         showConfirmButton: false,
         timer: 2000
     })
+
     this.order_accept_status="";
     this.order_accept_comment="";
     this.vendor_order_list=JSON.parse(promise.vendor_order_list).Table;
     this.formModel.hide();
     }
+    else if (promise.status== "Validation") {
+      Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: 'Please Enter All Mandatory Fields',
+        showConfirmButton: false,
+        timer: 3000
+    })
+
+      this.validation_list=promise.validation_list;
+
+  }
   })
+  }
+
+  change_data(ss:any)
+  {
+if(ss=='Accept')
+{
+ this.i_show=true;
+}
+else{
+ this.i_show=false;
+}
   }
 
 }

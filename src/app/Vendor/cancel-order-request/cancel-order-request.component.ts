@@ -23,7 +23,7 @@ export class CancelOrderRequestComponent implements OnInit {
   ) { }
    orderGroup = new FormGroup({
     orderStatus: new FormControl('',[Validators.required]),
-    orderRemark: new FormControl('',[Validators.required]),
+    orderRemark: new FormControl('',[Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]),
   });
 
   submitted=false;

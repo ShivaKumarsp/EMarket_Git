@@ -1,0 +1,83 @@
+<section class="min-vh-100 checkout">
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-12">
+                <ul class="nav nav-pills">
+                    <li class="nav-item"><a  class="nav-link" href="/app/hub_consignment_list">Consigment Collected</a></li>
+                    <li class="nav-item"><a  class="nav-link active" >Shipping List</a></li>
+                    <li class="nav-item"><a  class="nav-link" href="/app/hub_shipped">Shipped</a></li>
+                    <li class="nav-item"><a  class="nav-link" href="/app/hub_arrived_destination">Arrived at Destination</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div  class="active tab-block">
+                    <div class="table-responsive" [style]="{'height':'500px','overflow-auto':'auto'}">
+                      <table class="table table-bordered small p-2" >
+                        <thead>
+                          <tr>
+                            <th>SNo</th>
+                            <th>Consignment ID</th>
+                            <th>Length(cm)</th>
+                            <th>Width(cm)</th>
+                            <th>Height(cm)</th>
+                            <th>Weight (kg)</th>
+                            <th>Next Hub</th>
+                            <th>Transport Type</th>
+                            <th>Transport Id</th>
+                            <th>Scheduled</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                           <tr>
+                              <td>1</td>
+                              <td>#1234</td>
+                              <td>12</td>
+                              <td>23</td>
+                              <td>54</td>
+                              <td>0.5</td>
+                              <td>Chennai</td>
+                              <td>Truck</td>
+                              <td>123</td>
+                              <td>{{dd|date}}</td>
+                              <td> <span class="badge bg-info">Assigned</span> </td>
+                              <td>
+                               <div class="d-flex justify-content-between">
+                                          <button type="button" class="btn btn-info shadow shadow-sm btn-sm rounded-0"><i class="fa fa-eye"></i></button>
+                                          <button type="button"  class="btn btn-primary btn-sm shadow shadow-sm rounded-0"><i class="fa fa-edit"></i></button>
+                                        </div>
+                              </td>
+                           </tr>
+                        
+                           <tr>
+                              <td>2</td>
+                              <td>#1234</td>
+                              <td>12</td>
+                              <td>23</td>
+                              <td>54</td>
+                              <td>0.5</td>
+                              <td>Chennai</td>
+                              <td>Truck</td>
+                              <td>123</td>
+                              <td>{{dd|date}}</td>
+                              <td> <span class="badge bg-info">Assigned</span> </td>
+                              <td>
+                               <div class="d-flex justify-content-between">
+                                          <button type="button" class="btn btn-info shadow shadow-sm btn-sm rounded-0"><i class="fa fa-eye"></i></button>
+                                          <button type="button"  class="btn btn-primary btn-sm shadow shadow-sm rounded-0"><i class="fa fa-edit"></i></button>
+                                        </div>
+                              </td>
+                           </tr>
+                        </tbody>
+                      </table>
+                     
+
+                    </div>
+        
+                  </div>
+                </div>
+              </div>
+        
+            </div>
+          </div>
+        </section>

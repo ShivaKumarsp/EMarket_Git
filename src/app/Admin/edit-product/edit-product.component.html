@@ -9,7 +9,7 @@
             <div class="col-lg-3 text-right order-1 order-lg-2">
                 <ul class="breadcrumb justify-content-lg-end">
                     <li class="breadcrumb-item"><a >Home</a></li>
-                    <li class="breadcrumb-item active">Add Item</li>
+                    <li class="breadcrumb-item active">Edit Product</li>
                 </ul>
             </div>
         </div>
@@ -29,9 +29,9 @@
                 </ul>
             </div>
         </div>
-    
+
             <div class="row">
-                
+
                 <div class="col-lg-12">
                     <div class="tab-content">
                         <div id="product_info" class="active tab-block">
@@ -65,7 +65,7 @@
                                                 <div *ngIf="f['sub_cat'].errors && f['sub_cat'].errors['required']">Select Product Category</div>
                                             </div>
                                         </select>
-                                      
+
                                     </div>
                                 </div>
 
@@ -117,7 +117,8 @@
                                            placeholder="Enter Product Name" required />
                                           <div *ngIf="f['productname_en'].touched && f['productname_en'].invalid" class="text-danger">
                                             <div *ngIf="f['productname_en'].errors && f['productname_en'].errors['required']">Enter Product Name</div>
-                                        </div> 
+                                            <div *ngIf="f['productname_en'].errors && f['productname_en'].errors['pattern']">Product Name is invalid!</div>
+                                        </div>
                                 </div>
 
 
@@ -132,7 +133,7 @@
 
                                 <div class="col-sm-6 col-md-6">
                                     <label class="form-label">BasePrice <b style="color:red">*</b></label>
-                                    <input  type="number" min="1" class="form-control" formControlName="baseprice" 
+                                    <input  type="number" min="1" class="form-control" formControlName="baseprice" max="100000" step="0.01"
                                     [(ngModel)]="base_price" placeholder="Enter Base Price(ಮೂಲ ಬೆಲೆ)" oninput="validity.valid||(value='');">
                                     <div *ngIf="f['baseprice'].touched && f['baseprice'].invalid" class="text-danger">
                                         <div *ngIf="f['baseprice'].errors && f['baseprice'].errors['required']">Enter Base Price</div>
@@ -153,7 +154,7 @@
                                                     <input type="text" class="form-control" formControlName="hsn"  [(ngModel)]="hsn_code" placeholder="Enter HSN Code(ಎಚ್ಎಸ್ಎನ್ ಕೋಡ್)"  />
                                                      <div *ngIf="f['hsn'].touched && f['hsn'].invalid" class="text-danger">
                                                         <div *ngIf="f['hsn'].errors && f['hsn'].errors['required']">Enter HSN Code</div>
-                                                    </div> 
+                                                    </div>
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label class="form-label">IAN Code <b style="color:red">*</b></label>
@@ -176,9 +177,9 @@
                                                 {{uom.uom_name}}
                                             </option>
                                         </select>
-                                        <div *ngIf="f['uom'].touched && f['uom'].invalid" class="text-danger">
+                                        <!-- <div *ngIf="f['uom'].touched && f['uom'].invalid" class="text-danger">
                                             <div *ngIf="f['uom'].errors && f['uom'].errors['required']">Select Product Unit</div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                 </div>
 
@@ -300,7 +301,7 @@
 
                                 <div class="col-sm-3 col-md-3">
                                     <div>
-                                        <img id="productimg" src="{{p_imageurl}}" class="img-responsive" />
+                                        <img id="productimg" src="{{imageBaseUrl+p_imageurl}}" class="img-responsive" />
                                     </div>
                                 </div>
                             </div>
@@ -315,6 +316,9 @@
                          <!-- <a type="button" class="btn btn-template wide next"  (click)="Clear()" [disabled]="btn_dissable==false">Clear </a> &nbsp; -->
                         <a type="button" class="btn btn-template wide next"  (click)="savedata()" [disabled]="btn_dissable==false">
                             Update Product<i class="fa fa-angle-right"></i>
+                        </a>&nbsp;
+                        <a type="button" class="btn btn-template wide next"  (click)="go_next()" [disabled]="btn_dissable==false">
+                           Next<i class="fa fa-angle-right"></i>
                         </a>
 
                     </div>
@@ -332,7 +336,7 @@
                 <div class="col-md-9">{{val.uom_id_ret}}</div>
                 <div class="col-md-9">{{val.image_path_ret}}</div>
                 <div class="col-md-9">{{val.short_description_ret}}</div>
-            </div> 
+            </div>
     </div>
 </section>
 

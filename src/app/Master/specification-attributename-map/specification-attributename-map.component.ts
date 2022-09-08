@@ -97,7 +97,8 @@ this.allapi.PostData(geturl, data).subscribe(promise=> {
       showConfirmButton: false,
       timer: 1000
   })
-  this.attribute_name_id="";
+  this.submitted=false;
+  this.specattr.reset();
   this.specification_attribute_list =JSON.parse(promise.specification_attribute_list).Table;
   this.attribute_name_dd =JSON.parse(promise.attribute_name_dd).Table; 
   } 
@@ -110,7 +111,8 @@ this.allapi.PostData(geturl, data).subscribe(promise=> {
       showConfirmButton: false,
       timer: 1000
   })
-  this.attribute_name_id="";
+  this.submitted=false;
+  this.specattr.reset();
   this.specification_attribute_list =JSON.parse(promise.specification_attribute_list).Table;
   this.attribute_name_dd =JSON.parse(promise.attribute_name_dd).Table;
 

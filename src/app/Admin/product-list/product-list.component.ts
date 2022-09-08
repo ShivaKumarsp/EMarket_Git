@@ -26,6 +26,9 @@ export class ProductListComponent implements OnInit {
    imagepreview="";
    formModel:any;
    search="";
+   base64='data:image/jpeg;base64,';
+   imageBaseUrl='http://124.153.106.183:8015/EMarket_Image';
+   
   ngOnInit(): void {
 
     

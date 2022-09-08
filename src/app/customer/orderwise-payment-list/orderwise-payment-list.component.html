@@ -73,7 +73,7 @@
                 <th scope="col">Phone Number</th>
                 <th scope="col">Payment Method</th>
                 <th scope="col">Payment Id</th>
-                <th scope="col">Total Amount</th>
+                <th scope="col">Total Amount </th>
                 <th scope="col">Payment Status</th> 
                 <th scope="col">Payment Received On</th>   
                 <th scope="col">View Detais</th>            
@@ -87,7 +87,7 @@
                 <td>{{pro.phone_number}}</td>
                 <td>{{pro.payment_method}}</td>
                 <td>{{pro.transaction_id}}</td>
-                <td>{{pro.payable_amount}}</td>
+                <td>{{pro.payable_amount|currency:'INR'}}</td>
                 <td>{{pro.payment_status}}</td>
                 <td>{{pro.payment_received_on|date:'dd-MM-yyyy hh:ss aa'}}</td>
                <td><a type="button"  (click)="openModal(pro)"><i class="fa fa-eye"></i></a></td> 
@@ -153,32 +153,32 @@
                                       <tr>
                                         <th scope="row">3</th>
                                         <td>Delivery Charge</td>
-                                        <td>{{delivery_charge}}</td>
+                                        <td>{{delivery_charge|currency:'INR'}}</td>
                                       </tr>
                                       <tr>
                                         <th scope="row">4</th>
                                         <td>Discount</td>
-                                        <td>{{discount_amount}}</td>
+                                        <td>{{discount_amount|currency:'INR'}}</td>
                                       </tr>
                                       <tr>
                                         <th scope="row">5</th>
                                         <td>tax</td>
-                                        <td>{{tax_amount}}</td>
+                                        <td>{{tax_amount|currency:'INR'}}</td>
                                       </tr>
                                       <tr>
                                         <th scope="row">6</th>
                                         <td>Order Amount</td>
-                                        <td>{{total_order_amount}}</td>
+                                        <td>{{total_order_amount|currency:'INR'}}</td>
                                       </tr>
-                                      <tr>
+                                      <!-- <tr>
                                         <th scope="row">7</th>
                                         <td>Gross Amount</td>
                                         <td>{{gross_amount}}</td>
-                                      </tr>
+                                      </tr> -->
                                       <tr>
-                                        <th scope="row">8</th>
+                                        <th scope="row">7</th>
                                         <td>Paid Amount</td>
-                                        <td>{{payable_amount}}</td>
+                                        <td>{{payable_amount|currency:'INR'}}</td>
                                       </tr>
 
                                     </tbody>

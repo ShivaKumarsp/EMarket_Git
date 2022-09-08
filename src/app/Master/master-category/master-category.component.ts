@@ -25,16 +25,17 @@ export class MasterCategoryComponent implements OnInit {
    private formBuilder:FormBuilder) { this.form = formBuilder.group({
     categoryname:new FormControl('',[Validators.required]),
     categorycode:new FormControl('',[Validators.required]),
-    descr:new FormControl(''),
+    descr:new FormControl('',[Validators.required]),
     itemimage:new FormControl('')
-    
+
   }); }
   // form = new FormGroup({
   //   categoryname: new FormControl('',[Validators.required]),
   //   categorycode: new FormControl('',[Validators.required]),
   //   imageurl: new FormControl('',[Validators.required]),
   // });
-
+   base64="data:image/jpeg;base64,";
+   Url='http://124.153.106.183:8015/EMarket_Image';
   btn_dissable=true;
   category_name="";
   category_code="";
@@ -54,12 +55,18 @@ export class MasterCategoryComponent implements OnInit {
       })
   }
 
- 
+
 
 savedata()
 {
 
   this.submitted = true;
+  if(this.form.value.categoryname.trim() ==''){
+       this.form.controls['categoryname'].setErrors({'required': true})
+    }
+    if(this.form.value.descr.trim() ==''){
+      this.form.controls['descr'].setErrors({'required': true})
+   }
     if (this.form.invalid) {
       return;
     }
@@ -67,9 +74,9 @@ savedata()
   this.btn_dissable=false;
   var data={
     "mc_id":this.mc_id,
-    "category_name":this.category_name,
+    "category_name":this.category_name.trim(),
     "category_code":this.category_code,
-    "description":this.description,
+    "description":this.description.trim(),
     "image_url":this.s_imageurl,
     "language_id":1
   }
@@ -78,12 +85,8 @@ savedata()
     {
       if(promise.status=="Insert")
       {
-        this.mc_id=0;
-        this.category_name="";
-         this.category_code="";
-         this.description="";
-         this.s_imageurl="";
-         
+        this.submitted = false;
+        this.form.reset();
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -114,7 +117,7 @@ savedata()
           timer: 3000
       })
       }
-      
+
     })
 }
 edit_category(ss:any)
@@ -130,7 +133,7 @@ delete_category(ss:any)
 {
   this.btn_dissable=false;
   var data={
-    "mc_id":ss.mcid   
+    "mc_id":ss.mcid
   }
   let url='Master_Category/delete_cat/';
   this.allapi.PostData(url,data).subscribe(promise=>
@@ -157,7 +160,7 @@ delete_category(ss:any)
           timer: 3000
       })
       }
-      
+
     })
 }
 
@@ -199,8 +202,8 @@ if (imageInput.files[0].type != "image/jpeg") {
     {
       this.SelectedFile_Array=imageInput.files[0];
       formData.append("File", this.SelectedFile_Array);
-      let url='ImageUpload/DocumentUpload/';
-      return this.http.post('http://192.168.1.200:1305/api/ImageUpload/DocumentUpload', formData).subscribe((promise:any)=>
+      let url='ImageUpload/Cateory_Image_Upload/';
+      return this.http.post('http://localhost:1305/api/ImageUpload/Cateory_Image_Upload', formData).subscribe((promise:any)=>
       {
        this.s_imageurl=promise.path;
       });

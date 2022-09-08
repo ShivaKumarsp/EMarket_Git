@@ -25,7 +25,8 @@ export class ItemListComponent implements OnInit {
    tableSize: number = 7;
    tableSizes: any = [3, 6, 9, 12];
    search="";
-
+   base64='data:image/jpeg;base64,';
+   imageBaseUrl='http://124.153.106.183:8015/EMarket_Image';
    all_item_list:any;
    imagepreview="";
    formModel:any;

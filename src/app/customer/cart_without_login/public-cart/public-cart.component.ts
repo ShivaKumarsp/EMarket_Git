@@ -32,7 +32,8 @@ export class PublicCartComponent implements OnInit {
    shipingamount:any;
    discount:any;
    message123:any;
-   
+   base64='data:image/jpeg;base64,';
+   imageBaseUrl='http://124.153.106.183:8015/EMarket_Image';
   ngOnInit(): void {
     this.all_data.avani_name='Avani infosoft pvt ltd';
     let url='Shopping_Cart/public_checkout/';
@@ -61,8 +62,10 @@ var ss=this.mycartlist;
               total += (product.selling_price * product.quantity);
           }
           this.total = total;
-          this.gstamount = (total * 16) / 100;
-          this.payableamount = total + this.gstamount + 30 - 100;
+          this.gstamount = total;
+          this.payableamount = total;
+          //this.gstamount = (total * 16) / 100;
+        //  this.payableamount = total + this.gstamount + 30 - 100; 
           this.cartcount = response.mycartlist.length;
       }
       else {
@@ -99,11 +102,13 @@ var ss=this.mycartlist;
  this.mycartlist = this.mycartlist1;
     for (var i = 0; i < this.mycartlist.length; i++) {
         var product = this.mycartlist[i];
-        total += (product.selling_price * product.quantity + 1);
+        total += (product.selling_price * product.quantity );
     }
     this.total = total;
-    this.gstamount = (total * 16) / 100;
-    this.payableamount = total + this.gstamount + 30 - 100;
+    this.gstamount = total;
+    this.payableamount = total;
+    //this.gstamount = (total * 16) / 100;
+  //  this.payableamount = total + this.gstamount + 30 - 100; 
 }
 decrease_quantity (aa:any) {
   this.mycartlist1 = [];
@@ -124,11 +129,13 @@ decrease_quantity (aa:any) {
 
     for (var i = 0; i < this.mycartlist.length; i++) {
         var product = this.mycartlist[i];
-        total += (product.selling_price * product.quantity + 1);
+        total += (product.selling_price * product.quantity );
     }
     this.total = total;
-    this.gstamount = (total * 16) / 100;
-    this.payableamount = total + this.gstamount + 30 - 100;
+    this.gstamount = total;
+    this.payableamount = total;
+    //this.gstamount = (total * 16) / 100;
+  //  this.payableamount = total + this.gstamount + 30 - 100; 
   
 
   
@@ -172,11 +179,13 @@ delete_item(ss:any) {
 
           for (var i = 0; i < this.mycartlist.length; i++) {
               var product = this.mycartlist[i];
-              total += (product.selling_price * product.quantity + 1);
+              total += (product.selling_price * product.quantity );
           }
           this.total = total;
-          this.gstamount = (total * 16) / 100;
-          this.payableamount = total + this.gstamount + 30 - 100;
+          this.gstamount = total;
+          this.payableamount = total;
+          //this.gstamount = (total * 16) / 100;
+        //  this.payableamount = total + this.gstamount + 30 - 100; 
       }
 else{
   Swal.fire({

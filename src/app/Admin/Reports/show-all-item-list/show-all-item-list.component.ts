@@ -42,6 +42,8 @@ export class ShowAllItemListComponent implements OnInit {
    accept_order_count:any;
    reject_order_count:any;
    imagepreview="";
+   base64='data:image/jpeg;base64,';
+   imageBaseUrl='http://124.153.106.183:8015/EMarket_Image';
   //validation
   get f(){
     return this.orderGroup.controls;

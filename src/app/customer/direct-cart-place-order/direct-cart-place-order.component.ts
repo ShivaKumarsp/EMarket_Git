@@ -33,7 +33,9 @@ export class DirectCartPlaceOrderComponent implements OnInit {
    mob5="";
    public razorpay_payment_id="";
    public razorpay_order_id="";
-
+   base64='data:image/jpeg;base64,';
+   imageBaseUrl='http://124.153.106.183:8015/EMarket_Image';
+   
   ngOnInit(): void {
 let url='CartCheckout/get_payment_data_directcart/';
       var data = {
@@ -48,8 +50,10 @@ let url='CartCheckout/get_payment_data_directcart/';
                  total += (product.selling_price * product.car_qty);
              }
              this.total = total;
-             this.gstamount = (total * 16) / 100;
-             this.payableamount = total + this.gstamount + 30 - 100;
+             this.gstamount = total;
+             this.payableamount = total;
+             //this.gstamount = (total * 16) / 100;
+           //  this.payableamount = total + this.gstamount + 30 - 100; 
              this.cartcount = promise.mycartlist.length;
          }          
           else {
@@ -84,8 +88,10 @@ place_order () {
         total += (product.selling_price * product.car_qty);
     }
     this.total = total;
-    this.gstamount = (total * 16) / 100;
-    this.payableamount = total + this.gstamount + 30 - 100;
+    this.gstamount = total;
+            this.payableamount = total;
+            //this.gstamount = (total * 16) / 100;
+          //  this.payableamount = total + this.gstamount + 30 - 100; 
     let url='';
     let url1='CartCheckPlaceOrder/check_item_available/';
     var data1={
@@ -122,7 +128,8 @@ else if(modeofpayment=='POD'){
         "total_order_amount":total,
         "discount_amount":100,
         "tax_amount":this.gstamount,
-        "gross_amount":total + this.gstamount + 30 + 100,   
+      //"gross_amount":total + this.gstamount + 30 + 100,  
+      "gross_amount":total,  
         "payable_amount": this.payableamount,      
     }
 
@@ -234,8 +241,10 @@ onPaymentSuccess(event:any): void {
             totalqty +=  (product.quantity);
         }
         this.total = total;
-        this.gstamount = (total * 16) / 100;
-        this.payableamount = total + this.gstamount + 30 - 100;
+        this.gstamount = total;
+            this.payableamount = total;
+            //this.gstamount = (total * 16) / 100;
+          //  this.payableamount = total + this.gstamount + 30 - 100; 
 
 
    let url='CartCheckPlaceOrder/Direct_paymentsave/';
@@ -247,7 +256,8 @@ onPaymentSuccess(event:any): void {
      "discount_amount":100,
      "total_order_amount":total,
      "tax_amount":this.gstamount,
-     "gross_amount":total + this.gstamount + 30 + 100,   
+     //"gross_amount":total + this.gstamount + 30 + 100,  
+     "gross_amount":total,    
      "payable_amount": this.payableamount, 
      
        };

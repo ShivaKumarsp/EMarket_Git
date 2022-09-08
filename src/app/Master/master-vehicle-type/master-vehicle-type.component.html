@@ -1,0 +1,220 @@
+
+      <script>
+          function isNumber(evt) {
+              evt = (evt) ? evt : window.event;
+              var charCode = (evt.which) ? evt.which : evt.keyCode;
+              if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                  return false;
+              }
+              return true;
+          }      
+      </script>
+
+      <ngx-spinner  bdColor="rgba(51,51,51,0.8)"  size="medium"  color="#fff"  type="ball-scale-multiple">
+        <p style="font-size: 20px; color: white">Loading...</p>
+      </ngx-spinner> 
+
+
+          <section class="padding-small" >
+              <div class="container">
+                  <div class="row">
+                  <div class="col-lg-12">  
+                    <div class="block-header mb-5">
+                              <h5>Master Vehicle Type</h5>
+                          </div>
+                          <form method="post" [formGroup]="vehiclevalid" name="myForm1" class="content-block">
+                              <div class="row">
+                                        <div class="col-sm-12">
+                                      <div class="row">
+                                        <div class="form-group col-md-6">
+                                          <label  class="form-label">Vehicle Type<b style="color: red;">*</b></label>
+                                          <input  formControlName="v_vehicle_type" type="text" class="form-control" placeholder="Enter Vehicle Type" [(ngModel)]="vehicle_type" pattern="^[a-zA-Z][a-z A-Z 0-9]*$" oninput="if(!this.value.match('^[a-zA-Z][a-z A-Z 0-9]*$'))this.value='';"  (keypress)="keyPressSpace($event)" [ngClass]="{ 'is-invalid': submitted && f['v_vehicle_type'].errors }">
+                                          <div *ngIf="submitted && f['v_vehicle_type'].errors" class="invalid-feedback">   
+                                            <div *ngIf="f['v_vehicle_type'].errors['required']">Enter Vehicle Type</div> 
+                                          </div>
+                                      </div>
+                                 
+                                      <div class="form-group col-md-6">
+                                        <label  class="form-label">Vehicle Type Details<b style="color: red;">*</b></label>
+                                        <input  formControlName="v_vehicle_type_details" type="text" class="form-control" placeholder="Enter Vehicle Type Details" [(ngModel)]="vehicle_type_details" pattern="^[a-zA-Z][a-z A-Z 0-9]*$" oninput="if(!this.value.match('^[a-zA-Z][a-z A-Z 0-9]*$'))this.value='';"  (keypress)="keyPressSpace($event)" [ngClass]="{ 'is-invalid': submitted && f['v_vehicle_type_details'].errors }">
+                                        <div *ngIf="submitted && f['v_vehicle_type_details'].errors" class="invalid-feedback">   
+                                          <div *ngIf="f['v_vehicle_type_details'].errors['required']">Enter Vehicle Type Details</div> 
+                                        </div>
+                                    </div>
+                                    
+                                          <div class="col-sm-6">
+                                              <div class="form-group">
+                                                  <label for="address" class="form-label">Max Weight(kg)<b style="color: red;">*</b></label>
+                                                  <input  formControlName="v_max_weight" type="number" class="form-control" placeholder="Enter Max Weight(kg)" [(ngModel)]="max_weight" onkeypress='return event.charCode >= 48 && event.charCode <= 57' min="1" [ngClass]="{ 'is-invalid': submitted && f['v_max_weight'].errors }">
+                                                  <div *ngIf="submitted && f['v_max_weight'].errors" class="invalid-feedback">
+                                                   <div *ngIf="f['v_max_weight'].errors['required']">Enter Max Weight(kg)</div>
+                                                          <div *ngIf="f['v_max_weight'].errors && f['v_max_weight'].errors['max']">Maximum 1000 kg</div> 
+                                                        </div>
+                                              </div>
+                                          </div>
+                                          <div class="col-sm-6"></div>
+                                          <div class="col-sm-12">
+                                                  <br>
+                                      <h5>Volumetric Dimension</h5>
+                                          </div>
+                                          <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="address" class="form-label">Max Length(cm)<b style="color: red;">*</b></label>
+                                                <input  formControlName="v_max_volumetric_length" type="number" class="form-control" placeholder="Enter Max Weight(kg)" [(ngModel)]="max_volumetric_length" (keypress)="keyPressnumber($event)" min="1" [ngClass]="{ 'is-invalid': submitted && f['v_max_volumetric_length'].errors }">
+                                                <div *ngIf="submitted && f['v_max_volumetric_length'].errors" class="invalid-feedback">
+                                                        <div *ngIf="f['v_max_volumetric_length'].errors['required']">Enter Max Length(cm)</div>
+                                                   
+                                                      </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                                  <div class="form-group">
+                                                      <label for="address" class="form-label">Max Breadth(cm)<b style="color: red;">*</b></label>
+                                                      <input  formControlName="v_max_volumetric_breadth" type="number" class="form-control" placeholder="Enter Max Breadth(cm)" [(ngModel)]="max_volumetric_breadth" (keypress)="keyPressnumber($event)" min="1" [ngClass]="{ 'is-invalid': submitted && f['v_max_volumetric_breadth'].errors }">
+                                                      <div *ngIf="submitted && f['v_max_volumetric_breadth'].errors" class="invalid-feedback">
+                                                              <div *ngIf="f['v_max_volumetric_breadth'].errors['required']">Enter Max Breadth(cm)</div>
+                                                         
+                                                            </div>
+                                                  </div>
+                                              </div>
+                                        <div class="col-sm-4">
+                                                  <div class="form-group">
+                                                      <label for="address" class="form-label">Max Height(cm)<b style="color: red;">*</b></label>
+                                                      <input  formControlName="v_max_volumetric_height" type="number" class="form-control" placeholder="Enter Max Height(cm)" [(ngModel)]="max_volumetric_height" (keypress)="keyPressnumber($event)" min="1" [ngClass]="{ 'is-invalid': submitted && f['v_max_volumetric_height'].errors }">
+                                                      <div *ngIf="submitted && f['v_max_volumetric_height'].errors" class="invalid-feedback">
+                                                              <div *ngIf="f['v_max_volumetric_height'].errors['required']">Enter Max Height(cm)</div>
+                                                         
+                                                            </div>
+                                                  </div>
+                                              </div>
+
+      
+                                        <div class="col-sm-6">
+                                          <div class="form-group">
+                                              <label for="address" class="form-label">Pickup Type<b style="color: red;">*</b></label>
+                                              <select class="form-control"  formControlName="v_pickup_type" [(ngModel)]="pickup_type"    [ngClass]="{ 'is-invalid': submitted && f['v_vehicle_type'].errors }">
+                                                <option value="">--Select Weight Type--</option>
+                                                <option value="Less Than">Less Than Or Equal</option>
+                                                <option value="Greater Than">Greater Than Or Equal</option>
+                                            </select>
+                                              <div *ngIf="submitted && f['v_pickup_type'].errors" class="invalid-feedback">
+                                                      <div *ngIf="f['v_pickup_type'].errors['required']">Select Pickup Type</div>
+                                                    </div>
+                                          </div>
+                                      </div>
+                                      <div class="col-sm-6"></div>
+                                      <div class="col-sm-12">
+                                        <br>
+                            <h5>Pickup Volumetric Dimenction</h5>
+                                </div>
+                                      <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <label for="address" class="form-label">Pickup Volumetric Length(cm)<b style="color: red;">*</b></label>
+                                            <input  formControlName="v_pickup_volumetric_length" type="number" class="form-control" placeholder="Enter Max Weight(kg)" [(ngModel)]="pickup_volumetric_length" (keypress)="keyPressnumber($event)" min="1" [ngClass]="{ 'is-invalid': submitted && f['v_pickup_volumetric_length'].errors }">
+                                            <div *ngIf="submitted && f['v_pickup_volumetric_length'].errors" class="invalid-feedback">
+                                                    <div *ngIf="f['v_pickup_volumetric_length'].errors['required']">Enter Pickup Volumetric Length(cm)</div>
+                                               
+                                                  </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                              <div class="form-group">
+                                                  <label for="address" class="form-label">Pickup Volumetric Breadth(cm)<b style="color: red;">*</b></label>
+                                                  <input  formControlName="v_pickup_volumetric_breadth" type="number" class="form-control" placeholder="Enter Max Breadth(cm)" [(ngModel)]="pickup_volumetric_breadth" (keypress)="keyPressnumber($event)" min="1" [ngClass]="{ 'is-invalid': submitted && f['v_pickup_volumetric_breadth'].errors }">
+                                                  <div *ngIf="submitted && f['v_pickup_volumetric_breadth'].errors" class="invalid-feedback">
+                                                          <div *ngIf="f['v_pickup_volumetric_breadth'].errors['required']">Enter Pickup Volumetric Breadth(cm)</div>
+                                                     
+                                                        </div>
+                                              </div>
+                                          </div>
+                                          <div class="col-sm-4">
+                                              <div class="form-group">
+                                                  <label for="address" class="form-label">Pickup Volumetric Height(cm)<b style="color: red;">*</b></label>
+                                                  <input  formControlName="v_pickup_volumetric_heigth" type="number" class="form-control" placeholder="Enter Max Height(cm)" [(ngModel)]="pickup_volumetric_heigth" (keypress)="keyPressnumber($event)" min="1" [ngClass]="{ 'is-invalid': submitted && f['v_pickup_volumetric_heigth'].errors }">
+                                                  <div *ngIf="submitted && f['v_pickup_volumetric_heigth'].errors" class="invalid-feedback">
+                                                          <div *ngIf="f['v_pickup_volumetric_heigth'].errors['required']">Enter Pickup Volumetric Height(cm)</div>
+                                                     
+                                                        </div>
+                                              </div>
+                                          </div>
+                                 
+      
+                                    
+                                      </div>
+                                    </div>
+                                   
+                                </div>
+                     
+                          </form>
+                      </div>
+                  </div>
+                 
+
+<div class="row">
+  <div class="col-sm-12 text-center">
+    <input type="text" [(ngModel)]="vehicle_type_id" hidden>
+    <a type="button" class="btn btn-template wide next"  (click)="clear()">Clear</a> &nbsp;
+    <a type="button" class="btn btn-template wide next"  (click)="save()">Save</a>
+</div> 
+</div>
+                  
+                  <div class="row mt-2" *ngFor="let val of validation_list">
+                      <div class="col-md-9" style="color:red">{{val}}</div>               
+                  </div> 
+      
+              </div>
+          </section>
+<section>
+    <div class="container">
+      
+        <div class="my-3">
+            <div class="col-md-4" style="float: right">                    
+                <input class="form-control form-control-sm" type="text" [(ngModel)]="search" placeholder="search here...">
+            </div>
+        </div>
+        <table class="table table-bordered mt-4 shadow shadow-sm">
+          <thead>
+            <tr>
+              <th>SL No</th>
+              <th>Vehicle Type</th>
+              <th>Vehicle Type Details</th>
+              <th>Max Weight</th>
+              <th>Max Dimenction</th>
+              <th>Pickup Type</th>
+              <th>Pickup Dimenction</th>              
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let exe of vehicle_type_list| filter:search | paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index; filter:search">
+                <th>{{tableSize *(page-1)+i+1}}</th>
+              <td>{{exe.vehicle_type}}</td>
+              <td>{{exe.vehicle_type_details}}</td>
+              <td>{{exe.max_weight}}</td>
+              <td>{{exe.max_volumetric_length}}*{{exe.max_volumetric_breadth}}*{{exe.max_volumetric_height}}</td>
+              <td>{{exe.pickup_type}}</td>
+              <td>{{exe.pickup_volumetric_length}}*{{exe.pickup_volumetric_breadth}}*{{exe.pickup_volumetric_heigth}}</td>
+             
+             <td>
+                <button class="btn btn-sm btn-info" (click)="edit(exe)" >Edit</button>
+            </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="d-flex justify-content-center">
+            <pagination-controls
+              previousLabel="Prev"
+              nextLabel="Next"
+              (pageChange)="onTableDataChange($event)"
+            >
+            </pagination-controls>
+          </div>
+      </div>
+
+</section>
+
+
+      
+      
+      
+      

@@ -1,0 +1,256 @@
+
+
+<div class="container min-vh-100" [ngSwitch]="screen">
+  <div class="d-flex justify-content-end">
+    <a class="btn btn-sm btn-info text-decoration-none" type="button" [routerLink]="['/app/logistics/Managehub']" >Show All Hub</a>
+
+  </div>
+  <h6>{{currenthub.in_hub_name}}</h6>
+    <p>{{currenthub.in_address}} {{currenthub.in_pincode}}</p>
+  <div *ngSwitchDefault>
+    <button class="btn btn-sm btn-primary" (click)="screen=1">Add New </button>
+    <div class="my-3">
+      <h3 class="text-end">
+        All Facilitation centers
+      </h3>
+    </div>
+    <table class="table table-bordered mt-4 shadow shadow-sm">
+      <thead>
+        <tr>
+          <th>S No</th>
+          <th>Pincode</th>
+          <th>Facilitation Center Name</th>
+          <th>Facilitation Center contact_no</th>
+          <th>Email</th>
+          <!-- <th>Deliverable Pincodes</th>
+          <th></th> -->
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let hublist of hubListsType2;index as i">
+          <td>{{i+1}}</td>
+          <td>{{hublist.in_pincode}}</td>
+          <td>{{hublist.in_hub_name}}</td>
+          <td>{{hublist.in_contact_no}}</td>
+          <td>{{hublist.in_email}}</td>
+          <!-- <td>{{hublist.in_pincode}}</td>
+          <td>{{hublist.in_area}}</td> -->
+          <td><button class="btn btn-sm btn-info" (click)="Edit(hublist)">Edit</button></td>
+        </tr>
+      </tbody>
+
+
+    </table>
+  </div>
+ <form [formGroup]="hform" *ngSwitchCase="1">
+  <!-- <button class="btn btn-sm btn-primary" (click)="screen=0;newhub_id=0;screenBody=0;">Back </button> -->
+  <div class=" my-3 p-2 shadow shadow-sm" >
+    <div class="my-3">
+      <h3 class="text-end" *ngIf="formType==1">
+        Edit
+      </h3>
+      <h3 class="text-end" *ngIf="formType==0">
+        Add New Facilitation Center
+      </h3>
+    </div>
+
+
+
+    <div class="card card-body m-auto border-0" >
+
+      <div [ngSwitch]="screenBody">
+
+        <div class="row " *ngSwitchDefault>
+            <div class="col-md-6 p-4">
+              <div class="mb-3">
+                <label for="hname" class="form-label">Facilitation Center Name<b style="color:red">*</b></label>
+                <input type="text" class="form-control" formControlName="hname" id="hname" placeholder="Enter Facilitation Center Name" [ngClass]="{ 'is-invalid': submitted && f['hname'].errors }" required>
+                <div *ngIf="submitted && f['hname'].errors" class="invalid-feedback">
+                  <div *ngIf="f['hname'].errors['required']">Please Enter Facilitation Center Name</div>
+                  <div *ngIf="f['hname'].errors && f['hname'].errors['pattern']">Facilitation Center Name is Invalid</div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="email" class="form-label">Email address<b style="color:red">*</b></label>
+                <input type="email" class="form-control" formControlName="email" id="email" placeholder="name@example.com" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" required>
+                <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+                  <div *ngIf="f['email'].errors['required']">Please Enter Facilitation Center Email</div>
+                  <div *ngIf="f['email'].errors && f['email'].errors['pattern']">Facilitation Center Email is Invalid</div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="contact" class="form-label">Contact Number<b style="color:red">*</b></label>
+                <input type="tel" class="form-control" formControlName="contact" id="contact" [minlength]="10" [maxlength]="10" placeholder="Enter contact no" [ngClass]="{ 'is-invalid': submitted && f['contact'].errors }" required>
+                <div *ngIf="submitted && f['contact'].errors" class="invalid-feedback">
+                  <div *ngIf="f['contact'].errors['required']">Please Enter Facilitation Center Contact</div>
+                  <div *ngIf="f['contact'].errors && f['contact'].errors['pattern']">Facilitation Center Email is Invalid</div>
+                </div>
+              </div>
+              <div class="mb-3">
+                <label for="Address" class="form-label">Address<b style="color:red">*</b></label>
+                <textarea class="form-control" formControlName="Address" id="Address" rows="3" [ngClass]="{ 'is-invalid': submitted && f['Address'].errors }" required></textarea>
+                <div *ngIf="submitted && f['Address'].errors" class="invalid-feedback">
+                  <div *ngIf="f['Address'].errors['required']">Please Enter Facilitation Center Address</div>
+                </div>
+              </div>
+
+            </div>
+            <div class="col-md-6 p-4">
+              <div class="mb-3" >
+                <label for="hcountry" class="form-label">Facilitation Center Country<b style="color:red">*</b></label>
+                <!-- (change)="getstate(vendor_country_id)" -->
+                <select class="form-control" id="hcountry" formControlName="hcountry" (change)="get_state($event)" [ngClass]="{ 'is-invalid': submitted && f['hcountry'].errors }" required>
+                  <option value="" >-- Select Country --</option>
+                  <option *ngFor="let cou of countrylist" value="{{cou.countryid}}" ng-selected="{{cou.countryid==countrylist}}">
+                      {{cou.countryname}}
+                  </option>
+              </select>
+              <div *ngIf="submitted && f['hcountry'].errors" class="invalid-feedback">
+                <div *ngIf="f['hcountry'].errors['required']">Select Country</div>
+              </div>
+              </div>
+              <div class="mb-3">
+                <label for="hstate" class="form-label">Facilitation Center State<b style="color:red">*</b></label>
+                  <select class="form-control" id="hstate"  formControlName="hstate" (change)="get_city($event)" [ngClass]="{ 'is-invalid': submitted && f['hstate'].errors }" required>
+                  <option value="" >-- Select State --</option>
+                  <option *ngFor="let state of statelist" value="{{state.stateid}}" ng-selected="{{state.stateid==statelist}}">
+                      {{state.statename}}
+                  </option>
+                  </select>
+                  <div *ngIf="submitted && f['hstate'].errors" class="invalid-feedback">
+                    <div *ngIf="f['hstate'].errors['required']">Select state</div>
+                  </div>
+              </div>
+              <div class="mb-3">
+                <label for="hcity" class="form-label">Facilitation Center city<b style="color:red">*</b></label>
+                <select class="form-control" id="hcity"  formControlName="hcity" id="hcity" (change)="get_pincode($event)" [ngClass]="{ 'is-invalid': submitted && f['hcity'].errors }" required>
+                  <option value="" >-- Select City --</option>
+                  <option *ngFor="let city of citylist" value="{{city.city_id}}" ng-selected="{{city.city_id==citylist}}">
+                      {{city.city_name}}
+                  </option>
+                  </select>
+                  <div *ngIf="submitted && f['hcity'].errors" class="invalid-feedback">
+                    <div *ngIf="f['hcity'].errors['required']">Select city</div>
+                  </div>
+              </div>
+              <div class="mb-3">
+                <label for="hpin" class="form-label">Facilitation Center Pincode<b style="color:red">*</b></label>
+                <select class="form-control" id="hpin"  id="hpin" formControlName="hpin" [ngClass]="{ 'is-invalid': submitted && f['hpin'].errors }" required>
+                  <option value="" >-- Select Pincode --</option>
+                  <option *ngFor="let pin of pincodelist" value="{{pin.pincodeid}}" ng-selected="{{pin.pincodeid==pincodelist}}">
+                      {{pin.pincodes}}|{{pin.pinarea}}
+                  </option>
+                  </select>
+                  <div *ngIf="submitted && f['hpin'].errors" class="invalid-feedback">
+                    <div *ngIf="f['hpin'].errors['required']">Select Pincode</div>
+                  </div>
+              </div>
+
+            </div>
+
+            <div class="col-md-12 p-4">
+              <div class="row">
+                <div class="mb-3 col-md-6 d-none">
+                  <label for="hpin" class="form-label">Hub Type<b style="color:red">*</b></label>
+                  <select class="form-control"  id="htype" formControlName="htype" [ngClass]="{ 'is-invalid': submitted && f['htype'].errors }" required>
+                    <option value="" >-- Select Hub Type--</option>
+
+                    <option value="2">Regular Hub</option>
+                    <option value="3">Facilitation Center</option>
+                    </select>
+                    <!-- <div *ngIf="submitted && f['htype'].errors" class="invalid-feedback">
+                      <div *ngIf="f['htype'].errors['required']">Select Pincode</div>
+                    </div> -->
+                </div>
+                <div class="mb-3 col-md-6 d-none" *ngIf="this.hform.value.htype == 3">
+                  <label for="hpin" class="form-label">Select Parent Hub<b style="color:red">*</b></label>
+                  <select class="form-control" id="Phub" formControlName="Phub" [ngClass]="{ 'is-invalid': submitted && f['Phub'].errors }" required>
+                    <option value="" >-- Select Hub --</option>
+                    <option *ngFor="let list of hubLists" [value]="list.in_hub_id" ng-selected="{{list.in_hub_id==this.hform.value.Phub}}">{{list.in_hub_name}}</option>
+
+                    </select>
+                    <!-- <div *ngIf="submitted && f['htype'].errors" class="invalid-feedback">
+                      <div *ngIf="f['htype'].errors['required']">Select Pincode</div>
+                    </div> -->
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="row " *ngSwitchCase="1">
+            <!-- {{newhub_id }} -->
+          <div class="col-md-12 p-4">
+
+            <h6>Servicable Pincodes</h6>
+            <div class="input-group">
+              <!-- [ngClass]="{ 'is-invalid': submitted && f['delpin'].errors }" -->
+              <select class="form-select" id="dpin"  formControlName="delpin" aria-label="Example select with button addon" >
+                <option value="" >-- Select Pincode --</option>
+                <option *ngFor="let dpin of pincodelist"  value={{stringify(dpin)}}>
+                    {{dpin.pincodes}} {{dpin.pinarea}}
+                </option>
+              </select>
+              <!-- <select class="form-select" id="dpin" formControlName="delpin" aria-label="Example select with button addon" >
+                <option value="" >-- Select Pincode --</option>
+                <option *ngFor="let dpin of dpincodelist" value={{stringify(dpin)}} ng-selected="{{dpin.in_pincode_id==dpincodelist}}">
+                    {{dpin.in_pincode}}|{{dpin.in_area}}
+                </option>
+              </select> -->
+              <button type="button" class="btn btn-info" (click)="addthis()" > <i class="fa fa-plus"></i> Add</button>
+
+            </div>
+
+            <!-- {{tableserviceable|json}} -->
+            <table class="table table-bordered mt-4" >
+              <thead>
+                <tr>
+                  <th>S No</th>
+                  <th>Pincode</th>
+                  <th>Servicable Area</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <!-- <tbody>
+                <tr *ngFor="let pins of deliverablePincodes;index as i">
+                  <td>{{i+1}}</td>
+                  <td>{{getPincode(pins.in_pincode_id,false)}}</td>
+                  <td>{{pins.in_area}}</td> -->
+
+
+                  <!-- <td><div [innerHTML]="getPincode(pins.in_pincode_id,false)"></div></td> -->
+
+
+                  <!-- <td><button class="btn btn-sm btn-danger" (click)="removeTag(pins)">Remove</button></td>
+                </tr>
+
+                { "in_spin_id": 4, "in_pincode_id": 7, "in_pincode": 560007, "in_area": "BIKKARNAKATTE" }
+              </tbody> -->
+              <tbody>
+                <tr *ngFor="let item of tableserviceable;index as i">
+                  <td>{{i+1}}</td>
+                  <td>{{item.in_pincode}}</td>
+                  <td>{{item.in_area}}</td>
+                  <td><button class="btn btn-sm btn-danger" (click)="delete(item.in_spin_id)">Remove</button></td>
+                </tr>
+              </tbody>
+
+            </table>
+            </div>
+
+          </div>
+        </div>
+        </div>
+      </div>
+    <div class="text-center my-4">
+      <input type="hidden" formControlName="hub_id" value="hub_id">
+      <button type="button" class="btn  btn-template bg-primary" (click)="showlist()" ><i class="fa fa-angle-left"></i>Show All List</button>
+      <button type="button" class="btn  btn-template bg-primary" (click)="save()" *ngIf="screenBody==0">Save & Next</button>
+      <button type="button" class="btn  btn-template bg-primary" (click)="screenBody=0" *ngIf="screenBody==1">Manage Hub</button>&nbsp;&nbsp;
+      <!-- <button type="button" class="btn  btn-template bg-primary" (click)="saveservicable()" *ngIf="screenBody==1">Save</button> -->
+    </div>
+  </form>
+
+</div>
+

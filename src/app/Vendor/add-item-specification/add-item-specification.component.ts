@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { required } from '@rxweb/reactive-form-validators';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { AllapiService } from 'src/app/apiservice/allapi.service';
 import Swal from 'sweetalert2';
 
@@ -33,12 +35,17 @@ export class AddItemSpecificationComponent implements OnInit {
      private router: Router,
     private allapi: AllapiService,
     private activateroute:ActivatedRoute,
-    private formBuilder:FormBuilder) {
+    private formBuilder:FormBuilder,
+    private spinner:NgxSpinnerService) {
   }
+
+
+
+
   attribute_select = new FormGroup({
-    att_select_val_id:new FormControl(), 
+    att_select_val_id:new FormControl(''),
     customedata:new FormControl(),
-    v_search:new FormControl() 
+    v_search:new FormControl()
   });
   groupedSection:any
   itemname: any;
@@ -46,13 +53,14 @@ export class AddItemSpecificationComponent implements OnInit {
   itemid:any;
   product_specification_list: any;
   attribute_value_list: any;
-  item_specification_list: any; 
+  item_specification_list: any;
   product_spec_list: any;
   item_array: any;
+  item_array_remove: any;
   specificationname="";
   specificationid="";
   attributename="";
-  attributenameid=""
+  attributenameid=0
   attributevalueid:any;
   enablecuston:any;
   custon_data="";
@@ -66,61 +74,70 @@ export class AddItemSpecificationComponent implements OnInit {
   edititem_edit=false;
   edititem1=false;
   itemspecification_id=0;
+  submitted=false;
+  get f() {
+    return this.attribute_select.controls;
+  }
+
   ngOnInit(): void {
     this.itemid=this.activateroute.snapshot.paramMap.get("itemid");
-   
+
     let url1 = 'Vendor_Add_Item/get_specification_data/';
-  
+
     var data1 = {
       "language_id": 1,
       "item_id": parseInt(this.itemid)
     }
     this.allapi.PostData(url1, data1).subscribe(data2 => {
     this.edititem=data2.edititem;
-
       this.itemname = data2.ret_item_name;
       this.item_specification_list = data2.item_specification_list;
-
       this.attribute_value_list = data2.attribute_value_list;
-      this.product_specification_list = data2.product_specification_list;    
-     
-
+      this.product_specification_list = data2.product_specification_list;
       this.additional_cat_spec_list = [];
       this.additional_cat_spec_list_new = [];
       this.product_specification_list.forEach((ss:any)=>
       {
         this.additional_cat_spec_list.push({ 'specificationid': ss.specificationid, 'specificationname': ss.specificationname, 'attributename_id': ss.attributename_id, 'attributename': ss.attributename,'enablevalue':ss.enablecustom_value, 'attributevalue_id': "" })
-      }); 
-      
+      });
+
       this.groupedSection=this.groupBy(this.additional_cat_spec_list,'specificationname')
-         
+
       this.additional_cat_spec_list_new = this.groupBy(this.additional_cat_spec_list, "specificationname");
-     
-      this.attribute_value_list_new = this.groupBy(this.attribute_value_list, "attributename_id"); 
+
+      this.attribute_value_list_new = this.groupBy(this.attribute_value_list, "attributename_id");
     })
   }
-  
+
   // Edit Form will store the data
   save_attribute() {
+    // this.submitted=true;
+    // if(this.attribute_select.invalid)
+    // {
+    //   return
+    // }
+    this.spinner.show();
     this.item_array = [];
     var count1 = this.product_specification_list.length;
-    
+    this.item_array=[];
     this.attribute_value_list_out.forEach((ss: any) => {
-      this.item_array.push(ss)      
+      this.item_array.push(ss)
     })
-
-
-
+    console.log('count',count1)
+    console.log('this.item_array.length',this.item_array.length)
+    console.log('this.item_array',this.item_array)
     if (count1 == this.item_array.length) {
       let url = 'Vendor_Add_Item/save_itemspecification/';
       var data = {
         'item_array': this.item_array,
         "item_id": parseInt(this.itemid),
         "language_id": 1,
-      
       }
       this.allapi.PostData(url, data).subscribe(data2 => {
+        console.log('data',data);
+        console.log(data2)
         if (data2.msg_flg == "Update") {
+
           Swal.fire({
             position: 'center',
             icon: 'success',
@@ -128,9 +145,24 @@ export class AddItemSpecificationComponent implements OnInit {
             showConfirmButton: false,
             timer: 3000
           })
-          this.item_specification_list = data2.item_specification_list;
-          this.product_spec_list = [];
           this.edititem=data2.edititem;
+          this.itemname = data2.ret_item_name;
+          this.item_specification_list = data2.item_specification_list;
+          this.attribute_value_list = data2.attribute_value_list;
+          this.product_specification_list = data2.product_specification_list;
+          this.additional_cat_spec_list = [];
+          this.additional_cat_spec_list_new = [];
+          this.product_specification_list.forEach((ss:any)=>
+          {
+            this.additional_cat_spec_list.push({ 'specificationid': ss.specificationid, 'specificationname': ss.specificationname, 'attributename_id': ss.attributename_id, 'attributename': ss.attributename,'enablevalue':ss.enablecustom_value, 'attributevalue_id': "" })
+          });
+
+          this.groupedSection=this.groupBy(this.additional_cat_spec_list,'specificationname')
+
+          this.additional_cat_spec_list_new = this.groupBy(this.additional_cat_spec_list, "specificationname");
+
+          this.attribute_value_list_new = this.groupBy(this.attribute_value_list, "attributename_id");
+
         }
         else if (data2.msg_flg == "Failed") {
           Swal.fire({
@@ -161,15 +193,16 @@ export class AddItemSpecificationComponent implements OnInit {
         timer: 3000
       })
     }
+    this.spinner.hide();
   };
 
    changevalue(e: any, attributeid: any,enb:any, specificationid:any) {
-   
+
     if (this.attribute_value_list_out.length > 0 || this.attribute_value_list_out != "" ) {
       this.attribute_value_list_out.forEach((element: any, index: any) => {
         if (element.attribute_name_id == attributeid) delete this.attribute_value_list_out[index];
       });
-    }  
+    }
     if(enb==false)
     {
       if(e.target.value!="")
@@ -177,7 +210,7 @@ export class AddItemSpecificationComponent implements OnInit {
         this.attribute_value_list_out.push({'specification_id':specificationid,
         'attribute_name_id':attributeid,'attribute_value_id':parseInt(e.target.value), 'attribute_value':"",'enable_custom_value':false})
       }
-     
+
     }
     else if(enb==true)
     {
@@ -186,9 +219,9 @@ export class AddItemSpecificationComponent implements OnInit {
       this.attribute_value_list_out.push({'specification_id':specificationid,
       'attribute_name_id':attributeid,'attribute_value_id':0, 'attribute_value':e.target.value,'enable_custom_value':true})
     }
-     
+
     }
-    
+
   }
  attribute_value_list_edit:any;
   edit_specification(ss:any)
@@ -201,7 +234,7 @@ export class AddItemSpecificationComponent implements OnInit {
     this.attribute_value_list_edit.push(dd)
    }
     })
-    this.edititem_edit=true; 
+    this.edititem_edit=true;
 
     this.attribute_select.patchValue({
       att_select_val_id: ss.attributevalue_id
@@ -229,10 +262,10 @@ this.itemspecification_id=ss.itemspecification_id
       this.custon_data="";
       this.custon_data=e.target.value;
     }
-    
+
   }
   update_attribute()
-  { 
+  { this.spinner.show();
     if(this.enablecuston==true)
     {
       if(this.custon_data=="")
@@ -261,7 +294,7 @@ this.itemspecification_id=ss.itemspecification_id
     return
   }
 }
- 
+
     var data={
       "item_specification_id":this.itemspecification_id,
       "item_id": parseInt(this.itemid),
@@ -270,7 +303,7 @@ this.itemspecification_id=ss.itemspecification_id
    "attribute_value_id": this.attributevalueid,
    "attribute_value": this.custon_data,
    "enable_custom_value": this.enablecuston,
-   "language_id":1  
+   "language_id":1
     }
     let url = 'Vendor_Add_Item/update_itemspecification/';
     this.allapi.PostData(url, data).subscribe(data2 => {
@@ -307,8 +340,9 @@ this.itemspecification_id=ss.itemspecification_id
         })
       }
     });
+    this.spinner.hide();
   }
-  
+
   groupBy(list: any[], property: string | number) {
     return list.reduce((groups, item) => {
         const val = item[property];

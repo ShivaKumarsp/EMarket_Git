@@ -24,10 +24,10 @@ export class FooterComponent implements OnInit {
    
   ngOnInit(): void {
 
-    let requestFormUrl='Landing/getdata_footer/';
-    this.allapi.GetDataById_login(requestFormUrl,1).subscribe(response => {  
-      this.category_list = response.category_list;     
-    }); 
+    // let requestFormUrl='Landing/getdata_footer/';
+    // this.allapi.GetDataById_login(requestFormUrl,1).subscribe(response => {  
+    //   this.category_list = response.category_list;     
+    // }); 
   }
 
   get_category_page(ss:any)

@@ -26,7 +26,8 @@ export class VerifyItemListComponent implements OnInit {
    all_item_list:any;
    imagepreview="";
    formModel:any;
- 
+   imageBaseUrl='http://124.153.106.183:8015/EMarket_Image';
+   
   ngOnInit(): void {
   
       var data = {

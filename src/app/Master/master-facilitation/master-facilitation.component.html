@@ -1,0 +1,201 @@
+
+<section class="checkout">
+          <div class="container">
+              <div class="row">
+                  <div class="col-12">
+                    <ul class="nav nav-pills">
+                      <li class="nav-item"><a class="nav-link " href="/app/logistics/Managehub">Manage Hub</a></li>
+                      <li class="nav-item"><a class="nav-link active" >Facilitation Center</a></li>
+                      <li class="nav-item"><a class="nav-link" href="/app/map_facilitation_pincode">Map Facilitation And Pincode</a></li>
+                  </ul>
+                     
+                  </div>
+              </div>
+          </div> 
+        </section>
+        
+        <div class="container min-vh-100">
+        
+          <form [formGroup]="hform" >
+        <br>
+            <div class="row" *ngIf="showadd==true">
+             
+                    <div class="col-md-4"> 
+                       <h3>Manage Facilitation</h3> </div>    
+                         
+                     <div class="col-md-4"></div>   
+                      <div class="col-md-4 text-end"> <button class="btn btn-sm btn-primary"
+                               (click)="showlist()">All Facilitation</button></div>     
+                 </div>
+             
+                <div class="row " *ngIf="showadd==true">
+                  
+                              <div class="col-md-6" >
+                                        <label  class="form-label">Hub<b style="color:red">*</b></label>
+                                         <select class="form-control"  formControlName="hubid" [(ngModel)]="hub_id"  [ngClass]="{ 'is-invalid': submitted && f['hubid'].errors }">
+                                          <option value="" >-- Select Hub --</option>
+                                          <option *ngFor="let hub of hub_list" [ngValue]="hub.hub_id">
+                                              {{hub.hub_name}}
+                                          </option>
+                                      </select>
+                                      <div *ngIf="submitted && f['hubid'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['hubid'].errors['required']">Select Hub</div>
+                                       
+                                      </div>
+                                      </div>
+
+                                      <div class="col-md-6">
+                                        <label  class="form-label">Facilitation Name<b style="color:red">*</b></label>
+                                        <input type="text" class="form-control" [(ngModel)]="facilitation_name" (keypress)="keyPressSpace($event)" minlength="3" maxlength="30"
+                                        pattern="^[a-zA-Z][a-z A-Z 0-9]*$" oninput="if(!this.value.match('^[a-zA-Z][a-z A-Z 0-9]*$'))this.value='';" formControlName="facilitationname" placeholder="Facilitation Name" [ngClass]="{ 'is-invalid': submitted && f['facilitationname'].errors }" required>
+                                        <div *ngIf="submitted && f['facilitationname'].errors" class="invalid-feedback">
+                                          <div *ngIf="f['facilitationname'].errors['required']">Enter Facilitation Name</div>
+                                          <div *ngIf="f['facilitationname'].errors && f['facilitationname'].errors['minlength']">Minimun 3 Character</div> 
+                                        </div>
+                                      </div>
+
+                                      <div class="col-md-6">
+                                        <label  class="form-label">Email<b style="color:red">*</b></label>
+                                        <input type="text" class="form-control" (keypress)="keyPressSpace1($event)" [(ngModel)]="email" formControlName="vemail" placeholder="Facilitation Email" [ngClass]="{ 'is-invalid': submitted && f['vemail'].errors }" required>
+                                        <div *ngIf="submitted && f['vemail'].errors" class="invalid-feedback">
+                                          <div *ngIf="f['vemail'].errors['required']">Please Enter Email</div>
+                                      
+                                        </div>
+                                      </div>
+
+                      <div class="col-md-6">
+                        <label  class="form-label">Contact Number<b style="color:red">*</b></label>
+                        <input type="text" class="form-control" [(ngModel)]="contact_no" formControlName="contact"  [minlength]="10" [maxlength]="10" placeholder="Enter contact no" pattern="^[6-9][0-9]*$" oninput="if(!this.value.match('^[6-9][0-9]*$'))this.value='';" [ngClass]="{ 'is-invalid': submitted && f['contact'].errors }" required>
+                        <div *ngIf="submitted && f['contact'].errors" class="invalid-feedback">
+                          <div *ngIf="f['contact'].errors['required']">Enter Mobile Number</div>
+                          <div *ngIf="f['contact'].errors && f['contact'].errors['pattern']">Please provide Valid Mobile Number</div>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <label  class="form-label">Address<b style="color:red">*</b></label>
+                        <textarea class="form-control" (keypress)="keyPressSpace($event)" formControlName="Address" [(ngModel)]="address" rows="3" [ngClass]="{ 'is-invalid': submitted && f['Address'].errors }" placeholder="Enter Address" required></textarea>
+                        <div *ngIf="submitted && f['Address'].errors" class="invalid-feedback">
+                          <div *ngIf="f['Address'].errors['required']">Please Enter Hub Address</div>
+                        </div>
+                      </div>
+        
+                   
+                      <div class="col-md-6" >
+                        <label  class="form-label">Country<b style="color:red">*</b></label>
+                         <select class="form-control"  formControlName="hcountry" [(ngModel)]="country_id" (change)="get_state(country_id)" [ngClass]="{ 'is-invalid': submitted && f['hcountry'].errors }">
+                          <option value="" >-- Select Country --</option>
+                          <option *ngFor="let cou of country_list" [ngValue]="cou.countryid">
+                              {{cou.countryname}}
+                          </option>
+                      </select>
+                      <div *ngIf="submitted && f['hcountry'].errors" class="invalid-feedback">
+                        <div *ngIf="f['hcountry'].errors['required']">Select Country</div>
+                      </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label  class="form-label">State<b style="color:red">*</b></label>
+                          <select class="form-control" [(ngModel)]="state_id"   formControlName="hstate" (change)="get_city(country_id,state_id)" [ngClass]="{ 'is-invalid': submitted && f['hstate'].errors }" required>
+                          <option value="" >-- Select State --</option>
+                          <option *ngFor="let state of state_list" [ngValue]="state.stateid">
+                              {{state.statename}}
+                          </option>
+                          </select>
+                          <div *ngIf="submitted && f['hstate'].errors" class="invalid-feedback">
+                            <div *ngIf="f['hstate'].errors['required']">Select state</div>
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label  class="form-label">City<b style="color:red">*</b></label>
+                        <select class="form-control" [(ngModel)]="city_id"  formControlName="hcity" id="hcity" (change)="get_pincode(country_id,state_id,city_id)" [ngClass]="{ 'is-invalid': submitted && f['hcity'].errors }" required>
+                          <option value="" >-- Select City --</option>
+                          <option *ngFor="let city of city_list" [ngValue]="city.city_id">
+                              {{city.city_name}}
+                          </option>
+                          </select>
+                          <div *ngIf="submitted && f['hcity'].errors" class="invalid-feedback">
+                            <div *ngIf="f['hcity'].errors['required']">Select city</div>
+                          </div>
+                      </div>
+                      <div class="col-md-6">
+                        <label  class="form-label">Pincode<b style="color:red">*</b></label>
+                       <input type="text" class="form-control" [(ngModel)]="pincode"  formControlName="hpin" pattern="^[1-9][0-9]*$" oninput="if(!this.value.match('^[1-9][0-9]*$'))this.value='';"  minlength="6" maxlength="6" placeholder="Enter Pincode" [ngClass]="{ 'is-invalid': submitted && f['hpin'].errors }" required>
+                       <div *ngIf="submitted && f['hpin'].errors" class="invalid-feedback">
+                        <div *ngIf="f['hpin'].errors['required']">Enter Pincode</div>
+                        <div *ngIf="f['hpin'].errors && f['hpin'].errors['pattern']">Please Enter valid Pincode</div>
+                      </div>
+                      </div>
+                   
+                  </div>
+                  
+            <div class="text-center my-4" *ngIf="showadd==true">
+              <input type="text" [(ngModel)]="facilitation_id" hidden>
+              <button type="button" class="btn  btn-template bg-warning" (click)="clear()" >Clear</button>
+              &nbsp;
+              <button type="button" class="btn  btn-template bg-primary" (click)="save_data()">Save</button>
+             
+             
+            </div>
+       
+           
+            
+          <div *ngIf="showadd==false">
+           
+   <div class="row">
+ 
+      <div class="col-md-4">  <h3>All Facilitation</h3> </div>    
+           
+       <div class="col-md-4"></div>   
+        <div class="col-md-4 text-end"> <button class="btn btn-sm btn-primary" (click)="show_add()">Add New </button></div>     
+   </div>
+   
+   
+    <table class="table table-bordered mt-4 shadow shadow-sm">
+      <thead>
+        <tr>
+          <th>SL No</th>
+          <th>Hub</th>
+          <th>Facilitation</th>
+          <th>Email</th>
+          <th>Contact</th>
+          <th>Address</th>
+          <th>Pincode</th>
+        
+          <th>City</th>
+          <th>State</th>
+          <!-- <th>Action</th> -->
+        
+        </tr>
+      </thead>
+      <tbody>
+            <tr *ngFor="let fc of facilitation_list| filter:search | paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index; filter:search">
+            <th>{{tableSize *(page-1)+i+1}}</th>
+          <td>{{fc.hub_name}}</td>
+          <td>{{fc.facilitation_name}}</td>
+          <td>{{fc.email}}</td>
+          <td>{{fc.contact_no}}</td>
+          <td>{{fc.address}}</td>
+          <td>{{fc.pincode}}</td>
+       
+          <td>{{fc.city_name}}</td>
+          <td>{{fc.state_name}}</td>
+            <td><button class="btn btn-sm btn-info" (click)="edit_data(fc)">Edit</button>
+          </td> 
+        
+        </tr>
+      </tbody>
+    </table>
+    <div class="d-flex justify-content-center">
+            <pagination-controls
+              previousLabel="Prev"
+              nextLabel="Next"
+              (pageChange)="onTableDataChange($event)"
+            >
+            </pagination-controls>
+          </div>  
+  </div>
+  
+          </form>
+        
+        </div>
+        
+        

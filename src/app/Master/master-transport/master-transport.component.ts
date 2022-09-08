@@ -101,7 +101,8 @@ this.form.reset();
       this.hub_list=JSON.parse(promise.hub_list).Table;
        this.transport_mode_list=JSON.parse(promise.transport_mode_list).Table;
        this.transport_list=JSON.parse(promise.transport_list).Table;
-     this.Clear();
+       this.submitted=false;
+       this.form.reset();
     }
       else if(promise.status=="Failed")
       {

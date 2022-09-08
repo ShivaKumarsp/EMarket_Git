@@ -9,11 +9,11 @@ import { AllapiService } from 'src/app/apiservice/allapi.service';
 })
 export class ItemHandoverListComponent implements OnInit {
 
- 
+
   constructor( private allapi: AllapiService,
     private spinner:NgxSpinnerService) { }
-  
-   
+
+
     page: number = 1;
     count: number = 0;
     tableSize: number = 5;
@@ -40,5 +40,5 @@ this.allapi.PostData(url,data).subscribe(promise=>
     this.page = event;
     this.ngOnInit();
   }
-  
+
 }

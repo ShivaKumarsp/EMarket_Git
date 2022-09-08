@@ -1,0 +1,236 @@
+
+
+
+<div class="container min-vh-100">
+  <div class="mt-3">
+    <div class="d-flex justify-content-end">
+      <div class="form-group">
+      <select class="form-select shadow shadow-sm" [(ngModel)]="page_name" (change)="redirect_to_page(page_name)" aria-label="Default select example">
+        <option value="">Filter By Group</option>
+        <option value="1">FC to Hub</option>
+        <option value="2">FC to Customer</option>
+        <option value="3">Assign DE (Pickup From Vendor)</option>
+        <option value="4">Receive Consignment (Pickup From Vendor)</option>
+        <option value="5">Receive Consignment (From Hub)</option>
+      </select>
+      </div>
+    </div>
+  </div>
+
+          <div *ngIf="listitm==false" [formGroup]="form">
+                    <div class=" mb-2 row" >
+          <div class="row">
+                    
+                    <div class="col-md-4">
+                      <label  class="form-label">Storewise</label>
+                      <select class="form-select" multiple formControlName="selectOpt" (change)="get_data()">
+                        <option value=0>Select All</option>
+                        <option *ngFor="let store of store_list"  [ngValue]="store.store_id">
+                           {{ store.store_name }}</option>                    
+                      </select>
+                   
+                      <!-- <select  class="form-control"  formControlName="v_order_by" [(ngModel)]="order_by" (change)="change_order_by(order_by)">
+                        <option value="">-- Select --</option> 
+                        <option value="Store">Store</option>
+                      </select>                      -->
+                    </div>
+                   
+                    <div class="col-md-4">
+                      <div >
+                        <span>Max  Weight={{count_weight|number}} </span>
+                       
+
+                        <!-- <span *ngIf="count_weight>total_weight" style="color:red">Max Weight({{total_weight}})={{count_weight|number}}<br>Max Weight Reached </span>
+                        <span *ngIf="count_weight<=total_weight"> Max Weight({{total_weight}})={{count_weight|number}} </span>                 -->
+                    </div>
+                    <div >
+                                
+                      <span> Max Volume = {{count_vol_weight|number}} (cm)(LBH)</span> 
+
+                     <!-- <span *ngIf="count_vol_weight>total_vol_weight" style="color:red"> Max Volumetric({{total_vol_weight}})={{count_vol_weight|number}}<br>Max Volumetric Reached </span>             
+                     <span *ngIf="count_vol_weight<=total_vol_weight"> Max Volumetric ({{total_vol_weight}})={{count_vol_weight|number}} </span>              -->
+                    </div>
+                  </div> 
+
+                           
+          </div>
+
+         
+    </div>
+
+          <table class="table table-bordered my-4 p-1  shadow shadow-sm border-0" >
+            <thead>
+              <tr>
+                <th>SL No</th>
+                <th>Select</th> 
+               <th>Con Id</th>
+               <th>Product Name</th>
+               <th>Store Name</th>
+               <th>Pickup Address</th>
+               <th>Dimension(cm)(LBH)</th>             
+               <th>Weight(kg)</th>
+               <th>Type</th>                
+              </tr>
+            </thead>
+            <tbody>
+                    <tr *ngFor="let con of consignment_list_new|filter:search| paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index">
+                    <th>{{tableSize *(page-1)+i+1}}</th>
+                  <td>
+                   <input  class="form-check-input"  type="checkbox"
+                    (change)="click_change(con)" formControlName="v_ischeck"  [(ngModel)]="con.is_check"/>
+                  </td>
+                  <td>{{con.consignment_id}}</td>
+                  <td>{{con.item_name}}</td>
+                  <td>{{con.store_name}}</td>
+                  <td>{{con.pickup_location+" "+con.pincode}}</td>
+                  <td>{{con.consignment_l}}*{{con.consignment_b}}*{{con.consignment_h}}</td>               
+                  <td>{{con.weight|number}}</td>
+                  <td>Pickup</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="d-flex justify-content-center">
+                    <pagination-controls
+                      previousLabel="Prev"
+                      nextLabel="Next"
+                      (pageChange)="onTableDataChange($event)"
+                    >
+                    </pagination-controls>
+                  </div>
+<div>
+  <p style="color: red;">{{errormessage}}</p>
+</div>
+             <div class="row">
+              <div class="col-md-4">
+                <label  class="form-label">Delivery Executive<b style="color:red ;">*</b></label>
+                <select  class="form-control"  formControlName="deliveryExecutive" [(ngModel)]="delivery_executive_id" (change)="change_consignment_list(delivery_executive_id)"  [ngClass]="{ 'is-invalid': submitted && f['deliveryExecutive'].errors }">
+                  <option value="">-- Select --</option>
+                  <option *ngFor="let ex of  delivery_exe_dd" [ngValue]="ex.delivery_executive_id">
+                      {{ex.delivery_executive_id+": "+ex.first_name+" "+ex.second_name+" : "+
+                    ex.vehicle_type+" : "+ex.max_weight+" (kg)"}}
+               </option>
+                </select>
+                <div *ngIf="submitted && f['deliveryExecutive'].errors" class="invalid-feedback">
+                      <div *ngIf="f['deliveryExecutive'].errors['required']">Select Delivery Executive </div> 
+                    </div>
+                  
+                      <div style="color: red;"> {{de_message}}</div> 
+                    
+                  
+              </div>
+             
+          <div class="col-md-4">
+          <div class="text-end">
+            <button class="btn btn-sm btn-primary ms-2" (click)="onLogClick()">Assign</button>
+             </div>
+             </div>     
+            </div> 
+
+<br>
+          </div>
+<div *ngIf="listitm==true">
+          <div>
+                    <h4>Assigned List</h4>
+          </div>
+          <div class="text-end">
+                    <button class="btn btn-sm btn-primary ms-2" (click)="onClick(1)">Generated</button>
+           </div>
+
+                  <table class="table table-bordered my-4 p-1  shadow shadow-sm border-0" *ngIf="listitm==true">
+                    <thead>
+                      <tr>
+                        <th>SL No</th>
+                        <th>Boundle Id</th>
+                         <th>Consignment ID</th>
+                       <th>Delivery Executive Name</th>
+                        <th>Dimension</th>
+                        <th>Volumetric Weight(kg)</th>
+                        <th>Weight(kg)</th>
+                        <th>Type</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+               
+                      
+                        <tr *ngFor="let gen of consignment_generared_list|filter:search1| paginate: {itemsPerPage: tableSize1, currentPage: page1, totalItems: count1};let i = index">
+                              <th>{{tableSize1 *(page1-1)+i+1}}</th>
+                        <td>{{gen.boundle_id}}</td>
+                        <td>{{gen.consignment_id}}</td>
+                        <td>{{gen.executive_name}}</td>
+                        <td>{{gen.consignment_l}}*{{gen.consignment_b}}*{{gen.consignment_h}}</td>
+                        <td>{{(gen.consignment_l+gen.consignment_b+gen.consignment_h)/366|number}}</td>
+                        <td>{{gen.weight|number}}</td>
+                        <td>Pickup</td>
+                      </tr>
+                    </tbody>
+                  </table>
+            <div class="d-flex justify-content-center">
+                    <pagination-controls
+                      previousLabel="Prev"
+                      nextLabel="Next"
+                      (pageChange)="onTableDataChange1($event)"
+                    >
+                    </pagination-controls>
+                  </div>
+          </div>
+        
+      
+              <!-- Modal -->
+              <div class="modal fade" id="allconsignment" tabindex="-1" aria-labelledby="exampleallOrderModal" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                  <div class="modal-content">
+                    <div class="modal-header border-0">
+                      <h5 class="modal-title" id="exampleallOrderModal"></h5>
+                      <button type="button" class="btn-close" (click)="closeModal()"></button>
+                    </div>
+                    <div class="modal-body border-0">
+             
+                        <div class="'row">
+                          <div class="col-lg-12">                                    
+                              <div class="block">
+                                <div class="block-header">
+                                  <h6>Consignment List</h6>
+                              </div>
+                                <div class="block-body">
+                                  <table class="table table-bordered my-4 p-1  shadow shadow-sm border-0" >
+                                    <thead>
+                                      <tr>
+                                        <th>S No</th>
+                                         <th>Select</th> 
+                                        <th>Consignment ID</th>
+                                        <th>store Name</th>
+                                        <th>Dimension</th>
+                                        <th>Volumetric Weight(kg)</th>
+                                        <th>Weight(kg)</th>
+                                        <th>Type</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                            <tr *ngFor="let con1 of consignment_list_new_temp;let i = index">
+                                            <th>{{i+1}}</th>
+                                         <td>
+                                          <input class="form-check-input"  type="checkbox" [(ngModel)]="con1.is_check"/>
+                                        </td>
+                                        <td>{{con1.consignment_id}}</td>
+                                        <td>{{con1.store_name}}</td>
+                                        <td>{{con1.consignment_l}}*{{con1.consignment_b}}*{{con1.consignment_h}}</td>
+                                        <td>{{con1.volumetric_weight|number}}</td>
+                                        <td>{{con1.weight|number}}</td>
+                                        <td>Pickup</td>
+                                      </tr>
+                                    </tbody>
+                                  </table>
+                                
+                                </div>
+                              </div>
+        
+          
+                          </div>
+                        </div>
+                    
+                    </div>
+                    
+                  </div>
+                </div>
+              </div>
+

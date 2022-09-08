@@ -44,8 +44,10 @@ let url='CartCheckout/get_payment_data_directcart/';
                 total += (product.selling_price * product.car_qty);
             }
             this.total = total;
-            this.gstamount = (total * 16) / 100;
-            this.payableamount = total + this.gstamount + 30 - 100;
+            this.gstamount = total;
+            this.payableamount = total;
+            //this.gstamount = (total * 16) / 100;
+          //  this.payableamount = total + this.gstamount + 30 - 100; 
             this.cartcount = promise.mycartlist.length;
         }
         else {

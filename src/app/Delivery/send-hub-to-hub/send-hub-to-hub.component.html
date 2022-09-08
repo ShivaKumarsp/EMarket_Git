@@ -1,0 +1,241 @@
+<div class="my-4 min-vh-100">
+          <div class="container ">
+            <div class="my-3">
+              <h5>Orders Pickup From Hub And Drop To Public Transport</h5>
+            </div>
+            <div class="row g-0">
+               <!-- <div class="col-3 card card-body btn p-1 shadow shadow-sm" [ngClass]="{activeTab: page==1}" (click)="page=1">
+                <p class="small p-0"> <strong><i class="fa fa-check-square-o"></i>Pickup List</strong></p>
+              </div>  -->
+              <div class="col-3 card card-body btn p-1 shadow shadow-sm" [ngClass]="{activeTab: page==2}" (click)="page=2">
+                <p class="small p-0"> <strong><i class="fa fa-check-square-o"></i> Pickup From Hub</strong></p>
+              </div>
+              <div class="col-3 card card-body btn p-1 shadow shadow-sm" [ngClass]="{activeTab: page==3}" (click)="page=3">
+                <p class="small p-0"> <strong><i class="fa fa-truck"></i>Drop To Public Transport</strong></p>
+              </div>
+            </div>
+        
+        
+            <div class="my-3" [ngSwitch]="page">
+        
+              <!-- <div class="card rounded-0 shadow shadow-sm" *ngSwitchCase="1">
+                <div class="card-header">
+                  <i class="fa fa-fa-truck"></i> Pickup List
+                </div>
+                <div class="card-body">
+                  <div class="mb-3 card card-body" *ngFor="let order of request_delivery_list|filter:search| paginate: {itemsPerPage: tableSize, currentPage: page1, totalItems: count};let i = index">
+                   
+                    <div class="row">
+                      <div class="col-md-2"></div>
+                      <div class="col-md-8">
+                    <div class="d-flex justify-content-between">
+                       <h5>Tracking ID : #{{order.tracking_id}}</h5>
+                      <h5>Consignment ID : #{{order.consignment_id}}</h5>
+                    </div>
+                  </div>
+                    <div class="col-md-2"></div>
+                    </div>
+        
+                 <div class="row">
+                  <div class="col-md-6">
+                    <div class="card">
+                      <h6><b>Pickup Address :</b> </h6>
+                      <h6>Facilitation Name : {{order.facilitation_name}}</h6>
+                      <h6>Address : {{order.pickup_location+" "+order.vpincode}}</h6>
+                      <h6>Email : {{order.email}}</h6>
+                      <h6>Contact Number : {{order.contact_no}}</h6>
+                      </div>
+                     
+                    </div>
+                    <div class="col-md-6">
+                      <div class="card">
+                        <h6><b>Drop To Customer :</b> </h6>
+                        <h6>Customer Name : {{order.customer_name}}</h6>
+                        <h6>Address : {{order.delivery_address+" "+order.pincode}}</h6>
+                        <h6>Email : {{order.email_id}}</h6>
+                        <h6>Contact Number : {{order.mobile}}</h6>   
+                        <h6>Land Mark : {{order.land_mark}}</h6>             
+                       </div>
+                    </div>
+                  </div>
+<br>
+                    <div class="text-end">
+                      <button class="btn btn-template bg-primary" type="button" (click)="acceptingParcel(order)">Accept Order</button>&nbsp;
+                      <button class="btn btn-template bg-danger" type="button" (click)="open_rejectmodule(order)">Reject Order</button>
+                    </div>
+                  </div>
+                  <div class="d-flex justify-content-center">
+                    <pagination-controls
+                      previousLabel="Prev"
+                      nextLabel="Next"
+                      (pageChange)="onTableDataChange($event)"
+                    >
+                    </pagination-controls>
+                  </div>
+                </div>
+              </div> -->
+              <div class="card rounded-0 shadow shadow-sm" *ngSwitchCase="2">
+                <div class="card-header">
+                   Pickup From Hub
+                </div>
+                <div class="card-body">
+                  <div class="mb-3 card card-body" *ngFor="let order of pickup_delivery_list|filter:search1| paginate: {itemsPerPage: tableSize1, currentPage: page2, totalItems: count1};let i = index">
+                    
+        
+        
+                    <div class="row">
+                   <div class="col-md-4">
+                    <div class="card">
+                      <h6><b>Details</b> </h6>
+                      <h6>Batch Id : {{order.batch_id}}</h6>
+                       <h6>No Of Items : {{order.no_of_item}}</h6>
+                        <h6>Transport Mode : {{order.transport_mode_name}}</h6>
+                        <h6>Transport Details : {{order.transport_registration_no}}</h6> 
+                        <h6>Departure Time : {{order.departure_time}}</h6> 
+                        <h6>Assign Date : {{order.send_assigned_on|date}}</h6> 
+                    </div>
+                  </div>      
+
+                        <div class="col-md-5">
+                          <div class="card">
+                            <h6><b>Drop To Hub :</b> </h6>
+                            <h6>Hub Name : {{order.hub_name}}</h6>
+                            <h6>Address : {{order.delivery_address+" "+order.hub_pincode}}</h6>
+                            <h6>Email : {{order.email}}</h6>
+                            <h6>Contact Number : {{order.contact_no}}</h6> 
+                           </div>
+                        </div>
+                       
+                    <div class="col-md-3">
+                              <br>
+                              <br>
+                                      <button class="btn btn-template bg-primary" type="button" (click)="batch_details(order)">View All Item Details</button>
+                            </div>
+
+                      </div>
+<br>
+
+                    <div class="text-end">
+                      <button class="btn btn-template bg-primary" type="button" (click)="pickupParcel(order)">Pickup Order From Hub</button>
+                    </div> 
+                  </div>
+                  <div class="d-flex justify-content-center">
+                    <pagination-controls
+                      previousLabel="Prev"
+                      nextLabel="Next"
+                      (pageChange)="onTableDataChange1($event)"
+                    >
+                    </pagination-controls>
+                  </div>
+                </div>
+              </div>
+              <div class="card rounded-0 shadow shadow-sm" *ngSwitchCase="3">
+                <div class="card-header">
+                   Drop To Public Transport
+                </div>
+                <div class="card-body">
+                  <div class="mb-3 card card-body" *ngFor="let order of drop_delivery_list|filter:search1| paginate: {itemsPerPage: tableSize1, currentPage: page2, totalItems: count1};let i = index">
+                    
+        
+        
+                    <div class="row">
+                   <div class="col-md-4">
+                    <div class="card">
+                      <h6><b>Details</b> </h6>
+                      <h6>Batch Id : {{order.batch_id}}</h6>
+                       <h6>No Of Items : {{order.no_of_item}}</h6>
+                        <h6>Transport Mode : {{order.transport_mode_name}}</h6>
+                        <h6>Transport Details : {{order.transport_registration_no}}</h6> 
+                        <h6>Departure Time : {{order.departure_time}}</h6> 
+                        <h6>Assign Date : {{order.send_assigned_on|date}}</h6> 
+                    </div>
+                  </div>      
+
+                        <div class="col-md-5">
+                          <div class="card">
+                            <h6><b>Drop To Hub :</b> </h6>
+                            <h6>Hub Name : {{order.hub_name}}</h6>
+                            <h6>Address : {{order.delivery_address+" "+order.hub_pincode}}</h6>
+                            <h6>Email : {{order.email}}</h6>
+                            <h6>Contact Number : {{order.contact_no}}</h6> 
+                           </div>
+                        </div>
+                       
+                    <div class="col-md-3">
+                              <br>
+                              <br>
+                                      <button class="btn btn-template bg-primary" type="button" (click)="batch_details(order)">View All Item Details</button>
+                            </div>
+
+                      </div>
+<br>
+
+                    <div class="text-end">
+                      <button class="btn btn-template bg-primary" type="button" (click)="deliverParcel(order)">Drop To Public Transport</button>
+                    </div> 
+                  </div>
+                  <div class="d-flex justify-content-center">
+                    <pagination-controls
+                      previousLabel="Prev"
+                      nextLabel="Next"
+                      (pageChange)="onTableDataChange1($event)"
+                    >
+                    </pagination-controls>
+                  </div>
+                </div>
+              </div>
+            </div>
+        
+        
+          </div>
+        </div>
+        
+        <div class="modal fade"  id="openformModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+              <div class="modal-header border-0">
+                <h5 class="modal-title" id="exampleModalLabel">
+                  Batch Details
+                  </h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+         
+              </div>
+              <div class="modal-body border-0">
+        
+                  <div class="'row">
+                    <div class="col-lg-12">
+                      
+                      <table class="table table-bordered small p-2" >
+                        <thead>
+                          <tr>
+                            <th>SNo</th>
+                            <th>Consignment ID</th>
+                            <th>Batch Id</th>
+                            <th>Item Name</th>                        
+                            <th>Tracking Id</th>
+                            <th>Dimension(cm)(LBH)</th>
+                            <th>Weight(kg)</th>
+                           
+                          </tr>
+                        </thead>
+                        <tbody>
+                       <tr *ngFor="let han of all_item_details; let i = index;">
+                            <th>{{i+1}}</th>
+                            <td>{{han.consignment_id}}</td>
+                            <td>{{han.batch_id}}</td>
+                            <td>{{han.item_name}}</td>                           
+                            <td>{{han.tracking_id}}</td>
+                            <td>{{han.consignment_l}}*{{han.consignment_b}}*{{han.consignment_h}}</td>
+                            <td>{{han.weight}}</td>
+                          </tr>
+                        
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+        
+              </div>
+        
+            </div>
+          </div>
+        </div>

@@ -7,8 +7,8 @@
             </div>
             <div class="col-lg-3 text-right order-1 order-lg-2">
                 <ul class="breadcrumb justify-content-lg-end">
-                    <li class="breadcrumb-product"><a >Home</a></li>
-                    <li class="breadcrumb-product active">Product Features</li>
+                    <li class="breadcrumb-item"><a >Home</a></li>
+                    <li class="breadcrumb-item active">Product Feature</li>
                 </ul>
             </div>
         </div>
@@ -32,23 +32,23 @@
         </div>
 
         <div class="text-end">
-            <h6 class="my-3">{{productname}}</h6> 
+            <h6 class="my-3">{{productname}}</h6>
     </div>
 
         <div class="row min-vh-100">
 
             <div class="tab-content">
                 <div id="product_info" class="active tab-block">
-                    
-                    
+
+
                         <div class="card card-body p-4">
-                                                      
+
                             <div class="form-group" class="my-2" [formGroup]="forms">
-                               
-                             
+
+
 
                                     <div class="NgxEditor__Wrapper" class="shadow shodow-sm mt-3" [style]="{'height':'300px'}">
-                                        <ngx-editor-menu [editor]="editor"  [style]="{'height':'300px'}"  minHeight="50px" formControlName="msg"> </ngx-editor-menu>
+                                        <ngx-editor-menu [editor]="editor" [toolbar]="toolbar"  [style]="{'height':'300px'}"  minHeight="50px" formControlName="msg"> </ngx-editor-menu>
                                         <ngx-editor
                                         [editor]="editor"
                                         [ngModel]="html"
@@ -58,15 +58,15 @@
                                         [style]="{'height':'300px'}"
                                         >
                                         </ngx-editor>
-                                   
+
                                     </div>
                                     <a type="button" class="btn btn-template wide next" [style]="{'margin-top':'150px'}" (click)="savepfeatures()">
                                         Save<i class="fa fa-angle-right"></i>
                                     </a>
                             </div>
-                          
-                        </div>      
-                    
+
+                        </div>
+
                 </div>
             </div>
         </div>

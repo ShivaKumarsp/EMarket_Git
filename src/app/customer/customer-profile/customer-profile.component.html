@@ -1,6 +1,6 @@
 <ngx-spinner  bdColor="rgba(51,51,51,0.8)"  size="medium"  color="#fff"  type="ball-scale-multiple">
     <p style="font-size: 20px; color: white">Loading...</p>
-  </ngx-spinner> 
+  </ngx-spinner>
 <script>
     function isNumber(evt) {
         evt = (evt) ? evt : window.event;
@@ -15,8 +15,8 @@
 
 <div ng-init="BindData()">
     <section class="padding-small" >
-       
-     
+
+
         <div class="container">
             <div class="row d-flex">
                 <div class="col-lg-9 order-2 order-lg-1">
@@ -40,18 +40,18 @@
                 <div class="customer-sidebar col-xl-3 col-lg-4 mb-md-5">
                     <div class="customer-profile">
                         <!-- <div  class="d-inline-block overflow-hidden">
-                            <img src="{{p_imageurl}}" class="img-fluid rounded-circle customer-image" 
+                            <img src="{{p_imageurl}}" class="img-fluid rounded-circle customer-image"
                             [style]="{'width':'200px','height':'200px'}">
                         </div> -->
                         <div  class="d-inline-block overflow-hidden">
-                            <img src="{{userProfileImage}}" class="img-fluid rounded-circle customer-image" 
+                            <img src="{{imageBaseUrl+userProfileImage}}" class="img-fluid rounded-circle customer-image"
                             [style]="{'width':'200px','height':'200px'}">
-                        </div>
-                        
+                        </div>                        
+
                         <label class="badge bg-primary my-3" type="button" for="img" >
                             <i class="fa fa-edit"></i>Add Profile Pic</label>
                         <h6 class="text-small">{{this.first_name}} {{this.second_name}}</h6>
-             
+
                     </div>
                     <nav class="list-group customer-nav">
                         <a routerLink="/app/orderhistory" class="list-group-item d-flex justify-content-between align-items-center text-decoration-none ">
@@ -59,7 +59,7 @@
                         </a>
                         <a routerLink="/app/customerprofile" class="active list-group-item d-flex justify-content-between align-items-center text-decoration-none">
                             <span><span class="icon icon-profile"></span>Profile</span>
-                        </a>                      
+                        </a>
                               <a  class="list-group-item d-flex justify-content-between align-items-center" (click)="logout()">
                                 <span><span class="fa fa-sign-out"></span>Log out</span></a>
                       </nav>
@@ -112,21 +112,21 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="firstname" class="form-label">First Name</label>
-                                    <input id="firstname" formControlName="firstname"  type="text" class="form-control" 
-                                    [(ngModel)]="first_name" maxlength="15" onkeydown="return /[a-zA-Z]/i.test(event.key)"  required>
-                                    <div *ngIf="f['firstname'].touched && f['firstname'].invalid" class="text-danger">
-                                                <div *ngIf="f['firstname'].errors && f['firstname'].errors['required']">Enter First Name</div>
-                                            </div> 
+                                    <label  class="form-label">First Name<b style="color:red ;">*</b></label>
+                                    <input formControlName="firstname"  type="text" class="form-control"
+                                    [(ngModel)]="first_name" maxlength="15" onkeydown="return /[a-zA-Z]/i.test(event.key)"  [ngClass]="{ 'is-invalid': submitted && f['firstname'].errors }">
+                                    <div *ngIf="submitted && f['firstname'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['firstname'].errors['required']">Enter First Name</div>
+                                      </div>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="lastname" class="form-label">Last Name</label>
-                                    <input id="lastname" formControlName="lastname"   type="text" class="form-control" maxlength="15" [(ngModel)]="second_name" onkeydown="return /[a-zA-Z]/i.test(event.key)" >
-                                    <div *ngIf="f['lastname'].touched && f['lastname'].invalid" class="text-danger">
-                                        <div *ngIf="f['lastname'].errors && f['lastname'].errors['required']">Last First Name</div>
-                                    </div> 
+                                    <label  class="form-label">Last Name<b style="color:red ;">*</b></label>
+                                    <input  formControlName="lastname"   type="text" class="form-control" maxlength="15" [(ngModel)]="second_name" onkeydown="return /[a-zA-Z]/i.test(event.key)" [ngClass]="{ 'is-invalid': submitted && f['lastname'].errors }">
+                                    <div *ngIf="submitted && f['lastname'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['lastname'].errors['required']">Enter Last Name</div>
+                                      </div>
                                 </div>
                             </div>
                         </div>
@@ -134,23 +134,24 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="email" class="form-label">Email</label>
-                                    <input id="email" formControlName="email" type="email" class="form-control" [(ngModel)]="email">
-                                    <div *ngIf="f['email'].touched && f['email'].invalid" class="text-danger">
-                                        <div *ngIf="f['email'].errors && f['email'].errors['required']">Enter Email</div>
-                                        
-                                    </div> 
+                                    <label  class="form-label">Email<b style="color:red ;">*</b></label>
+                                    <input  formControlName="vemail" type="text" class="form-control" [(ngModel)]="email"   [ngClass]="{ 'is-invalid': submitted && f['vemail'].errors }" >
+                                 <div *ngIf="submitted && f['vemail'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['vemail'].errors['required']">Enter Email</div>
+                                        <div *ngIf="f['vemail'].errors && f['vemail'].errors['pattern']">Please provide valid Email</div>
+                                   </div>
                                 </div>
                             </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="mobile" class="form-label">Mobile</label>
-                                    <input id="mobile" formControlName="phonenumber" type="text" class="form-control" [(ngModel)]="mobile"
-                                          minlength="10" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                                          <div *ngIf="f['phonenumber'].touched && f['phonenumber'].invalid" class="text-danger">
-                                            <div *ngIf="f['phonenumber'].errors && f['phonenumber'].errors['required']">Enter Mobile</div>
-                                                                                   </div> 
-                                      
+                                    <label  class="form-label">Mobile<b style="color:red ;">*</b></label>
+                                    <input  formControlName="phonenumber" type="text" class="form-control" [(ngModel)]="mobile"
+                                          minlength="10" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57' [ngClass]="{ 'is-invalid': submitted && f['phonenumber'].errors }">
+                                          <div *ngIf="submitted && f['phonenumber'].errors" class="invalid-feedback">
+                                            <div *ngIf="f['phonenumber'].errors['required']">Enter Mobile Number</div>
+                                            <div *ngIf="f['phonenumber'].errors && f['phonenumber'].errors['pattern']">Mobile Number is invalid!</div>
+                                          </div>
+
                                 </div>
                             </div>
                         </div>
@@ -158,105 +159,105 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label for="address" class="form-label">Address</label>
-                                    <textarea id="address" formControlName="address" type="text" class="form-control" [(ngModel)]="address"></textarea>
-                                    <div *ngIf="f['address'].touched && f['address'].invalid" class="text-danger">
-                                        <div *ngIf="f['address'].errors && f['address'].errors['required']">Enter Address</div>
-                                    </div> 
+                                    <label  class="form-label">Address<b style="color:red ;">*</b></label>
+                                    <textarea  formControlName="address" type="text" class="form-control" [(ngModel)]="address" [ngClass]="{ 'is-invalid': submitted && f['address'].errors }"></textarea>
+                                    <div *ngIf="submitted && f['address'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['address'].errors['required']">Enter Address</div>
+                                      </div>
                                 </div>
                             </div>
                             <div class="form-group col-md-6">
-                                <label for="country" class="form-label">Country</label>
-                                <select class="custom-select form-control form-control-sm"  formControlName="countryid" [(ngModel)]="countryid" (click)="getstate(countryid)">
+                                <label  class="form-label">Country<b style="color:red ;">*</b></label>
+                                <select class="form-control"  formControlName="countryid" [(ngModel)]="countryid" (click)="getstate(countryid)" [ngClass]="{ 'is-invalid': submitted && f['countryid'].errors }">
                                     <option value="">-- Select Country --</option>
                                     <option *ngFor="let cname of countrylist" value="{{cname.countryid}}" ng-selected="{{cname.countryid==countryid}}">
                                         {{cname.countryname}}
                                     </option>
                                 </select>
-                                <div *ngIf="f['countryid'].touched && f['countryid'].invalid" class="text-danger">
-                                    <div *ngIf="f['countryid'].errors && f['countryid'].errors['required']">Select Country</div>
-                                </div> 
+                                <div *ngIf="submitted && f['countryid'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['countryid'].errors['required']">Select Country</div>
+                                  </div>
                             </div>
                             <div class="col-sm-6 ">
                                 <div class="form-group">
-                                    <label for="state" class="form-label">State</label>
-                                    <select class="custom-select form-control form-control-sm" formControlName="state" [(ngModel)]="stateid">
+                                    <label  class="form-label">State<b style="color:red ;">*</b></label>
+                                    <select class="form-control" formControlName="state" [(ngModel)]="stateid" [ngClass]="{ 'is-invalid': submitted && f['state'].errors }">
                                         <option value="">-- Select State --</option>
                                         <option *ngFor="let state of statelist" value="{{state.stateid}}" ng-selected="{{state.stateid==stateid}}">
                                             {{state.statename}}
                                         </option>
                                     </select>
-                                    <div *ngIf="f['state'].touched && f['state'].invalid" class="text-danger">
-                                        <div *ngIf="f['state'].errors && f['state'].errors['required']">Select State</div>
-                                    </div> 
+                                    <div *ngIf="submitted && f['state'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['state'].errors['required']">Select State</div>
+                                      </div>
                                 </div>
                             </div>
 
                             <div class="col-sm-6 ">
                                 <div class="form-group">
-                                    <label for="city" class="form-label">City</label>
-                                    <input id="city" name="city" type="text" formControlName="city" class="form-control" [(ngModel)]="city">
-                                    <div *ngIf="f['city'].touched && f['city'].invalid" class="text-danger">
-                                        <div *ngIf="f['city'].errors && f['city'].errors['required']">Enter City</div>
-                                    </div> 
+                                    <label  class="form-label">City<b style="color:red ;">*</b></label>
+                                    <input  type="text" formControlName="city" class="form-control" [(ngModel)]="city" [ngClass]="{ 'is-invalid': submitted && f['city'].errors }">
+                                    <div *ngIf="submitted && f['city'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['city'].errors['required']">Enter City</div>
+                                      </div>
                                 </div>
                             </div>
 
                             <div class="form-group col-md-6">
                                 <div class="form-group">
-                                    <label for="phone" class="form-label">Pincode</label>
-                                    <input id="phone" name="pincode" type="text"  formControlName="pincode" class="form-control" [(ngModel)]="pincode"
-                                        minlength="6" maxlength="6" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                                        <div *ngIf="f['pincode'].touched && f['pincode'].invalid" class="text-danger">
-                                            <div *ngIf="f['pincode'].errors && f['pincode'].errors['required']">Enter Pincode</div>
-                                        </div> 
-                                </div>
-                            </div>
-
-
-                            <div class="form-group col-md-6">
-                                <div class="form-group">
-                                    <label for="dob" class="form-label">Date Of Birth</label>
-                                        <input id="manufacturing_date" formControlName="new_dob" type="date"
-                                   name="manufacturing_date" class="form-control"  [max]="min_dob| date: 'yyyy-MM-dd'" [(ngModel)]="new_dob">
-                                   <div *ngIf="f['new_dob'].touched && f['new_dob'].invalid" class="text-danger">
-                                    <div *ngIf="f['new_dob'].errors && f['new_dob'].errors['required']">Enter DOB</div>
-                                </div> 
+                                    <label  class="form-label">Pincode<b style="color:red ;">*</b></label>
+                                    <input  type="text"  formControlName="pincode" class="form-control" [(ngModel)]="pincode"
+                                        minlength="6" maxlength="6" onkeypress='return event.charCode >= 48 && event.charCode <= 57' [ngClass]="{ 'is-invalid': submitted && f['pincode'].errors }">
+                                        <div *ngIf="submitted && f['pincode'].errors" class="invalid-feedback">
+                                            <div *ngIf="f['pincode'].errors['required']">Enter Pincode</div>
+                                            <div *ngIf="f['pincode'].errors && f['pincode'].errors['pattern']">Pincode is invalid!</div>
                                           </div>
-                            </div> 
+                                </div>
+                            </div>
+
+
+                            <div class="form-group col-md-6">
+                                <div class="form-group">
+                                    <label  class="form-label">Date Of Birth<b style="color:red ;">*</b></label>
+                                        <input  formControlName="new_dob" type="date"
+                                   name="manufacturing_date" class="form-control"  [max]="min_dob| date: 'yyyy-MM-dd'" [(ngModel)]="new_dob" [ngClass]="{ 'is-invalid': submitted && f['new_dob'].errors }">
+                                   <div *ngIf="submitted && f['new_dob'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['new_dob'].errors['required']">Select Date Of Birth</div>
+                                  </div>
+                                          </div>
+                            </div>
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="gender" class="form-label">Gender</label>
-                                    <select class="custom-select form-control form-control-sm" formControlName="gender" [(ngModel)]="genderid">
+                                    <label  class="form-label">Gender<b style="color:red ;">*</b></label>
+                                    <select class="form-control" formControlName="gender" [(ngModel)]="genderid" [ngClass]="{ 'is-invalid': submitted && f['gender'].errors }">
                                         <option value="">-- Select Gender --</option>
                                         <option *ngFor="let genname of genderlist" value="{{genname.genderid}}" ng-selected="{{genname.genderid==genderid}}">
                                             {{genname.gendername}}
                                         </option>
                                     </select>
-                                    <div *ngIf="f['gender'].touched && f['gender'].invalid" class="text-danger">
-                                        <div *ngIf="f['gender'].errors && f['gender'].errors['required']">Select Gender</div>
-                                    </div> 
+                                    <div *ngIf="submitted && f['gender'].errors" class="invalid-feedback">
+                                        <div *ngIf="f['gender'].errors['required']">Select Gender</div>
+                                      </div>
 
                                 </div>
                             </div>
 
                             <div class="col-sm-6">
                                 <div class="form-group">
-                                    <label for="alternative_mobile" class="form-label">Alternative Mobile</label>
-                                    <input id="alternative_mobile" formControlName="altermob" type="text" class="form-control" [(ngModel)]="alternative_mobile"
-                                           minlength="10" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57'>
-                                           <div *ngIf="f['altermob'].touched && f['altermob'].invalid" class="text-danger">
-                                            <div *ngIf="f['altermob'].errors && f['altermob'].errors['required']">Enter Alter Mobile Number</div>
-                                        </div> 
+                                    <label  class="form-label">Alternative Mobile<b style="color:red ;">*</b></label>
+                                    <input  formControlName="altermob" type="text" class="form-control" [(ngModel)]="alternative_mobile"
+                                           minlength="10" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57' [ngClass]="{ 'is-invalid': submitted && f['altermob'].errors }">
+                                           <div *ngIf="submitted && f['altermob'].errors" class="invalid-feedback">
+                                            <div *ngIf="f['altermob'].errors['required']">Enter Alternative Mobile</div>
+                                            <div *ngIf="f['altermob'].errors && f['altermob'].errors['pattern']">Alternate Mobile No is invalid!</div>
+                                          </div>
                                 </div>
                             </div>
                             <div class="col-sm-12 mb-4">
-                                 
-                                <input type="file" class="form-control form-control-sm d-none"  formControlName="profile" name="itemimage" accept="image/*" [(ngModel)]="p_imageurl" (change)="selectFileUpload(imageInput)" id="img" #imageInput required>
-                                <div *ngIf="f['profile'].touched && f['profile'].invalid" class="text-danger">
-                                    <div *ngIf="f['profile'].errors && f['profile'].errors['required']">Upload Profile Picture</div>
-                                </div> 
-                            </div> 
+
+                                <input type="file" class="form-control form-control-sm d-none"  formControlName="profile" name="itemimage" accept="image/*" [(ngModel)]="p_imageurl" (change)="selectFileUpload(imageInput)" id="img" #imageInput>
+
+                            </div>
 
                             <div class="col-sm-12 text-center">
                                 <a type="button" class="btn btn-template wide next"  (click)="updatecustomerdata()">
@@ -270,8 +271,8 @@
                 </div>
             </div>
             <div class="row mt-2" *ngFor="let val of validation_list">
-                <div class="col-md-9" style="color:red">{{val}}</div>               
-            </div> 
+                <div class="col-md-9" style="color:red">{{val}}</div>
+            </div>
 
         </div>
     </section>

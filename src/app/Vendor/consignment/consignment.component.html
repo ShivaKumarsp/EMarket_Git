@@ -5,167 +5,72 @@
               <ul class="nav nav-pills">
                   <li class="nav-item"><a class="nav-link" href="/app/vendororderlist">Order List</a></li>
                   <li class="nav-item"><a class="nav-link active" >Consignment</a></li>
-                  <li class="nav-item"><a class="nav-link" href="/app/item_handover">Hand Over</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/app/item_handover">Ready To Hand Over</a></li>
                   <li class="nav-item"><a class="nav-link" href="/app/item_handover_list">Hand Over List</a></li>
               </ul>
           </div>
       </div>
-  </div> 
+  </div>
 </section>
 
 
 <div class="container my-4 min-vh-100">
-          <div [ngSwitch]="screen">        
-            <div *ngSwitchCase="1">
-              <div class="text-end">
-                <button class="btn btn-sm btn-primary" (click)="back_screen(0)">Back</button>
+          <div [ngSwitch]="screen">
+
+            <div class="container" *ngSwitchCase="0">
+              <div class="row">
+                <div class="col-md-4" style="float: left">
+                  <!-- <button class="btn btn-sm btn-primary" style="float: left;" (click)="back_screen(1)">Add New</button> -->
               </div>
-              <h3 class="my-4">New Consignment</h3>
-              <div class="m-auto  my-4 p-2">
-                <div style="max-width: auto;">
-                  <form [formGroup]="consignmentdata">
-                                        
-                    <div class="row">
-                      <div class="mb-3 col-md-6" *ngIf="editdata">
-                        <label class="form-label">Order Item</label>
-                        <textarea type="text" class="form-control" formControlName="v_edit_item_name" [(ngModel)]="edit_item_name" [attr.disabled]="true" [cols]="4"></textarea>
-                      </div>
-
-                      <div class="mb-3 col-md-6" *ngIf="!editdata">
-                        <label class="form-label">Order Item</label>
-                        <select class="form-control" formControlName="v_order_item_id"  [(ngModel)]="order_item_id">
-                          <option value="">Select</option>
-                          <option *ngFor="let order of order_item_list" [ngValue]="order.order_item_id">
-                              {{order.item_name}}
-                    </option>                         
-                        </select>
-                      </div>
-
-                      <div class="mb-3 col-md-6">
-                        <label  class="form-label">Weight</label>
-                        <input type="text" class="form-control" formControlName="v_weight" [(ngModel)]="weight">
-                      </div>        
-                    </div>
-
-                    
-                    <div class="mb-3">
-                      <h5>Dimension</h5>
-                    </div>
-                    <div class="row">
-                      <div class="mb-3 col-md-4">
-                        <label  class="form-label">Length</label>
-                        <input type="text" class="form-control" formControlName="v_consignment_l" [(ngModel)]="consignment_l">
-                      </div>
-                      <div class="mb-3 col-md-4">
-                        <label  class="form-label">Width</label>
-                        <input type="text" class="form-control" formControlName="v_consignment_b" [(ngModel)]="consignment_b">
-                      </div>
-                      <div class="mb-3 col-md-4">
-                        <label  class="form-label">Height</label>
-                        <input type="text" class="form-control" formControlName="v_consignment_h" [(ngModel)]="consignment_h">
-                      </div>
-                    </div>
-                   
-
-                    <div class="mb-3">
-                      <h5>Hub</h5>
-                    </div>
-                    <div class="row">
-                      <div class="mb-3 col-md-6">
-                        <label  class="form-label">First Hub</label>
-                        <select class="form-control" formControlName="v_first_hub"  [(ngModel)]="first_hub_id" >
-                          <option value="">Select</option>
-                          <option *ngFor="let hub1 of hub_list_1" [ngValue]="hub1.hub_id">
-                              {{hub1.hub_name}}
-                    </option>                         
-                        </select>
-                      </div>
-                      <div class="mb-3 col-md-6">
-                        <label class="form-label">Last Hub</label>
-                        <select class="form-control" formControlName="v_last_hub"  [(ngModel)]="last_hub_id">
-                          <option value="">Select</option>
-                          <option *ngFor="let hub2 of hub_list_2" [ngValue]="hub2.hub_id">
-                              {{hub2.hub_name}}
-                    </option>
-                        </select>
-                      </div>        
-                    </div>
-
-                   
-                            <div class="row">
-                              <div class="mb-3 col-md-6">
-                                <label class="form-label">Route</label>
-                                <select class="form-control" formControlName="v_hub_route_id"  [(ngModel)]="hub_route_id">
-                                  <option value="">Select</option>
-                                  <option value=1>One</option>
-                                  <option value=2>Two</option>
-                                  <option value=3>Three</option>
-                                </select>
-                              </div>
-
-                              <div class="mb-3 col-md-6">
-                                        <label  class="form-label">Status</label>
-                                        <select class="form-control" formControlName="v_consignment_status"  [(ngModel)]="consignment_status">
-                                          <option value="">Select</option>
-                                          <option value="New">New</option>
-                                        </select>
-                                      </div>
-                            </div>
-
-                   
-        
-                    <div class="text">
-                      <input type="text" [(ngModel)]="consignment_id" hidden>
-                      <button class="btn btn-primary" (click)="save_data()">Save</button>
-                    </div>
-                  </form>
-                  <div class="row mt-2" *ngFor="let val of validation_list">
-                    <div class="col-md-9" style="color:red">{{val}}</div>               
-                </div> 
-
-                </div>
-              </div>
-            </div>
-            <div class="container" *ngSwitchCase="0">   
-               
-              <div class="row"> 
-                <div class="col-md-4" style="float: left">                    
-                  <button class="btn btn-sm btn-primary" style="float: left;" (click)="back_screen(1)">Add New</button>
-              </div>                              
               <div class="col-md-4"> </div>
-                <div class="col-md-4" style="float: right">                    
+                <div class="col-md-4" style="float: right">
                   <input class="form-control form-control-sm" type="text" [(ngModel)]="search" placeholder="search here...">
               </div>
-            </div> 
+            </div>
 
               <div class="table-responsive">
-                <table class="table table-hover">
+                <table  class="table table-hover small">
                   <thead>
                     <tr>
                       <th>SL No</th>
-                      <th>Consignment No</th>
-                      <th>Dimenstion</th>
-                      <th>Weight</th>
-                       <th>First Hub</th>
+                      <th>Order id</th>
+                      <th>Order Item id</th>
+                      <th>Item Name</th>
+                      <th>Item SKU</th>
+                      <th>Quantity</th>
+                      <th>Dimension(cm)</th>
+                      <th>Weight(kg)</th>
+                      <th>Order Date</th>
+                       <!-- <th>First Hub</th>
                       <th>Final Hub</th>
-                      <th>Route Details</th>
+                      <th>Route Details</th> -->
                       <th>Action</th>
                     </tr>
                   </thead>
+                  <!-- {{consignment_list[1]|json}} -->
                   <tbody>
+
                     <tr *ngFor="let con of consignment_list| filter:search | paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index; filter:search">
-                              <th>{{tableSize *(page-1)+i+1}}</th>
-                              <th>{{con.consignment_id}}</th>
-                              <th>{{con.consignment_l}}*{{con.consignment_l}}*{{con.consignment_l}}</th>
-                              <th>{{con.weight}}</th>
-                              <th>{{con.first_hub}}</th>
+                              <td>{{tableSize *(page-1)+i+1}}</td>
+                              <td>{{con.order_id}}</td>
+                              <td>{{con.order_item_id}}</td>
+                              <td>{{con.item_name}}</td>
+                              <td>{{con.sku}}</td>
+                              <td>{{con.quantity}}</td>
+                              <td>{{con.consignment_l}}*{{con.consignment_b}}*{{con.consignment_h}}{{con.is_invoice}}</td>
+                              <td>{{con.weight}}</td>
+                              <td>{{con.updated_on|date:'dd-MM-YYYY hh:mm:ss a'}}</td>
+                              <!-- <th>{{con.first_hub}}</th>
                               <th>{{con.last_hub}}</th>
-                              <th>{{con.hub_route_id}}</th>
+                              <th>{{con.hub_route}}</th> -->
                       <td>
-                        <button class="btn btn-sm btn-primary" *ngIf="con.is_print==0" (click)="edit_data(con)">Edit</button> &nbsp;
-                      <button class="btn btn-sm btn-primary" *ngIf="con.is_print==1" (click)="view_print(con)">View Print</button> 
-                      <button class="btn btn-sm btn-primary" style="background-color:rgb(236, 125, 34) ;" *ngIf="con.is_print==0" (click)="view_print(con)">Generate Lable</button> 
-                     
+
+                        <button class="btn btn-sm btn-primary" style="background-color:rgb(236, 125, 34) ;" *ngIf="con.is_print==0;" (click)="save_data(con)">Generate Label</button>
+                      <button class="btn btn-sm btn-primary" *ngIf="con.is_print==1" (click)="view_print(con)">Label Print</button>&nbsp;
+                      <!-- <button class="btn btn-sm btn-primary" *ngIf="con.is_invoice==0" (click)="open_invoice(con)">Invoice Print</button> -->
+                      <button class="btn btn-sm btn-success" *ngIf="con.is_invoice==1" (click)="open_invoice(con)"><i class="fa fa-file-pdf-o" aria-hidden="true"> Invoice Print</i></button>
+
+
                       </td>
                     </tr>
                   </tbody>
@@ -177,128 +82,36 @@
                       (pageChange)="onTableDataChange($event)"
                     >
                     </pagination-controls>
-                  </div> 
+                  </div>
               </div>
             </div>
 
-            
-            <div *ngSwitchCase="2">
-              <div class="text-end">
-                <button class="btn btn-sm btn-primary" (click)="screen=0">Back</button>
-              </div>
-              <h3 class="my-4">Edit & Save</h3>
-              <div class="m-auto my-4 p-2">
-                <div style="max-width: 500px;">
-                  <form>
-                    <div class="mb-3">
-                      <h5>Dimension</h5>
-                    </div>
-                    <div class="row">
-                      <div class="mb-3 col-md-4">
-                        <label for="l" class="form-label">Length</label>
-                        <input type="text" class="form-control" id="l" >
-                      </div>
-                      <div class="mb-3 col-md-4">
-                        <label for="l" class="form-label">Width</label>
-                        <input type="text" class="form-control" id="l" >
-                      </div>
-                      <div class="mb-3 col-md-4">
-                        <label for="l" class="form-label">Height</label>
-                        <input type="text" class="form-control" id="l" >
-                      </div>
-                    </div>
-                    <div class="mb-3">
-                      <h5>Weight</h5>
-                    </div>
-                    <div class="row">
-                      <div class="mb-3 col-md-4">
-                        <label for="l" class="form-label">Weight</label>
-                        <input type="text" class="form-control" id="l" >
-                      </div>
-        
-                    </div>
-                    <div class="mb-3">
-                      <h5>Hub</h5>
-                    </div>
-                    <div class="row">
-                      <div class="mb-3 col-md-6">
-                        <label for="l" class="form-label">First Hub</label>
-                        <select class="form-select" aria-label="Default select example">
-                          <option selected>Select</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
-                        </select>
-                      </div>
-                      <div class="mb-3 col-md-6">
-                        <label for="l" class="form-label">Last Hub</label>
-                        <select class="form-select" aria-label="Default select example">
-                          <option selected>Select</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
-                        </select>
-                      </div>
-        
-                    </div>
-                    <div class="mb-3">
-                      <h5>Route Details</h5>
-                    </div>
-                    <div class="row">
-                      <div class="mb-3 col-md-12">
-                        <textarea class="form-control" placeholder="Add route" id="floatingTextarea"></textarea>
-        
-                      </div>
-        
-        
-                    </div>
-                    <div class="mb-3">
-                      <h5>Status</h5>
-                    </div>
-                    <div class="row">
-                      <div class="mb-3 col-md-6">
-                        <label for="l" class="form-label">Status</label>
-                        <select class="form-select" aria-label="Default select example">
-                          <option selected>Select</option>
-                          <option value="1">One</option>
-                          <option value="2">Two</option>
-                          <option value="3">Three</option>
-                        </select>
-                      </div>
-                    </div>
-        
-                    <div class="text">
-                      <button class="btn btn-primary">Save</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
-  
+
+
 
  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog" >
             <div class="modal-content">
-              <div class="modal-header border-0">              
+              <div class="modal-header border-0">
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
-              <div class="modal-body border-0" >
-                <div class="container" >
+              <div class="modal-body border-0" id="invoice" #invoice>
+                <div class="container " >
                   <div class="min-vh-100" >
                    <div class="p-2 m-auto my-4" style="max-width: 500px;">
                       <div class="d-flex justify-content-between">
-                        <div class=" small" style="width: 50%;"> 
+                        <div class="pfont" style="width: 50%;">
                           <ngx-barcode [bc-height]="bc_height" [bc-width]="bc_width" [bc-margin-top]="bc_margin_top" [bc-margin-right]="0"  [bc-value]="'12345678901231'" [bc-display-value]="false"></ngx-barcode>
                           <!-- <img width="70%" src="https://assets.retarus.com/blog/en/wp-content/uploads/sites/22/2020/11/barcode1-teaser.png"/> -->
                           <b>Consignment</b>
-                          <p class="small">Ship To</p>
+                          <p class="small ">Ship To</p>
                           <p class="p-0 m-0">{{customer_name}}</p>
-                          <p class="p-0 m-0">{{address_line_1}} 
+                          <p class="p-0 m-0">{{address_line_1}}
                             {{address_line_2}} {{city}}
-                              {{state_name}} 
+                              {{state_name}}
                               Pincode : {{pincode}} </p>
                           <p class="p-0 m-0">Landmark : {{land_mark}} </p>
                         </div>
@@ -312,12 +125,18 @@
                             </tr>
                             <tr>
                               <td>
-                               Weight: {{weight}}
+                               Weight: {{weight}} kg
                               </td>
+
+                            </tr>
+                            <tr>
+                              <td>
+                                Box: {{quantity}} unit
+                               </td>
                             </tr>
                           </table>
                           <div class=" d-flex my-3" style="width:100%;">
-                  
+
                               <div class=" border mx-2 border-dark border-3 p-2">
                                 <span class="small">Entry Hub</span>
                                 <h6>{{first_hub}}</h6>
@@ -325,7 +144,7 @@
                               <div class=" border border-dark border-3 p-2">
                                 <span class="small">Exit Hub</span>
                                 <h6>{{last_hub}}</h6>
-                            
+
                               </div>
                           </div>
                           </strong>
@@ -333,26 +152,26 @@
                       </div>
                       <hr/>
                       <div class="my-3">
-                        <p class="small">
+                        <p class="pfont">
                           Shipped By : {{store_name}} <br/>
                           {{pickup_location}}
                         </p>
-                  
+
                       </div>
                       <hr/>
                       <div class="my-3">
-                        <p class="small">
+                        <p class="pfont">
                           Customer Self Declaration : The goods sold are intended for end user consumption. Not for resale.
                         </p>
-                        <table class="table table-bordered">
+                        <table class="table table-bordered small">
                           <thead>
                             <tr>
-                              <th scope="col">SL No</th>
-                              <th scope="col">Seller</th>
-                              <th scope="col">Invoice</th>
-                              <th scope="col">Date</th>
-                              <th scope="col">GST Number</th>
-                              <th scope="col">Item Type</th>
+                              <th>SLNo</th>
+                              <th>Seller</th>
+                              <th>Invoice</th>
+                              <th>Date</th>
+                              <th>GST </th>
+                              <th>Category</th>
                             </tr>
                           </thead>
                           <tbody>
@@ -364,36 +183,140 @@
                               <td>{{dt.gst_number}}</td>
                               <td>{{dt.item_type}}</td>
                             </tr>
-                  
+
                           </tbody>
                         </table>
                       </div>
                     </div>
                   </div>
-    
+
                 </div>
-              </div>                     
+              </div>
               <button class="btn btn-sm btn-primary"  (click)="lable_print()">Print</button>
             </div>
           </div>
-        </div> 
+        </div>
 
-        
-      
-        
-       
+<!-- Invoice Print starts mukta 20-08-2022 -->
+<div class="modal fade" id="invoiceprintModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" >
+    <div class="modal-content">
+      <div class="modal-header border-0">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body border-0 smallest" id="invoicep" #invoicep>
+        <div class="container" >
+          <div class="min-vh-100" >
+           <div class="p-2 m-auto " >
+              <div  class=" ">
+                <div class="" >
+                  <ngx-barcode [bc-height]="bc_height" [bc-width]="bc_width" [bc-margin-top]="bc_margin_top" [bc-margin-right]="0"  [bc-value]="'12345678901231'" [bc-display-value]="false"></ngx-barcode>
+                  <!-- <img width="70%" src="https://assets.retarus.com/blog/en/wp-content/uploads/sites/22/2020/11/barcode1-teaser.png"/> -->
+                  <h6><b>Tax Invoice</b></h6>
+                  <h6 class="pfont">Sold by {{store_name}}</h6>
+
+                  <h6 class="p-0 m-0 pfont">{{pickup_location}}
+                      {{state_name}}
+                      Pincode : {{pincode}} </h6>
+                </div>
+                <div class="">
+                  <table class="table table-bordered" >
+                    <tbody >
+
+                      <tr *ngFor="let idt of invoice_list" >
+                        <td>
+
+                          Order ID:{{idt.orderid}}<br/>
+                          Order Date:{{idt.orderdate|date}}<br/>
+                          InvoiceID:{{idt.invoice_number}}<br/>
+                          Invoice Date:{{idt.invoice_date|date}}
+                        </td>
+                        <td class="text-break">
+                          <strong>Bill To</strong><br/>
+                          {{customername}}
+                          {{address_line1}}{{address_line2}}{{ccity}}
+                          {{statename}}
+                          {{country_name}}
+                          {{pin}}
+                        </td>
+                        <td class="text-break">
+                          <strong>Ship To</strong><br/>
+                          {{customer_name}}
+                          {{address_line_1}}{{address_line_2}}
+                          {{state_name}}
+                          {{pincode}}
+                        </td>
+
+                      </tr>
+                    </tbody>
+                    </table>
+                    <div>
+                      <p>
+                        <i>* Keep this invoice and manufacturer box for warrenty purposes.</i>
+                      </p>
+                    </div>
+
+                  <table class="table table-bordered">
+                    <thead>
+                    <tr >
+                      <th>Item</th>
+                      <th>Qty</th>
+                      <th>Gross Amt</th>
+                      <th>Discounts</th>
+                      <th>Tax</th>
+                      <th>IGST</th>
+                      <th>Total</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>{{item_name}}</td>
+                      <td>{{quantity}}</td>
+                      <td>{{gross_amount}}</td>
+                      <td>{{discount_amount}}</td>
+                      <td>{{tax_amount}}</td>
+                      <td>0</td>
+                      <!-- <td>{{selling_price}}</td> -->
+                      <td>{{payable_amount}}</td>
+                    </tr>
+                  </tbody>
+
+                  </table>
+
+
+                </div>
+              </div>
+              <hr/>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="modal-footer border-0">
+         <p align="center">
+          @Market-Place
+         </p>
+      </div>
+      <button class="btn btn-sm btn-primary" (click)="invoice_print()" >Invoice Print</button>
+    </div>
+  </div>
+</div>
+<!-- Invoice Print ends -->
+
+
         <!-- <div class="min-vh-100" id="printSection">
           <div class="p-2 m-auto my-4" style="max-width: 500px;">
              <div class="d-flex justify-content-between">
-               <div class=" small" style="width: 50%;"> 
+               <div class=" small" style="width: 50%;">
                  <ngx-barcode [bc-height]="bc_height" [bc-width]="bc_width" [bc-margin-top]="bc_margin_top" [bc-margin-right]="0"  [bc-value]="'12345678901231'" [bc-display-value]="false"></ngx-barcode>
-                 <img width="70%" src="https://assets.retarus.com/blog/en/wp-content/uploads/sites/22/2020/11/barcode1-teaser.png"/> 
+                 <img width="70%" src="https://assets.retarus.com/blog/en/wp-content/uploads/sites/22/2020/11/barcode1-teaser.png"/>
                  <b>Consignment</b>
                  <p class="small">Ship To</p>
                  <p class="p-0 m-0">{{customer_name}}</p>
-                 <p class="p-0 m-0">{{address_line_1}} 
+                 <p class="p-0 m-0">{{address_line_1}}
                    {{address_line_2}} {{city}}
-                     {{state_name}} 
+                     {{state_name}}
                      Pincode : {{pincode}} </p>
                  <p class="p-0 m-0">Landmark : {{land_mark}} </p>
                </div>
@@ -412,7 +335,7 @@
                    </tr>
                  </table>
                  <div class=" d-flex my-3" style="width:100%;">
-         
+
                      <div class=" border mx-2 border-dark border-3 p-2">
                        <span class="small">Entry Hub</span>
                        <h6>{{first_hub}}</h6>
@@ -420,7 +343,7 @@
                      <div class=" border border-dark border-3 p-2">
                        <span class="small">Exit Hub</span>
                        <h6>{{last_hub}}</h6>
-                   
+
                      </div>
                  </div>
                  </strong>
@@ -432,7 +355,7 @@
                  Shipped By : {{store_name}} <br/>
                  {{pickup_location}}
                </p>
-         
+
              </div>
              <hr/>
              <div class="my-3">
@@ -459,7 +382,7 @@
                      <td>{{dt.gst_number}}</td>
                      <td>{{dt.item_type}}</td>
                    </tr>
-         
+
                  </tbody>
                </table>
              </div>

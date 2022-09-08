@@ -10,23 +10,23 @@
                 </ul>
             </div>
         </div>
-    </div> 
+    </div>
   </section>
-      
+
   <div class="container-fluid min-vh-100">
-                
+
     <div class="row">
-    
+
       <div class="col-md-12">
         <hr class="d-none d-sm-block d-md-none">
         <div class="container my-3">
           <div class="col-md-4">
             <ul class="side-ui d-flex flex-wrap">
              <a type="button" class="btn btn-template wide next" (click)="openModal()">
-              Add Pincode </a> 
-            </ul>                 
+              Add Pincode </a>
+            </ul>
           </div>
-          <div class="col-md-4" style="float: right">                    
+          <div class="col-md-4" style="float: right">
               <input class="form-control form-control-sm" type="text" [(ngModel)]="search" placeholder="search here...">
           </div>
              <table class="table table-bordered" >
@@ -35,29 +35,32 @@
             <thead>
               <tr>
                 <th scope="col">SL No</th>
+
+                <th scope="col">Country</th>
+                <th scope="col">State</th>
+                <th scope="col">City</th>
+                <th scope="col">Area</th>
                 <th scope="col">Pincode</th>
-                <th scope="col">Country</th>  
-                <th scope="col">State</th>     
-                <th scope="col">City</th>    
-                <th scope="col">Area</th>              
+
+
                 <th scope="col">Action</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let pin of all_pincode_list| filter:search | paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index; filter:search">
                 <th>{{tableSize *(page-1)+i+1}}</th>
-                <td>{{pin.pincode}}</td>
                 <td>{{pin.country_name}}</td>
                 <td>{{pin.state_name}}</td>
                 <td>{{pin.city_name}}</td>
                 <td>{{pin.area}}</td>
+                <td>{{pin.pincode}}</td>
                 <td>
                   <a class="btn btn-primary btn-sm" (click)="edit_data(pin)"><i class="fa fa-edit"></i></a>  &nbsp;
                   <a hidden class="btn btn-danger btn-sm" (click)="delete_data(pin)"><i class="fa fa-trash"></i></a>
                 </td>
-              </tr>  
-                   </tbody>            
-          </table>   
+              </tr>
+                   </tbody>
+          </table>
           <div class="d-flex justify-content-center">
               <pagination-controls
                 previousLabel="Prev"
@@ -65,14 +68,14 @@
                 (pageChange)="onTableDataChange($event)"
               >
               </pagination-controls>
-            </div>            
+            </div>
         </table>
         </table>
-        </div>        
+        </div>
       </div>
-    </div>        
-  </div>       
-  
+    </div>
+  </div>
+
       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
@@ -97,9 +100,9 @@
             </option>
         </select>
        <div *ngIf="submitted && f['country_id'].errors" class="invalid-feedback">
-        <div *ngIf="f['country_id'].errors['required']">Select Country</div> 
+        <div *ngIf="f['country_id'].errors['required']">Select Country</div>
         </div>
-       </div>   
+       </div>
        <div class="col-md-12">
                 <label for="store_title" class="form-label p-0">State<b style="color: red;">*</b></label>
                  <select class="form-control" formControlName="state_id" [(ngModel)]="stateid" (change)="get_city(stateid)"
@@ -110,9 +113,9 @@
                       </option>
                   </select>
                  <div *ngIf="submitted && f['state_id'].errors" class="invalid-feedback">
-                  <div *ngIf="f['state_id'].errors['required']">Select State</div> 
+                  <div *ngIf="f['state_id'].errors['required']">Select State</div>
                   </div>
-                 </div>  
+                 </div>
 
                  <div class="col-md-12">
                     <label for="store_title" class="form-label p-0">City<b style="color: red;">*</b></label>
@@ -123,42 +126,46 @@
                           </option>
                       </select>
                      <div *ngIf="submitted && f['cityid'].errors" class="invalid-feedback">
-                      <div *ngIf="f['cityid'].errors['required']">Select City</div> 
+                      <div *ngIf="f['cityid'].errors['required']">Select City</div>
                       </div>
                      </div>
 
                      <div class="col-md-12">
                         <label for="store_title" class="form-label p-0">Pincode<b style="color: red;">*</b></label>
-                       <input type="text" placeholder="Enter Pincode" class="form-control" formControlName="v_pincode" [(ngModel)]="pincode" [ngClass]="{ 'is-invalid': submitted && f['v_pincode'].errors }">
+                       <input type="text" placeholder="Enter Pincode" class="form-control" minlength="6" maxlength="6" formControlName="v_pincode" [(ngModel)]="pincode" [ngClass]="{ 'is-invalid': submitted && f['v_pincode'].errors }">
                      <div *ngIf="submitted && f['v_pincode'].errors" class="invalid-feedback">
-                      <div *ngIf="f['v_pincode'].errors['required']">Enter Pincode</div> 
+                      <div *ngIf="f['v_pincode'].errors['required']">Enter Pincode</div>
+                      <div *ngIf="f['v_pincode'].errors && f['v_pincode'].errors['pattern']">Pincode is invalid!</div>
                       </div>
                         </div>
 
                         <div class="col-md-12">
                             <label for="store_title" class="form-label p-0">Area</label>
-                           <input type="text" placeholder="Enter Area" class="form-control" formControlName="v_area" [(ngModel)]="area">                        
+                           <input type="text" placeholder="Enter Area" class="form-control" formControlName="v_area" [(ngModel)]="area" [ngClass]="{ 'is-invalid': submitted && f['v_area'].errors }">
+                           <div *ngIf="submitted && f['v_area'].errors" class="invalid-feedback">
+                            <div *ngIf="f['v_area'].errors['required']">Enter Area</div>
+                            <div *ngIf="f['v_area'].errors && f['v_area'].errors['pattern']">Area is invalid!</div>
+                            </div>
                             </div>
 
 
 
        <div class="col-lg-12 mt-4">
        <div class="text-center">
-        <input type="text" [(ngModel)]="pincode_id" hidden />                       
+        <input type="text" [(ngModel)]="pincode_id" hidden />
         <a *ngIf="add_status==true" type="button" class="btn btn-template wide next" (click)="Clear()">
           Clear</a> &nbsp;
         <a type="button" class="btn btn-template wide next"  (click)="savedata()" >
          Save<i class="fa fa-angle-right"></i>
         </a>
-    
+
           </div>
         </div>
         </form>
-  
+              <button type="submit" class="d-none" (click)="adddata()">Add all data</button>
               </div>
             </div>
-  
+
           </div>
         </div>
       </div>
-  

@@ -47,7 +47,10 @@ export class CustomerorderhistoryComponent implements OnInit {
    old_pass="";
    valueAsDate="";
    p_imageurl="";
-
+   base64='data:image/jpeg;base64,';
+   imageBaseUrl='http://124.153.106.183:8015/EMarket_Image';
+   userProfileImage:String="https://cdn-icons-png.flaticon.com/512/149/149071.png";
+   
   ngOnInit(): void {
     let requestFormUrl = 'Customer_Order_Track/get_data/';
     this.allapi.GetDataById(requestFormUrl,1).subscribe(promise => {
@@ -62,6 +65,12 @@ export class CustomerorderhistoryComponent implements OnInit {
     this.p_imageurl=this.customerlist[0].imageurl;
     this.first_name =this.customerlist[0].cfirst_name;
     this.second_name =this.customerlist[0].csecond_name;
+
+             if(this.p_imageurl!="" && this.p_imageurl!=null)
+             {
+              this.userProfileImage=this.p_imageurl
+             }
+
  }
 
  });

@@ -17,7 +17,7 @@ export class DocumentverificationComponent implements OnInit {
   vdocid=0
   rejectedby=0
   description=""
-
+  messageflg:any
 
   constructor(private httpClient: HttpClient,
     private http: HttpClient,
@@ -66,7 +66,10 @@ export class DocumentverificationComponent implements OnInit {
     //console.log(data)
     let updateurl='Document_verification/save_documents/'
     this.allapi.PostData(updateurl,data).subscribe(promise=>{
-      if (promise.msg_flg == "Update") {
+      if(this.messageflg){
+        this.messageflg.push(promise.messageflg)
+      }
+      if (promise.status == "Update") {
         Swal.fire({
             position: 'center',
             icon: 'success',
@@ -75,7 +78,16 @@ export class DocumentverificationComponent implements OnInit {
             timer: 3000
         })
     }
-    else if (promise.msg_flg == "Failed") {
+    else if (promise.status == "Insert") {
+      Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'updated Successfully',
+          showConfirmButton: false,
+          timer: 3000
+      })
+  }
+    else if (promise.status == "Failed") {
         Swal.fire({
             position: 'center',
             icon: 'warning',

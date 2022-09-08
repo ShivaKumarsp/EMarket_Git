@@ -1,0 +1,288 @@
+<!-- {{locallist[0]|json}} -->
+<div class="container min-vh-100 mt-3">
+
+
+  <form [formGroup]="formTransport" >
+    <div class="card card-body m-1">
+    <div class="row">
+    <div class="col-md-6 p-4" >
+      <h4>Transportor information</h4>
+      <div class="mb-3">
+        <label class="form-label">Transporter Name<b style="color: red;">*</b></label>
+        <div class="input-group mb-3">
+          <input type="name" formControlName="tname" class="form-control form-control-sm" [ngClass]="{ 'is-invalid': submitted && f['tname'].errors }" required/>
+          <div *ngIf="submitted && f['tname'].errors" class="invalid-feedback">
+            <div *ngIf="f['tname'].errors['required']">Please Enter Name</div>
+            <div *ngIf="f['tname'].errors['pattern']">Name is invalid!</div>
+          </div>
+        </div>
+      </div>
+      <div class=" mb-3">
+        <label class="form-label">Communication Email<b style="color: red;">*</b></label>
+        <div class="input-group mb-3">
+          <input type="email" formControlName="temail" class="form-control form-control-sm" [ngClass]="{ 'is-invalid': submitted && f['temail'].errors }" required/>
+          <div *ngIf="submitted && f['temail'].errors" class="invalid-feedback">
+            <div *ngIf="f['temail'].errors['required']">Please Enter Email</div>
+            <div *ngIf="f['temail'].errors['pattern']">Email is invalid!</div>
+          </div>
+        </div>
+      </div>
+      <div class=" mb-3">
+        <label class="form-label">Communication Mobile<b style="color: red;">*</b></label>
+        <div class="input-group mb-3">
+          <input type="tel" formControlName="tmobile" class="form-control form-control-sm" [minLength]="10" [maxlength]="10" [ngClass]="{ 'is-invalid': submitted && f['tmobile'].errors }" required/>
+          <div *ngIf="submitted && f['tmobile'].errors" class="invalid-feedback">
+            <div *ngIf="f['tmobile'].errors['required']">Please Enter Mobile No</div>
+            <div *ngIf="f['tmobile'].errors['pattern']">Mobile is invalid!</div>
+          </div>
+        </div>
+      </div>
+        <div class="mb-3">
+          <label for="vtype" class="form-label">Vehical type<b style="color: red;">*</b></label>
+          <select id="vtype" class="form-select form-select-sm" formControlName="vtype" [ngClass]="{'is-invalid': submitted && f['vtype'].errors }" required>
+            <option>--Select Vehicle type</option>
+            <!-- <option value="1">truck</option>
+            <option value="2">Minivan</option> -->
+             <option *ngFor="let item of vehicletypelist" [ngValue]="item.vehicle_typeid">
+              {{item.vehicletype}}
+            </option>
+          </select>
+          <div *ngIf="submitted && f['vtype'].errors" class="invalid-feedback">
+            <div *ngIf="f['vtype'].errors['required']">Please Select Vehicle Type</div>
+          </div>
+        </div>
+      <div class=" mb-3">
+        <label class="form-label">Vehical Registration No<b style="color: red;">*</b></label>
+        <div class="input-group mb-3">
+          <input type="text" formControlName="treg" class="form-control form-control-sm" [ngClass]="{'is-invalid': submitted && f['treg'].errors }" required/>
+          <div *ngIf="submitted && f['treg'].errors" class="invalid-feedback">
+            <div *ngIf="f['treg'].errors['required']">Please Enter Vehical Registration No</div>
+            <div *ngIf="f['treg'].errors['pattern']">Vehical Registration Pattern i.e. ex:KA 01 AA 1111 or KA 01 A 1111</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3 p-4">
+      <h4>Vehicle Capacity</h4>
+      <div class=" mb-3">
+        <label class="form-label">Vehical Length(in meters)<b style="color: red;">*</b></label>
+        <div class="input-group mb-3">
+          <input type="text" formControlName="vehiclel" class="form-control form-control-sm" [ngClass]="{'is-invalid': submitted && f['vehiclel'].errors }" required/>
+          <div *ngIf="submitted && f['vehiclel'].errors" class="invalid-feedback">
+            <div *ngIf="f['vehiclel'].errors['required']">Please Enter Vehical Length</div>
+            <div *ngIf="f['vehiclel'].errors['pattern']">Vehical Length is Invalid!</div>
+          </div>
+        </div>
+      </div>
+      <div class=" mb-3">
+        <label class="form-label">Vehical Breadth(in meters)<b style="color: red;">*</b></label>
+        <div class="input-group mb-3">
+          <input type="text" formControlName="vehicleb" class="form-control form-control-sm" [ngClass]="{'is-invalid': submitted && f['vehicleb'].errors }" required/>
+          <div *ngIf="submitted && f['vehicleb'].errors" class="invalid-feedback">
+            <div *ngIf="f['vehicleb'].errors['required']">Please Enter Vehical Breadth</div>
+            <div *ngIf="f['vehicleb'].errors['pattern']">Vehical Breadth is Invalid!</div>
+          </div>
+        </div>
+      </div>
+      <div class=" mb-3">
+        <label class="form-label">Vehical Height(in meters)<b style="color: red;">*</b></label>
+        <div class="input-group mb-3">
+          <input type="text" formControlName="vehicleh" class="form-control form-control-sm" [ngClass]="{'is-invalid': submitted && f['vehicleh'].errors }" required/>
+          <div *ngIf="submitted && f['vehicleh'].errors" class="invalid-feedback">
+            <div *ngIf="f['vehicleh'].errors['required']">Please Enter Vehical Height</div>
+            <div *ngIf="f['vehicleh'].errors['pattern']">Vehical Height is Invalid!</div>
+          </div>
+        </div>
+      </div>
+      <div class=" mb-3">
+        <label class="form-label">Vehical Weight(in Kg)<b style="color: red;">*</b></label>
+        <div class="input-group mb-3">
+          <input type="text" formControlName="vehiclew" class="form-control form-control-sm" [ngClass]="{'is-invalid': submitted && f['vehiclew'].errors }" required/>
+          <div *ngIf="submitted && f['vehiclew'].errors" class="invalid-feedback">
+            <div *ngIf="f['vehiclew'].errors['required']">Please Enter Vehical Weight</div>
+            <div *ngIf="f['vehiclew'].errors['pattern']">Vehical Weight is Invalid!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="my-4 text-center">
+      <button type="button" class="btn btn-primary" (click)="save()" >Create</button>
+    </div>
+  </div>
+    <div class="col-md-12 p-4">
+      <div class="card card-body m-1">
+      <div class="table-responsive">
+
+      <table class="table small table-bordered">
+        <thead>
+          <tr>
+            <th>SNo</th>
+            <th>Transporter</th>
+            <th>Email</th>
+            <th>Mobile</th>
+            <th>Vehical Reg. No.</th>
+            <!-- <th>Hub id</th> -->
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+            <tr *ngFor="let item of locallist|filter:search| paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index">
+           <th>{{tableSize *(page-1)+i+1}}</th>
+           <td>{{item.transportorname}}</td>
+           <td>{{item.emailid}}</td>
+           <td>{{item.contactno}}</td>
+           <td>{{item.vehicle_registrationno}}</td>
+           <!-- <td>{{item.hubid}}</td> -->
+           <td>
+            <button class="btn btn-sm btn-danger" *ngIf="!is_active">Deactivate</button>
+            <button class="btn btn-sm btn-warning" *ngIf="is_active">Activate</button>
+          </td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="d-flex justify-content-center">
+        <pagination-controls
+          previousLabel="Prev"
+          nextLabel="Next"
+          (pageChange)="onTableDataChange($event)"
+        >
+        </pagination-controls>
+      </div>
+
+      </div>
+      </div>
+    </div>
+    </div>
+
+
+
+
+  </form>
+
+  <div class="text-end p-2 d-none">
+
+
+    <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="collapse" data-bs-target=".multi-collapse" aria-expanded="false" aria-controls="route transport">Add/Manage Transportation</button>
+
+  </div>
+  <div class="collapse multi-collapse" id="route">
+
+  </div>
+  <div class="d-none">
+    <form [formGroup]="formRoute" >
+      <p>route scheduling for local tranportor</p>
+      <div class="row">
+      <!-- <p>Banglore hub</p> -->
+      <div class="col-md-3 p-4" >
+        <div class="card card-body m-1">
+          <div class="mb-3">
+            <label for="fhubid" class="form-label">Facilitation Center<b style="color: red;">*</b></label>
+            <select id="fhubid" class="form-select form-select-sm" formControlName="fhubid" [ngClass]="{'is-invalid': submitted && g['fhubid'].errors }" required>
+              <option>--Select Facilitation Center</option>
+               <option *ngFor="let item of facilitationcenterlist" [ngValue]="item.hubid">
+                {{item.pin}} {{item.hubname}}
+              </option>
+            </select>
+            <div *ngIf="submitted && g['fhubid'].errors" class="invalid-feedback">
+              <div *ngIf="g['fhubid'].errors['required']">Please Select Facilitation Center</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="transport_id" class="form-label">Select Transport<b style="color: red;">*</b></label>
+            <select id="transport_id" class="form-select form-select-sm" formControlName="transport_id" [ngClass]="{'is-invalid': submitted && g['transport_id'].errors }" required>
+              <option>--Select transportation</option>
+              <option *ngFor="let item of locallist" [ngValue]="item.transportid">
+                {{item.vehicle_registrationno}} {{item.transportorname}}
+              </option>
+              <div *ngIf="submitted && g['transport_id'].errors" class="invalid-feedback">
+                <div *ngIf="g['transport_id'].errors['required']">Please Select Transport</div>
+
+              </div>
+            </select>
+          </div>
+        <div class=" mb-3">
+          <label class="form-label">Schedule Date<b style="color: red;">*</b></label>
+          <div class="input-group mb-3">
+            <input type="date" class="form-control form-control-sm" formControlName="schedule_date" [min]="minDate| date: 'yyyy-MM-dd'" [max]="maxDate| date: 'yyyy-MM-dd'"  [ngClass]="{'is-invalid': submitted && g['schedule_date'].errors }" required>
+            <div *ngIf="submitted && g['schedule_date'].errors" class="invalid-feedback">
+              <div *ngIf="g['schedule_date'].errors['required']">Please Enter Date</div>
+              <!-- <div *ngIf="g['schedule_date'].errors['pattern']">Vehical Registration No is Invalid!</div> -->
+            </div>
+          </div>
+        </div>
+        <div class=" mb-3">
+          <label class="form-label">Departure Time<b style="color: red;">*</b></label>
+          <div class="input-group mb-3">
+            <input type="time" class="form-control form-control-sm" formControlName="departure_time" min="06:00" max="22:00" pattern="(06|2[0-2]):[0-5]\d" [ngClass]="{'is-invalid': submitted && g['departure_time'].errors }" required>
+            <div *ngIf="submitted && g['departure_time'].errors" class="invalid-feedback">
+              <div *ngIf="g['departure_time'].errors['required']">Please Enter Time</div>
+              <!-- <div *ngIf="g['treg'].errors['pattern']">Vehical Registration No is Invalid!</div> -->
+            </div>
+          </div>
+        </div>
+        <div class="my-4 text-end">
+          <button class="btn btn-primary" (click)="schedulesave()">Save</button>
+        </div>
+        </div>
+      </div>
+
+      <div class="col-md-9 p-4">
+        <div class="card card-body m-1">
+        <div class="table-responsive">
+
+        <table class="table small table-bordered d-none">
+          <thead>
+            <tr>
+              <th>SNo</th>
+              <th>facilitation center</th>
+              <th>Transportor Name</th>
+              <th>Vehicle Reg No</th>
+              <th>schedule date</th>
+              <th>departure time</th>
+              <!-- <th>Hub ID</th> -->
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+
+            <tr *ngFor="let item of facilitationschedulelist|filter:search| paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index">
+           <th>{{tableSize *(page-1)+i+1}}</th>
+           <td>{{item.hubname}}</td>
+           <td>{{item.transportname}}</td>
+           <td>{{item.vehicle_registrationno}}</td>
+           <td>{{item.scheduleddate}}</td>
+           <td>{{item.departuretime}}</td>
+            <!-- <td>{{item.hubid}}</td> -->
+           <td>
+            <button class="btn btn-sm btn-danger" *ngIf="!is_active">Deactivate</button>
+            <button class="btn btn-sm btn-warning" *ngIf="is_active">Activate</button>
+          </td>
+          </tr>
+        </tbody>
+        </table>
+        <div class="d-flex justify-content-center">
+          <pagination-controls
+            previousLabel="Prev"
+            nextLabel="Next"
+            (pageChange)="onTableDataChange($event)"
+          >
+          </pagination-controls>
+        </div>
+
+        </div>
+        </div>
+      </div>
+      </div>
+
+
+
+
+    </form>
+  </div>
+
+
+</div>
+
+

@@ -3,7 +3,9 @@
         </ngx-spinner> 
 
 <div class="container my-3">
-          <h6><span class="badge bg-secondary" alignment="text-left">{{cancel_request_list.length}}</span><span class="badge bg-secondary" alignment="text-left" >Cancel Orders</span></h6>
+         
+          <h6>Cancel Orders&nbsp; <span class="badge bg-secondary" alignment="text-left" >{{cancel_request_list.length}}</span></h6>
+
           <div class="col-md-4" style="float: right">                    
             <input class="form-control form-control-sm" type="text" [(ngModel)]="search" placeholder="search here...">
         </div>
@@ -102,6 +104,7 @@
                                             <textarea class="form-control" placeholder="Leave a comment here"  formControlName="orderRemark" id="floatingTextarea2" style="height: 100px" [(ngModel)]="cancel_request_reasion" [ngClass]="{ 'is-invalid': submitted && f['orderRemark'].errors }"></textarea>
                                             <div *ngIf="submitted && f['orderRemark'].errors" class="invalid-feedback">
                                               <div *ngIf="f['orderRemark'].errors['required']">Enter Remark</div> 
+                                              <div *ngIf="f['orderRemark'].errors && f['orderRemark'].errors['pattern']">Enter Remark</div>
                                             </div>
                                             <label for="orderstatusremark">Type Here..</label>
                                           </div>

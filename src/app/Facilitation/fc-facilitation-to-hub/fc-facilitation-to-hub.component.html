@@ -1,0 +1,195 @@
+
+<section class="min-vh-100 checkout">
+  <div class="mt-3">
+    <div class="d-flex justify-content-end">
+      <div class="form-group">
+      <select class="form-select  shadow shadow-sm" [(ngModel)]="page_name" (change)="redirect_to_page(page_name)" aria-label="Default select example">
+        <option value="">Filter By Group</option>
+        <option value="1">FC to Hub</option>
+        <option value="2">FC to Customer</option>
+        <option value="3">Assign DE (Pickup From Vendor)</option>
+        <option value="4">Receive Consignment (Pickup From Vendor)</option>
+        <option value="5">Receive Consignment (From Hub)</option>
+      </select>
+      </div>
+    </div>
+  </div>
+
+  
+          <div class="container">
+            <div class="row">
+              <div class="col-lg-12">
+                <ul class="nav nav-pills">
+                  <li class="nav-item"><a  class="nav-link" href="/app/fc_consignment_list">Consigment Collected</a></li>
+                    <li class="nav-item"><a  class="nav-link" href="/app/fc_facilitation_to_customer">Facilitation To Customer</a></li>
+                    <li class="nav-item"><a  class="nav-link active" >Facilitation To Hub</a></li>
+                </ul>
+                <div class="tab-content">
+                  <div  class="active tab-block">
+                    <div class="table-responsive" [style]="{'height':'500px','overflow-auto':'auto'}">
+                      <table class="table table-bordered small p-2" >
+                        <thead>
+                          <tr>
+                            <th>SL No</th>
+                            <th>Select</th>
+                            <th>Con Id</th>
+                            <th>Product Name</th>
+                            <th>Dimension(cm)(LBH)</th>                           
+                            <th>Weight(kg)</th>                           
+                            <th>Hub Name</th>
+                            <th>Hub Address</th>
+                            
+                       
+                          </tr>
+                        </thead>
+                        <tbody>
+                       <tr *ngFor="let han of fc_to_hub_consignment_list| filter:search | paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index; filter:search">
+                            <th>{{tableSize *(page-1)+i+1}}</th>
+                            <td>
+                              <input class="form-check-input"  type="checkbox" [(ngModel)]="han.is_check"/>
+                            </td>
+                            <td>{{han.consignment_id}}</td>
+                            <td>{{han.item_name}}</td>
+                            <td>{{han.consignment_l}}*{{han.consignment_b}}*{{han.consignment_h}}</td>
+                            <td>{{han.weight|number}}</td>
+                          
+                            <td>{{han.hub_name}}</td>
+                            <td>{{han.address+" "+han.pincode}}</td>
+                             
+                          </tr>
+                        
+                        </tbody>
+                      </table>
+                      <div class="d-flex justify-content-center">
+                      <pagination-controls previousLabel="Prev"  nextLabel="Next"
+                       (pageChange)="onTableDataChange($event)">
+                      </pagination-controls>
+                      </div>
+                      <div class="text-end">
+                        <button class="btn btn-sm btn-primary ms-2" (click)="assig_fc_hub()">Generate</button>
+                        
+               </div>
+                    </div>
+        
+                  </div>
+                </div>
+              </div>
+        
+            </div>
+          </div>
+        </section>
+        
+        
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header border-0">
+                <h5 class="modal-title" id="exampleModalLabel">Consignmnet Details</h5>
+                <button type="button" class="btn-close" (click)="doSomething()"></button>
+              </div>
+              <div class="modal-body border-0 small">
+                <table class="table table-bordered small text-center">
+                  <thead>
+                    <tr>
+                      <th colspan="3" >Dimension </th>
+                      <th rowspan="2">Volumetric Weight (kg)</th>
+                      <th rowspan="2">Weight (kg)</th>
+                    </tr>
+                    <tr>
+        
+                      <th>Length (cm)</th>
+                      <th>Width (cm)</th>
+                      <th>Height (cm)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+
+                      <td>{{consignment_l}}</td>
+                      <td>{{consignment_b}}</td>
+                      <td>{{consignment_h}}</td>
+                      <td>{{totalweight|number }}</td>
+                      <td>{{weight/1000|number}}</td>
+                    </tr>
+        
+                  </tbody>
+                </table>
+        
+                <h6 class="mt-4">Route Details</h6>
+                <table class="table table-bordered small">
+                  <thead>
+                    <tr>
+                      <th>Hub Name</th>
+                      <th>Hub City</th>
+                      <th>Estimate Datetime</th>
+                      <th>Last Status</th>
+                      <th>Last Updated On</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let det of hub_route_details;let i=index">
+                      <td>{{det.hub_name}}</td>
+                      <td>{{det.address}}</td>
+                      <td>{{det.movement_date_time|date:'dd-MM-yyyy HH:MM'}}</td>
+                      <td>{{det.last_status}}</td>
+                      <td>{{det.last_updated_on|date:'dd-MM-yyyy HH:MM'}}</td>
+                    </tr>
+                  
+                  </tbody>
+                </table>
+        
+                <!-- <h6 class="mt-4">Next Transport Details</h6>
+                  <ol>
+                    <li>Transport ID </li>
+                    <li>Scheduled Time 15/07/2022 07:00:00</li>
+                    <li>Next Destination Delhi Hub(8)</li>
+                  </ol> -->
+        
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header border-0">
+                <h5 class="modal-title" id="editModalLabel">Change Transport/Route</h5>
+                <button type="button" class="btn-close" (click)="closeEdit()"></button>
+              </div>
+              <div class="modal-body border-0">
+        
+                    <div class="mb-3">
+                      <label for="nextdestination">Change Next Destination</label>
+                      <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="nextdestination">
+                        <option selected>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                      </select>
+                    </div>
+        
+                    <div class="mb-3">
+                      <label for="addtransport">Change Transport</label>
+                      <select class="form-select form-select-sm" aria-label=".form-select-sm example" id="addtransport">
+                        <option selected>Open this select menu</option>
+                        <option value="1">One</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                      </select>
+                    </div>
+        
+        
+        
+                <form>
+        
+                </form>
+              </div>
+              <div class="modal-footer border-0">
+                <button type="button" class="btn btn-secondary" (click)="closeEdit()">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        

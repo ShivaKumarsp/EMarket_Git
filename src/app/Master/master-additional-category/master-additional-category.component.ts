@@ -10,7 +10,7 @@ import Swal from 'sweetalert2';
   templateUrl: './master-additional-category.component.html',
   styleUrls: ['./master-additional-category.component.css']
 })
-export class MasterAdditionalCategoryComponent implements OnInit { 
+export class MasterAdditionalCategoryComponent implements OnInit {
   page: number = 1;
   count: number = 0;
   tableSize: number = 7;
@@ -22,10 +22,10 @@ submitted = false;
    private router: Router,
    private allapi:AllapiService,
    private formBuilder:FormBuilder) { this.form = formBuilder.group({
-    addcategoryname:new FormControl('',[Validators.required]),
-    subcatname:new FormControl('',[Validators.required]),   
+    addcategoryname:new FormControl('',[Validators.required,Validators.pattern("^[a-zA-Z_ ]*$")]),
+    subcatname:new FormControl('',[Validators.required]),
         catname:new FormControl('',[Validators.required])
-        
+
   }); }
   btn_dissable=true;
   additional_cat_name="";
@@ -41,7 +41,7 @@ submitted = false;
   subcategory_list:any;
   additional_cat_code="";
   category_dd:any;
-
+  Url='http://124.153.106.183:8015/EMarket_Image';
   ngOnInit(): void {
     let url='Manage_Subsubcategory/getdata/';
     this.allapi.GetDataById(url,1).subscribe(promise=>      {
@@ -57,14 +57,14 @@ submitted = false;
     let url='Manage_Subsubcategory/get_add_category/';
     this.allapi.PostData(url,data).subscribe(promise=>      {
         this.subcategory_dd=JSON.parse(promise.subcatlist_dd).Table;
-   
+
       })
   }
 
   selectFileUpload(imageInput: any) {
     var formData = new FormData();
     const file: File = imageInput.files[0];
-  
+
   if (imageInput.files[0].type != "image/jpeg") {
         Swal.fire({
           position: 'center',
@@ -89,7 +89,7 @@ submitted = false;
         this.SelectedFile_Array=imageInput.files[0];
         formData.append("File", this.SelectedFile_Array);
         let url='ImageUpload/DocumentUpload/';
-        return this.http.post('http://192.168.1.200:1305/api/ImageUpload/DocumentUpload', formData).subscribe((promise:any)=>
+        return this.http.post('http://localhost:1305/api/ImageUpload/Cateory_Image_Upload', formData).subscribe((promise:any)=>
         {
          this.s_imageurl=promise.path;
         });
@@ -110,6 +110,9 @@ this.form.reset();
   savedata()
 {
   this.submitted = true;
+  if(this.form.value.addcategoryname.trim() ==''){
+    this.form.controls['addcategoryname'].setErrors({'required': true})
+  }
     if (this.form.invalid) {
       return;
     }
@@ -139,6 +142,8 @@ return
     {
       if(promise.status=="Insert")
       {
+        this.submitted=false;
+        this.form.reset();
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -147,7 +152,7 @@ return
           timer: 3000
       })
       this.subcategory_list=JSON.parse(promise.subsubcatlist_grid).Table;
-     this.Clear();
+
     }
       else if(promise.status=="Failed")
       {
@@ -169,7 +174,7 @@ return
           timer: 3000
       })
       }
-      
+
     })
 }
 edit_category(ss:any)
@@ -187,7 +192,7 @@ delete_category(ss:any)
 {
   this.btn_dissable=false;
   var data={
-    "msc_id":ss.additionalcatid   
+    "msc_id":ss.additionalcatid
   }
   let url='Master_Category/delete_subcat/';
   this.allapi.PostData(url,data).subscribe(promise=>
@@ -214,7 +219,7 @@ delete_category(ss:any)
           timer: 3000
       })
       }
-      
+
     })
 }
 
@@ -226,5 +231,5 @@ delete_category(ss:any)
       this.page = event;
       this.ngOnInit();
     }
-    
+
 }

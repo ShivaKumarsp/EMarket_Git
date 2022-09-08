@@ -9,7 +9,7 @@
             <div class="col-lg-3 text-right order-1 order-lg-2">
                 <ul class="breadcrumb justify-content-lg-end">
                     <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">Add Item</li>
+                    <li class="breadcrumb-item active">Add Product</li>
                 </ul>
             </div>
         </div>
@@ -29,9 +29,9 @@
                 </ul>
             </div>
         </div>
-    
+
             <div class="row">
-                
+
                 <div class="col-lg-12">
                     <div class="tab-content">
                         <div id="product_info" class="active tab-block">
@@ -41,7 +41,7 @@
                                 <div class="col-sm-6 col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Category<b style="color:red">*</b></label>
-                                        <select class="form-control" [(ngModel)]="cat_id" formControlName="catname" 
+                                        <select class="form-control" [(ngModel)]="cat_id" formControlName="catname"
                                         (change)="get_sub_category(cat_id)" [ngClass]="{ 'is-invalid': submitted && f['catname'].errors }">
                                             <option value="">-- Select Category --</option>
                                             <option *ngFor="let cat of category_list" value="{{cat.mcid}}" ng-selected="{{cat.mcid == cat_id}}">
@@ -49,7 +49,7 @@
                                             </option>
                                         </select>
                                         <div *ngIf="submitted && f['catname'].errors" class="invalid-feedback">
-                                            <div *ngIf="f['catname'].errors['required']">Select Category</div> 
+                                            <div *ngIf="f['catname'].errors['required']">Select Category</div>
                                           </div>
                                         <!-- <div *ngIf="f['catname'].touched || f['catname'].invalid" class="text-danger">
                                             <div *ngIf="f['catname'].errors && f['catname'].errors['required']">Select  Category</div>
@@ -67,8 +67,8 @@
                                                 {{subcat.subcategory_name}}
                                             </option>
                                           </select>
-                                          <div *ngIf="submitted && f['sub_cat'].errors" class="invalid-feedback">
-                                            <div *ngIf="f['sub_cat'].errors['required']">Select SubCategory</div> 
+                                          <div *ngIf="submitted && f['sub_cat'].errors && f['sub_cat'].touched" class="invalid-feedback">
+                                            <div *ngIf="f['sub_cat'].errors['required']">Select SubCategory</div>
                                           </div>
                                     </div>
                                 </div>
@@ -84,11 +84,11 @@
                                             </option>
                                         </select>
                                         <div *ngIf="submitted && f['add_cat'].errors" class="invalid-feedback">
-                                            <div *ngIf="f['add_cat'].errors['required']">Select Additional Category</div> 
+                                            <div *ngIf="f['add_cat'].errors['required']">Select Additional Category</div>
                                           </div>
                                     </div>
                                 </div>
-                      
+
                                 <div class="col-sm-6 col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Product Type<b style="color:red">*</b></label>
@@ -100,29 +100,30 @@
                                             </option>
                                         </select>
                                         <div *ngIf="submitted && f['producttype'].errors" class="invalid-feedback">
-                                            <div *ngIf="f['producttype'].errors['required']">Select Product Type</div> 
+                                            <div *ngIf="f['producttype'].errors['required']">Select Product Type</div>
                                           </div>
                                     </div>
                                 </div>
 
                                 <div class="col-sm-6 col-md-6">
                                     <label class="form-label">Product Name<b style="color:red">*</b></label>
-                                    <input type="text" class="form-control" formControlName="productname_en" 
+                                    <input type="text" class="form-control" formControlName="productname_en"
                                     [(ngModel)]="product_name" placeholder="Enter Product Name" [ngClass]="{ 'is-invalid': submitted && f['productname_en'].errors }" />
                                     <div *ngIf="submitted && f['productname_en'].errors" class="invalid-feedback">
-                                        <div *ngIf="f['productname_en'].errors['required']">Enter Product Name</div> 
-                                      </div> 
+                                        <div *ngIf="f['productname_en'].errors['required']">Enter Product Name</div>
+                                        <div *ngIf="f['productname_en'].errors && f['productname_en'].errors['pattern']">Product Name is invalid!</div>
+                                      </div>
                                 </div>
 
 
                                 <div class="col-sm-6 col-md-6">
                                     <label class="form-label">Base Price <b style="color:red">*</b></label>
-                                    <input  type="number" min="1" class="form-control" formControlName="baseprice" 
+                                    <input  type="number" min="1" class="form-control" formControlName="baseprice" max="100000" step="0.01"
                                     [(ngModel)]="base_price" placeholder="Enter Base Price"
                                     oninput="validity.valid||(value='');" [ngClass]="{ 'is-invalid': submitted && f['baseprice'].errors }">
                                     <div *ngIf="submitted && f['baseprice'].errors" class="invalid-feedback">
-                                        <div *ngIf="f['baseprice'].errors['required']">Enter Base Price</div> 
-                                      </div> 
+                                        <div *ngIf="f['baseprice'].errors['required']">Enter Base Price</div>
+                                      </div>
                                 </div>
 
                                 <div class="col-lg-6">
@@ -134,19 +135,19 @@
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label class="form-label">HSN Code<b style="color:red">*</b></label>
-                                                    <input type="text" class="form-control" formControlName="hsn"  
+                                                    <input type="text" class="form-control" formControlName="hsn"
                                                     [(ngModel)]="hsn_code" placeholder="Enter HSN Code"  [ngClass]="{ 'is-invalid': submitted && f['hsn'].errors }"/>
                                                     <div *ngIf="submitted && f['hsn'].errors" class="invalid-feedback">
-                                                        <div *ngIf="f['hsn'].errors['required']">Enter HSN Code</div> 
-                                                      </div> 
+                                                        <div *ngIf="f['hsn'].errors['required']">Enter HSN Code</div>
+                                                      </div>
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label class="form-label">IAN Code <b style="color:red">*</b></label>
                                                     <input type="text" class="form-control" formControlName="ian" [(ngModel)]="ian_code"
                                                      placeholder="Enter IAN Code" [ngClass]="{ 'is-invalid': submitted && f['ian'].errors }" />
                                                      <div *ngIf="submitted && f['ian'].errors" class="invalid-feedback">
-                                                        <div *ngIf="f['ian'].errors['required']">Enter IAN Code</div> 
-                                                      </div> 
+                                                        <div *ngIf="f['ian'].errors['required']">Enter IAN Code</div>
+                                                      </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -163,12 +164,12 @@
                                             </option>
                                         </select>
                                         <div *ngIf="submitted && f['uom'].errors" class="invalid-feedback">
-                                            <div *ngIf="f['uom'].errors['required']">Set Product Unit</div> 
-                                          </div> 
+                                            <div *ngIf="f['uom'].errors['required']">Set Product Unit</div>
+                                          </div>
                                     </div>
                                 </div>
-                                
-                               
+
+
 
                                 <div class="col-sm-6 col-md-6">
                                     <label class="form-label">BOM Item Contain</label>
@@ -178,10 +179,10 @@
                                         <option value="false">No</option>
                                     </select>
                                     <div *ngIf="submitted && f['bommm'].errors" class="invalid-feedback">
-                                        <div *ngIf="f['bommm'].errors['required']">Select BOM Item Contain</div> 
-                                      </div> 
+                                        <div *ngIf="f['bommm'].errors['required']">Select BOM Item Contain</div>
+                                      </div>
                                 </div>
-                                
+
 
 
 
@@ -190,23 +191,25 @@
                                     <textarea type="text" class="form-control" cols="30" rows="3" formControlName="short_desc_en"
                                      [(ngModel)]="short_description"  placeholder="Enter Short Description" [ngClass]="{ 'is-invalid': submitted && f['short_desc_en'].errors }"></textarea>
                                      <div *ngIf="submitted && f['short_desc_en'].errors" class="invalid-feedback">
-                                        <div *ngIf="f['short_desc_en'].errors['required']">Enter Short Description</div> 
-                                      </div> 
+                                        <div *ngIf="f['short_desc_en'].errors['required']">Enter Short Description</div>
+                                      </div>
                                 </div>
+
+
 
                                 <div class="col-sm-3 col-md-3">
                                     <label class="form-label">Product Image <b style="color:red">*</b></label><br />
-                                    <input type="file" formControlName="itemimage"  accept="image/jpeg" [(ngModel)]="p_imageurl" 
+                                    <input type="file" formControlName="itemimage"  accept="image/*"[(ngModel)]="p_imageurl"
                                     (change)="selectFileUpload(imageInput)" id="img" #imageInput [ngClass]="{ 'is-invalid': submitted && f['itemimage'].errors }">
                                     <div *ngIf="submitted && f['itemimage'].errors" class="invalid-feedback">
-                                        <div *ngIf="f['itemimage'].errors['required']">Upload Image</div> 
-                                      </div>                                   
+                                        <div *ngIf="f['itemimage'].errors['required']">Upload Image</div>
+                                      </div>
 
                                 </div>
 
                                 <div class="col-sm-3 col-md-3">
                                     <div>
-                                        <img id="productimg" src="{{p_imageurl}}" class="img-responsive" />
+                                        <img id="productimg" src="{{imageBaseUrl+p_imageurl}}" class="img-responsive" />
                                     </div>
                                 </div>
                             </div>
@@ -229,8 +232,8 @@
                 </div>
             </div>
             <div class="row mt-2" *ngFor="let val of validation_list">
-                <div class="col-md-9" style="color:red">{{val}}</div>               
-            </div> 
+                <div class="col-md-9" style="color:red">{{val}}</div>
+            </div>
     </div>
 </section>
 

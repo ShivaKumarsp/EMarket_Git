@@ -11,7 +11,7 @@ import { catchError, map, Observable, tap } from 'rxjs';
 
 export class HttpUniversalService {
 
-  public baseUrl = 'http://192.168.1.200:1305/api/';
+  public baseUrl = 'http://localhost:1305/api/';
   secretKey:string="123";
 public token=localStorage.getItem('idToken');
 public userid=localStorage.getItem('userid'); 
@@ -159,8 +159,7 @@ public httpOptions_login = {
    public http_getBy_id = (apiURL: string): Observable<any> => {
     let url = "";    
     url = this.baseUrl + apiURL;
-    //alert(url)
-    return this.httpClient.get(url, this.httpOptions )
+       return this.httpClient.get(url, this.httpOptions )
       // .pipe(
       //   tap((data: any) => {
       //     console.log(data);

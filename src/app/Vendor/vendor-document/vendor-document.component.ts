@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder,FormControl,FormGroup, Validators } from '@angular/forms';
+import { FormBuilder,FormControl,FormGroup, ValidationErrors, Validators } from '@angular/forms';
+import { json } from '@rxweb/reactive-form-validators';
 import { AllapiService } from 'src/app/apiservice/allapi.service';
 import Swal from 'sweetalert2';
 declare var window:any;
@@ -34,21 +35,59 @@ v_obj:any
 screen:any=0
 messageflg:any=[]
 pattrn=""
+tempController:any=''
+is_doc_verify=0;
+is_profile_verify=false;
+submitted=false;
 
 
-    form!: FormGroup;
-  constructor(private httpClient: HttpClient,
-    private http: HttpClient,
-    private formBuilder: FormBuilder,
-    private allapi: AllapiService,) {
-        }
+      form!: FormGroup;
+      constructor(private httpClient: HttpClient,
+      private http: HttpClient,
+      private formBuilder: FormBuilder,
+      private allapi: AllapiService,) {}
 
-    get f(){
-        return this.form.controls;
+    get f(){return this.form.controls;}
+
+    //dynamic form creation
+    forms = this.formBuilder.group({});
+    addform(e:any,label:any,all:any)
+    {
+      this.tempModel = ''
+      let c='control'+e
+      this.tempController=c
+      let availdata=""
+      this.vendordocumentlist.map((x:any)=>{ if(x.documentid===e){ availdata= x.documentnumber}})
+      if(availdata=='' || availdata==null){ availdata=''}
+      this.forms.addControl(c, new FormControl(availdata,[Validators.minLength(5),Validators.required,Validators.pattern(all.mdpattern)]))
+      this.tempModel=availdata
+
+      
       }
-    savedata() {
 
+    ngOnInit(): void {
+        this.getData()
+    }
+
+   handleChange(e:any)
+   {
+     console.log('change')
+    console.log('function val ',e)
+        let cont = 'control'+e
+     console.log('form',this.forms.controls[cont])
+
+   }
+   returnError(e:any){
+
+     if(this.forms.get(e)?.errors){
+      return this.forms.get(e)?.errors
+     }
+     return
+   }
+    savedata() {
+    console.log(this.forms)
       this.documentlist.forEach((list:any)=>{
+        //console.log(list)
         let cc = 'control'+list.mdid
         let newvdoc_id=0
         let newvdoc_fileurl=""
@@ -76,7 +115,7 @@ pattrn=""
         if(this.forms.value[cc] != undefined){
           newmd_document_no = this.forms.value[cc]
         }
-
+        //save
         var data = {
             vdoc_id:newvdoc_id,
             vdoc_fileurl:"",
@@ -88,24 +127,25 @@ pattrn=""
             md_document_no:newmd_document_no,
             language_id:1,
         }
-        console.log(data)
+        //console.log('save',data)
         let oldid = 'old'+list.mdid
         let oldData = document.getElementById(oldid)?.innerHTML
         if(oldData != data.document){
           this.save(data)
         }
       })
-    setTimeout(()=>{this.getData()},1000)}
+
+    }
 //save
 save(data:any)
 {
-  this.messageflg.length=0
+   this.messageflg.length=0
   let saveurl='Vendor_Document/save_vendor_documents/'
       this.allapi.PostData(saveurl,data).subscribe(promise=> {
+        //console.log(promise)
         if(this.messageflg){
           this.messageflg.push(promise.messageflg)
         }
-
               if (promise.msg_flg == "Update") {
                   Swal.fire({
                       position: 'center',
@@ -134,56 +174,29 @@ save(data:any)
                   })
               }
           })
-          setTimeout(()=>{window.location.reload(true)},1000)
-          this.forms.reset()
+          window.location.reload();
 }
 
-    //dynamic form creation
-    forms = this.formBuilder.group({});
-    addform(e:any,label:any,all:any)
-    {
-      this.tempModel = ''
-      let c='control'+e
-      let availdata=""
-      this.vendordocumentlist.map((x:any)=>{ if(x.documentid===e){ availdata= x.documentnumber}})
-      if(availdata=='' || availdata==null){ availdata=''}
-      this.forms.addControl(c, new FormControl(availdata,[Validators.minLength(5),Validators.required,Validators.pattern(all.mdpattern)]))
-      this.tempModel=availdata
 
-      //this.forms.addControl(c, new FormControl())
-      //console.log(all)
-      // this.vendordocumentlist.forEach((list:any)=>{
 
-      //    if(label==list.mddocumentname ){
 
-      //       this.tempModel=list.documentnumber
-      //     }
-      //   })
-      }
-     ngOnInit(): void {
-        this.getData()
-    }
+
 
   getData(){
-
-    var lang1 = window.sessionStorage.getItem('lang_id');
-      if (lang1 == null) {
-          var sid = 1;
-      }
-      else {
-          var sid = parseInt(lang1);
-      }
       let geturl='Vendor_Document/getdata/'
-      this.allapi.GetDataById(geturl, sid).subscribe(promise => {
-          console.log(promise)
+      this.allapi.GetDataById(geturl, 1).subscribe(promise => {
+
           this.vendordocumentlist=JSON.parse(promise.vendordocumentlist).Table
           this.documentlist = JSON.parse(promise.documentlist).Table;
-          console.log( this.vendordocumentlist)
-          console.log(this.documentlist)
+       this.is_doc_verify=promise.is_doc_verify;
+       this.is_profile_verify=promise.is_profile_verify;
         })
 
     this.screen=0
  }
+
+
+
 
 }
 

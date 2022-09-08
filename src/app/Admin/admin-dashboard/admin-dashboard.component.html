@@ -1,39 +1,7 @@
-<!-- <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <div class="container-fluid">
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" >Orders</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" >Products</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle"  id="navbarDropdown" role="button" data-bs-toggle="dropdown"
-              aria-expanded="false">
-              Reports
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li><a class="dropdown-item" >Action</a></li>
-              <li><a class="dropdown-item" >Another action</a></li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-              <li><a class="dropdown-item" >Something else here</a></li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link disabled"  tabindex="-1" aria-disabled="true">Customers</a>
-          </li>
-        </ul>
-        <form class="d-flex">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-          <button class="btn btn-outline-success" type="submit">Search</button>
-        </form>
-      </div>
-    </div>
-  </nav> -->
-
+<ngx-spinner  bdColor="rgba(51,51,51,0.8)"  size="medium"  color="#fff"  type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner> 
+<div class="min-vh-100">
   <div class="container m-auto">
   <div class="row my-4">
     <div class="col-12 col-md-6 col-lg-3 mb-4 mb-lg-0">
@@ -48,7 +16,7 @@
           </div>
     </div>
     <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-3">
-        <div class="card">
+        <div class="card d-none">
             <h5 class="card-header">Revenue</h5>
             <div class="card-body">
               <h5 class="card-title">2.4k</h5>
@@ -58,7 +26,7 @@
           </div>
     </div>
     <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-3">
-        <div class="card">
+        <div class="card d-none">
             <h5 class="card-header">Purchases</h5>
             <div class="card-body">
               <h5 class="card-title">43</h5>
@@ -68,7 +36,7 @@
           </div>
     </div>
     <div class="col-12 col-md-6 mb-4 mb-lg-0 col-lg-3">
-        <div class="card">
+        <div class="card d-none">
             <h5 class="card-header">Traffic</h5>
             <div class="card-body">
               <h5 class="card-title">64k</h5>
@@ -79,9 +47,9 @@
     </div>
   </div>
   </div>
-  <div class="container m-auto">
+  <div class="container m-auto d-none">
   <div class="row">
-    <div class="col-12 col-xl-8 mb-4 mb-lg-0">
+    <div class="col-12 col-xl-8 mb-4 mb-lg-0 d-none">
         <div class="card">
             <h5 class="card-header">Latest transactions</h5>
             <div class="card-body">
@@ -153,7 +121,7 @@
             </div>
         </div>
     </div>
-    <div class="col-12 col-xl-4">
+    <div class="col-12 col-xl-4 d-none">
   
         <div class="card">
           <h5 class="card-header">Traffic last 6 months</h5>
@@ -164,7 +132,7 @@
     </div>
   </div>
   </div>
-  <div class="container mt-3">
+  <div class="container mt-3 d-none">
   <div class="row mb-3">
     <!-- Visitors card -->
     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 mb-4">
@@ -217,6 +185,5 @@
          </div>
     </div>
   </div>
-    <!-- Revenue card ends -->
-  
-  
+</div> 
+

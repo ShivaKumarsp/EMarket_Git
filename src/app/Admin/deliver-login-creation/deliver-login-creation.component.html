@@ -1,6 +1,4 @@
-<ngx-spinner  bdColor="rgba(51,51,51,0.8)"  size="medium"  color="#fff"  type="ball-scale-multiple">
-          <p style="font-size: 20px; color: white">Loading...</p>
-        </ngx-spinner> 
+
       <script>
           function isNumber(evt) {
               evt = (evt) ? evt : window.event;
@@ -9,52 +7,41 @@
                   return false;
               }
               return true;
-          }
-      
+          }      
       </script>
-      
-      <div ng-init="BindData()">
-          <section class="padding-small" >
-             
-           
-              <div class="container">
-                  <div class="row d-flex">
-                     
-                      <div class="col-lg-3 text-right order-1 order-lg-2">
-                          <ul class="breadcrumb justify-content-lg-end">
-                              <li class="breadcrumb-item"><a >Home</a></li>
-                              <li class="breadcrumb-item active">User Creation</li>
-                          </ul>
-                      </div>
-                  </div>
-              </div>
-      
-          </section>
+
+      <ngx-spinner  bdColor="rgba(51,51,51,0.8)"  size="medium"  color="#fff"  type="ball-scale-multiple">
+        <p style="font-size: 20px; color: white">Loading...</p>
+      </ngx-spinner> 
+
+
           <section class="padding-small" >
               <div class="container">
                   <div class="row">
-                    
-                      <div class="col-lg-12">
-                                               
-                          <div class="block-header mb-5">
-                              <h5>Delivery Executive User Creation</h5>
+                  <div class="col-lg-12">  
+                    <div class="block-header mb-5">
+                              <h5>Delivery Executive Creation</h5>
                           </div>
                           <form method="post" [formGroup]="customervalid" name="myForm1" class="content-block">
+                            <div class="row">
+                                <div class="col-sm-7">
                               <div class="row">
                                   <div class="col-sm-6">
                                       <div class="form-group">
                                           <label  class="form-label">First Name<b style="color: red;">*</b></label>
                                           <input  formControlName="firstname"  type="text" class="form-control" 
-                                          [(ngModel)]="first_name" maxlength="15" onkeydown="return /[a-zA-Z]/i.test(event.key)"  [ngClass]="{ 'is-invalid': submitted && f['firstname'].errors }">
+                                          [(ngModel)]="first_name" placeholder="Enter First Name" maxlength="20"  (keypress)="keyPressSpace($event)"  pattern="^[a-zA-Z][a-z A-Z 0-9]*$" oninput="if(!this.value.match('^[a-zA-Z][a-z A-Z 0-9]*$'))this.value='';" [ngClass]="{ 'is-invalid': submitted && f['firstname'].errors }">
                                           <div *ngIf="submitted && f['firstname'].errors" class="invalid-feedback">
                                       <div *ngIf="f['firstname'].errors['required']">Enter First Name</div> 
+                                      <div *ngIf="f['firstname'].errors && f['firstname'].errors['minlength']">Minimun 3 Character</div> 
                                                 </div>
+                                      
                                       </div>
                                   </div>
                                   <div class="col-sm-6">
                                       <div class="form-group">
                                           <label for="lastname" class="form-label">Last Name</label>
-                                          <input id="lastname" formControlName="lastname"   type="text" class="form-control" maxlength="15" [(ngModel)]="second_name" onkeydown="return /[a-zA-Z]/i.test(event.key)" >
+                                          <input id="lastname" placeholder="Enter Last Name"  (keypress)="keyPressSpace($event)"  pattern="^[a-zA-Z][a-z A-Z 0-9]*$" oninput="if(!this.value.match('^[a-zA-Z][a-z A-Z 0-9]*$'))this.value='';" formControlName="lastname"   type="text" class="form-control" maxlength="20" [(ngModel)]="second_name" >
                                           </div>
                                   </div>
                               </div>
@@ -63,19 +50,21 @@
                                   <div class="col-sm-6">
                                       <div class="form-group">
                                           <label  class="form-label">Email<b style="color: red;">*</b></label>
-                                          <input  formControlName="email" type="email" class="form-control" [(ngModel)]="email" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">
+                                          <input  formControlName="email" type="email" class="form-control" [(ngModel)]="email" placeholder="Enter Email"  (keypress)="keyPressSpace($event)"  [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">
                                           <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
-                                                  <div *ngIf="f['email'].errors['required']">Enter Email</div> 
-                                                </div>
+                                          <div *ngIf="f['email'].errors['required']">Enter Email</div> 
+                                          <div *ngIf="f['email'].errors && f['email'].errors['pattern']">Please provide valid Email</div>
+                                          </div>
                                       </div>
                                   </div>
                                   <div class="col-sm-6">
                                       <div class="form-group">
                                           <label  class="form-label">Mobile<b style="color: red;">*</b></label>
-                                          <input  formControlName="phonenumber" type="text" class="form-control" [(ngModel)]="mobile"
-                                                minlength="10" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57' [ngClass]="{ 'is-invalid': submitted && f['phonenumber'].errors }">
+                                          <input  formControlName="phonenumber" type="text" class="form-control" placeholder="Enter Mobile Number"  [(ngModel)]="mobile"
+                                                minlength="10" maxlength="10" pattern="^[6-9][0-9]*$" oninput="if(!this.value.match('^[6-9][0-9]*$'))this.value='';" [ngClass]="{ 'is-invalid': submitted && f['phonenumber'].errors }">
                                                 <div *ngIf="submitted && f['phonenumber'].errors" class="invalid-feedback">
                                                   <div *ngIf="f['phonenumber'].errors['required']">Enter Mobile Number</div> 
+                                                  <div *ngIf="f['phonenumber'].errors && f['phonenumber'].errors['pattern']">Please provide Valid Mobile Number</div>
                                                 </div>
                                             
                                       </div>
@@ -86,17 +75,18 @@
                                   <div class="col-sm-12">
                                       <div class="form-group">
                                           <label for="address" class="form-label">Address<b style="color: red;">*</b></label>
-                                          <textarea  formControlName="address" type="text" class="form-control" [(ngModel)]="address" [ngClass]="{ 'is-invalid': submitted && f['address'].errors }"></textarea>
+                                          <textarea  formControlName="address" type="text" class="form-control"  placeholder="Enter Address" (keypress)="keyPressSpace($event)"  pattern="^[a-zA-Z][a-z A-Z 0-9 ,]*$" oninput="if(!this.value.match('^[a-zA-Z][a-z A-Z 0-9 ,]*$'))this.value='';" [(ngModel)]="address" [ngClass]="{ 'is-invalid': submitted && f['address'].errors }"></textarea>
                                           <div *ngIf="submitted && f['address'].errors" class="invalid-feedback">
-                                                  <div *ngIf="f['address'].errors['required']">Enter Address</div> 
-                                                </div>
+                                          <div *ngIf="f['address'].errors['required']">Enter Address</div> 
+                                          <div *ngIf="f['address'].errors && f['address'].errors['minlength']"> Minimun 3 Character</div> 
+                                         </div>
                                       </div>
                                   </div>
                                   <div class="form-group col-md-6">
                                       <label  class="form-label">Country<b style="color: red;">*</b></label>
-                                      <select class="custom-select form-control form-control-sm"  formControlName="countryid" [(ngModel)]="countryid" (click)="getstate(countryid)" [ngClass]="{ 'is-invalid': submitted && f['countryid'].errors }">
+                                      <select class="form-control"  formControlName="countryid" [(ngModel)]="countryid" (click)="getstate(countryid)" [ngClass]="{ 'is-invalid': submitted && f['countryid'].errors }">
                                           <option value="">-- Select Country --</option>
-                                          <option *ngFor="let cname of countrylist" value="{{cname.countryid}}" selected="{{cname.countryid==countryid}}">
+                                          <option *ngFor="let cname of countrylist" [ngValue]="cname.countryid">
                                               {{cname.countryname}}
                                           </option>
                                       </select>
@@ -107,14 +97,14 @@
                                   <div class="col-sm-6 ">
                                       <div class="form-group">
                                           <label  class="form-label">State<b style="color: red;">*</b></label>
-                                          <select class="custom-select form-control form-control-sm" formControlName="state" [(ngModel)]="stateid" [ngClass]="{ 'is-invalid': submitted && f['state'].errors }">
+                                          <select class="form-control" formControlName="vstate" [(ngModel)]="stateid" [ngClass]="{ 'is-invalid': submitted && f['vstate'].errors }">
                                               <option value="">-- Select State --</option>
-                                              <option *ngFor="let state of statelist" value="{{state.stateid}}" ng-selected="{{state.stateid==stateid}}">
+                                              <option *ngFor="let state of statelist" [ngValue]="state.stateid">
                                                   {{state.statename}}
                                               </option>
                                           </select>
-                                          <div *ngIf="submitted && f['state'].errors" class="invalid-feedback">
-                                                  <div *ngIf="f['state'].errors['required']">Select State</div> 
+                                          <div *ngIf="submitted && f['vstate'].errors" class="invalid-feedback">
+                                                  <div *ngIf="f['vstate'].errors['required']">Select State</div> 
                                                 </div>
                                       </div>
                                   </div>
@@ -122,9 +112,10 @@
                                   <div class="col-sm-6 ">
                                       <div class="form-group">
                                           <label  class="form-label">City<b style="color: red;">*</b></label>
-                                          <input  name="city" type="text" formControlName="city" class="form-control" [(ngModel)]="city" [ngClass]="{ 'is-invalid': submitted && f['city'].errors }">
+                                          <input  name="city" placeholder="Enter City" type="text" formControlName="city" class="form-control" pattern="^[a-zA-Z][a-z A-Z 0-9]*$" oninput="if(!this.value.match('^[a-zA-Z][a-z A-Z 0-9]*$'))this.value='';" (keypress)="keyPressSpace($event)" [(ngModel)]="city" [ngClass]="{ 'is-invalid': submitted && f['city'].errors }">
                                           <div *ngIf="submitted && f['city'].errors" class="invalid-feedback">
-                                                  <div *ngIf="f['city'].errors['required']">Enter City</div> 
+                                           <div *ngIf="f['city'].errors['required']">Enter City</div> 
+                                           <div *ngIf="f['city'].errors && f['city'].errors['minlength']">City Name Minimum 3 Character</div> 
                                                 </div> 
                                       </div>
                                   </div>
@@ -132,10 +123,11 @@
                                   <div class="form-group col-md-6">
                                       <div class="form-group">
                                           <label  class="form-label">Pincode<b style="color: red;">*</b></label>
-                                          <input   type="text"  formControlName="pincode" class="form-control" [(ngModel)]="pincode"
-                                              minlength="6" maxlength="6" onkeypress='return event.charCode >= 48 && event.charCode <= 57' [ngClass]="{ 'is-invalid': submitted && f['pincode'].errors }">
+                                          <input   type="text"  formControlName="pincode" class="form-control"  placeholder="Enter Pincode" [(ngModel)]="pincode"
+                                              minlength="6" maxlength="6" pattern="^[1-9][0-9]*$" oninput="if(!this.value.match('^[1-9][0-9]*$'))this.value='';" [ngClass]="{ 'is-invalid': submitted && f['pincode'].errors }">
                                               <div *ngIf="submitted && f['pincode'].errors" class="invalid-feedback">
                                                   <div *ngIf="f['pincode'].errors['required']">Enter Pincode</div> 
+                                               
                                                 </div>
                                       </div>
                                   </div>
@@ -154,9 +146,9 @@
                                   <div class="col-sm-6">
                                       <div class="form-group">
                                           <label  class="form-label">Gender<b style="color: red;">*</b></label>
-                                          <select class="custom-select form-control form-control-sm" formControlName="gender" [(ngModel)]="genderid" [ngClass]="{ 'is-invalid': submitted && f['gender'].errors }">
+                                          <select class="form-control" formControlName="gender" [(ngModel)]="genderid" [ngClass]="{ 'is-invalid': submitted && f['gender'].errors }">
                                               <option value="">-- Select Gender --</option>
-                                              <option *ngFor="let genname of genderlist" value="{{genname.genderid}}" ng-selected="{{genname.genderid==genderid}}">
+                                              <option *ngFor="let genname of genderlist" [ngValue]="genname.genderid">
                                                   {{genname.gendername}}
                                               </option>
                                           </select>
@@ -170,39 +162,296 @@
                                   <div class="col-sm-6">
                                       <div class="form-group">
                                           <label  class="form-label">Alternative Mobile<b style="color: red;">*</b></label>
-                                          <input  formControlName="altermob" type="text" class="form-control" [(ngModel)]="alternative_mobile"
-                                                 minlength="10" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57' [ngClass]="{ 'is-invalid': submitted && f['altermob'].errors }">
+                                          <input  formControlName="altermob" placeholder="Enter Alternative Mobile" type="text" class="form-control" [(ngModel)]="alternative_mobile"
+                                                 minlength="10" maxlength="10" pattern="^[6-9][0-9]*$" oninput="if(!this.value.match('^[6-9][0-9]*$'))this.value='';" [ngClass]="{ 'is-invalid': submitted && f['altermob'].errors }">
                                                  <div *ngIf="submitted && f['altermob'].errors" class="invalid-feedback">
                                                   <div *ngIf="f['altermob'].errors['required']">Select Alternative Mobile</div> 
+                                                  <div *ngIf="f['altermob'].errors && f['altermob'].errors['pattern']">Please provide Valid Mobile Number</div>
                                                 </div>
                                       </div>
                                   </div>
+                                  <div class="form-group col-md-6">
+                                    <label  class="form-label">Belongs To<b style="color: red;">*</b></label>
+                                    <select class="form-control" (change)="change_fc(belongs_to)"  formControlName="v_is_belong" [(ngModel)]="belongs_to" [ngClass]="{ 'is-invalid': submitted && f['v_is_belong'].errors }">
+                                        <option value="">-- Select --</option>
+                                        <option value="HUB">Hub</option>
+                                        <option value="FC">Facilitation</option>
+                                    </select>
+                                    <div *ngIf="submitted && f['v_is_belong'].errors" class="invalid-feedback">
+                                      <div *ngIf="f['v_is_belong'].errors['required']">Select Belongs To</div> 
+                                    </div>
+                                </div>
+
+                                  <div class="form-group col-md-6" *ngIf="belongs_to=='FC'">
+                                    <label  class="form-label">Facility Center<b style="color: red;">*</b></label>
+                                    <select class="form-control"  formControlName="facilityid" [(ngModel)]="facilitation_id" [ngClass]="{ 'is-invalid': submitted && f['facilityid'].errors }">
+                                        <option value="">-- Select Facility Center--</option>
+                                        <option *ngFor="let fc of facility_center_list" [ngValue]="fc.facilitation_id">
+                                            {{fc.facilitation_name}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="submitted && f['facilityid'].errors" class="invalid-feedback">
+                                      <div *ngIf="f['facilityid'].errors['required']">Select Facility Center</div> 
+                                    </div>
+                                </div>
+                              
+
+                              <div class="form-group col-md-6">
+                                <div class="form-check">
+                                 
+                                </div>
+
+                                <label  class="form-label">You Have Own Vehicle</label> &nbsp;
+                                <input type="checkbox" class="form-check-input" [(ngModel)]="own_vehicle"  formControlName="v_own_vehicle" (change)="checkdub()">
+                              
+
+                            </div>
+
+
                                   <div class="col-sm-12 mb-4">
                                         <label for="alternative_mobile" class="form-label">Upload Image<b style="color: red;">*</b></label>
                                       <input type="file" class="form-control form-control-sm"  formControlName="profilepic"  accept="image/*" [(ngModel)]="p_imageurl" (change)="selectFileUpload(imageInput)" id="img" #imageInput [ngClass]="{ 'is-invalid': submitted && f['profilepic'].errors }">
+
                                       <div *ngIf="submitted && f['profilepic'].errors" class="invalid-feedback">
                                         <div *ngIf="f['profilepic'].errors['required']">Upload Image</div> 
                                       </div>
                                   </div> 
       
-                                  <div class="col-sm-12 text-center">
-                                      <a type="button" class="btn btn-template wide next"  (click)="updatecustomerdata()">
-                                          Create User
-                                      </a>
-      
-                                      <!-- <button type="submit" class="btn btn-primary" (click)="updatecustomerdata()"><i class="fa fa-save"></i>Save</button> -->
-                                  </div>
+                                 
                               </div>
+                            </div>
+                            <div class="col-sm-5">     
+                             <form [formGroup]="pincodeform">
+                                    <div class=" my-3 p-2 shadow shadow-sm" >
+                                      <div class="card card-body m-auto border-0" >
+                                            <div class="row ">
+                                            <div class="col-md-12 p-4">
+                                              <h6>Servicable Pincodes</h6>
+                                              <div class="input-group">
+                                                <select class="form-select" id="dpin"  formControlName="delpin" [(ngModel)]="pincode_id" aria-label="Example select with button addon" >
+                                                  <option value="" >-- Select Pincode --</option>
+                                                  <option *ngFor="let dpin of pincodelist" [ngValue]="dpin.pincode_id">
+                                                      {{dpin.pincode}} {{dpin.area}}
+                                                  </option>
+                                                </select>
+                                                <button type="button" class="btn btn-info" (click)="addthis(pincode_id)" > <i class="fa fa-plus"></i> Add</button>
+                                  
+                                              </div>
+                                  
+                                              <!-- {{tableserviceable|json}} -->
+                                              <table class="table table-bordered mt-4" >
+                                                <thead>
+                                                  <tr>
+                                                    <th>S No</th>
+                                                    <th>Pincode</th>
+                                                    <th>Servicable Area</th>
+                                                    <th>Action</th>
+                                                  </tr>
+                                                </thead>
+                                                <tbody>
+                                                  <tr *ngFor="let item of pincodelist_temp;index as i">
+                                                    <td>{{i+1}}</td>
+                                                    <td>{{item.pincode}}</td>
+                                                    <td>{{item.area}}</td>
+                                                    <td><button class="btn btn-sm btn-danger" (click)="delete(item)">Remove</button></td>
+                                                  </tr>
+                                                </tbody>
+                                  
+                                              </table>
+                                              </div>
+                                  
+                                            </div>
+                                       
+                                          </div>
+                                        </div>
+                                    </form>  
+                                                 
+                            </div>
+                        </div>
+                      <div>
+
+                      </div>
                           </form>
                       </div>
                   </div>
+                  <div class="row" *ngIf="dub_show==true">
+                    <div class="col-lg-12">  
+                      <div class="block-header mb-5">
+                                <h5>Delivery Executive Vehicle</h5>
+                            </div>
+                            <form method="post" [formGroup]="customervalid"  class="content-block">
+                              <div class="row">
+                                  <div class="col-sm-12">
+                                <div class="row">
+                                  <div class="form-group col-md-6">
+                                    <label  class="form-label">Vehicle Type<b style="color: red;">*</b></label>
+                                    <select class="form-control"  formControlName="v_vehicle_type" [(ngModel)]="vehicle_type_id"    [ngClass]="{ 'is-invalid': submitted && f['v_vehicle_type'].errors }">
+                                        <option value="">--Select Vehicle Type--</option>
+                                        <option *ngFor="let vh of vehicle_type_list" [ngValue]="vh.vehicle_type_id">{{vh.vehicle_type}}</option>
+                                     
+                                    </select>
+                                    <div *ngIf="submitted && f['v_vehicle_type'].errors" class="invalid-feedback">
+                                      
+                                      <div *ngIf="f['v_vehicle_type'].errors['required']">Select Vehicle Type</div> 
+                                    </div>
+                                </div>
+                           
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label  class="form-label">Vehicle Reg Number<b style="color: red;">*</b></label>
+                                            <input  formControlName="v_vehicle_reg_number" type="text" class="form-control" placeholder="Enter Vehicle Reg Number" [(ngModel)]="vehicle_reg_number" pattern="^[a-zA-Z][a-z A-Z 0-9]*$" oninput="if(!this.value.match('^[a-zA-Z][a-z A-Z 0-9]*$'))this.value='';"  (keypress)="keyPressSpace1($event)" [ngClass]="{ 'is-invalid': submitted && f['v_vehicle_reg_number'].errors }">
+                                            <div *ngIf="submitted && f['v_vehicle_reg_number'].errors" class="invalid-feedback">
+                                                    <div *ngIf="f['v_vehicle_reg_number'].errors['required']">Enter Vehicle Reg Number</div> 
+                                                    <div *ngIf="f['v_vehicle_reg_number'].errors && f['v_vehicle_reg_number'].errors['minlength']">Minimum 3 Character</div> 
+                                                  </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label  class="form-label">Vehicle Details<b style="color: red;">*</b></label>
+                                            <input  formControlName="v_vehicle_details" type="text" class="form-control" placeholder="Enter Vehicle Details" [(ngModel)]="vehicle_details" pattern="^[a-zA-Z][a-z A-Z 0-9]*$" oninput="if(!this.value.match('^[a-zA-Z][a-z A-Z 0-9]*$'))this.value='';"  (keypress)="keyPressSpace($event)" [ngClass]="{ 'is-invalid': submitted && f['v_vehicle_details'].errors }">
+                                                  <div *ngIf="submitted && f['v_vehicle_details'].errors" class="invalid-feedback">
+                                                    <div *ngIf="f['v_vehicle_details'].errors['required']">Enter Vehicle Details</div> 
+                                                    <div *ngIf="f['v_vehicle_details'].errors && f['v_vehicle_details'].errors['minlength']">Minimum 3 Character</div> 
+
+                                                  </div>
+                                              
+                                        </div>
+                                    </div>
+                              
+                                    <!-- <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="address" class="form-label">Max Weight(kg)<b style="color: red;">*</b></label>
+                                            <input  formControlName="v_max_weight_kg" type="number" class="form-control" placeholder="Enter Max Weight(kg)" [(ngModel)]="max_weight_kg" onkeypress='return event.charCode >= 48 && event.charCode <= 57' min="1" [ngClass]="{ 'is-invalid': submitted && f['v_max_weight_kg'].errors }">
+                                            <div *ngIf="submitted && f['v_max_weight_kg'].errors" class="invalid-feedback">
+                                                    <div *ngIf="f['v_max_weight_kg'].errors['required']">Enter Max Weight(kg)</div>
+                                               
+                                                    <div *ngIf="f['v_max_weight_kg'].errors && f['v_max_weight_kg'].errors['max']">Maximum 1000 kg</div> 
+                                                  </div>
+                                        </div>
+                                    </div>
+                               
+                                    <div class="col-sm-6">
+                                      <div class="form-group">
+                                          <label for="address" class="form-label">Max Volumetric Weight(kg)<b style="color: red;">*</b></label>
+                                          <input  formControlName="v_max_volumetric_weight" type="number" class="form-control" placeholder="Enter Max Weight(kg)" [(ngModel)]="max_volumetric_weight" (keypress)="keyPressnumber($event)" min="1" [ngClass]="{ 'is-invalid': submitted && f['v_max_volumetric_weight'].errors }">
+                                          <div *ngIf="submitted && f['v_max_volumetric_weight'].errors" class="invalid-feedback">
+                                                  <div *ngIf="f['v_max_volumetric_weight'].errors['required']">Enter Max Volumetric Weight(kg)</div>
+                                             
+                                                </div>
+                                      </div>
+                                  </div>
+
+                                  <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="address" class="form-label">Weight Type<b style="color: red;">*</b></label>
+                                        <select class="form-control"  formControlName="v_weight_type" [(ngModel)]="weight_type"    [ngClass]="{ 'is-invalid': submitted && f['v_vehicle_type'].errors }">
+                                          <option value="">--Select Weight Type--</option>
+                                          <option value="Less Than">Less Than Or Equal</option>
+                                          <option value="Greater Than">Greater Than Or Equal</option>
+                                       
+                                      </select>
+                                        <div *ngIf="submitted && f['v_weight_type'].errors" class="invalid-feedback">
+                                                <div *ngIf="f['v_weight_type'].errors['required']">Select Weight Type</div>
+                                           
+                                              </div>
+                                    </div>
+                                </div>
+
+                                  <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="address" class="form-label">Volumetric Weight(kg)<b style="color: red;">*</b></label>
+                                        <input  formControlName="v_volumetric_weight" type="number" class="form-control" placeholder="Enter Max Weight(kg)" [(ngModel)]="volumetric_weight" (keypress)="keyPressnumber($event)" min="1" [ngClass]="{ 'is-invalid': submitted && f['v_volumetric_weight'].errors }">
+                                        <div *ngIf="submitted && f['v_volumetric_weight'].errors" class="invalid-feedback">
+                                                <div *ngIf="f['v_volumetric_weight'].errors['required']">Enter Volumetric Weight(kg)</div>
+                                           
+                                              </div>
+                                    </div>
+                                </div> -->
+
+                           
+
+                              
+                                </div>
+                              </div>
+                             
+                          </div>
+                        <div>
+  
+                        </div>
+                            </form>
+                        </div>
+                    </div>
+
+<div class="row">
+  <div class="col-sm-12 text-center">
+    <input type="text" [(ngModel)]="delivery_executive_id" hidden>
+    <a type="button" class="btn btn-template wide next"  (click)="clear()">Clear</a> &nbsp;
+    <a type="button" class="btn btn-template wide next"  (click)="updatecustomerdata()">Create User </a>
+</div> 
+</div>
+                  
                   <div class="row mt-2" *ngFor="let val of validation_list">
                       <div class="col-md-9" style="color:red">{{val}}</div>               
                   </div> 
       
               </div>
           </section>
+<section>
+    <div class="container">
+      
+        <div class="my-3">
+            <div class="col-md-4" style="float: right">                    
+                <input class="form-control form-control-sm" type="text" [(ngModel)]="search" placeholder="search here...">
+            </div>
+        </div>
+        <table class="table table-bordered mt-4 shadow shadow-sm">
+          <thead>
+            <tr>
+              <th>S No</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Mobile</th>
+              <th>Adress</th>
+              <th>City</th>
+              <th>Pincode</th>
+              <th>DOB</th>
+              <th>Hub</th>
+              <th>facility Center</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let exe of executive_list| filter:search | paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index; filter:search">
+                <th>{{tableSize *(page-1)+i+1}}</th>
+              <td>{{exe.first_name+' '+exe.second_name}}</td>
+              <td>{{exe.email}}</td>
+              <td>{{exe.mobile}}</td>
+              <td>{{exe.address}}</td>
+              <td>{{exe.city}}</td>
+              <td>{{exe.pincode}}</td>
+              <td>{{exe.dob|date}}</td>
+              <td>{{exe.hub_name}}</td>
+              <td>{{exe.facilitation_name}}</td>
+             <td>
+                <button class="btn btn-sm btn-info" (click)="get_edit_data(exe)" >Edit</button>
+            </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="d-flex justify-content-center">
+            <pagination-controls
+              previousLabel="Prev"
+              nextLabel="Next"
+              (pageChange)="onTableDataChange($event)"
+            >
+            </pagination-controls>
+          </div>
       </div>
+
+</section>
+
+
       
       
       

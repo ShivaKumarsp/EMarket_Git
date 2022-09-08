@@ -24,15 +24,15 @@
                 <ul class="nav nav-pills">
                     <li class="nav-item"><a class="nav-link active" routerLink="/app/master_specification">Specification</a></li>
                     <li class="nav-item"><a class="nav-link " routerLink="/app/master_attributename">Attribute Name</a></li>
-                    <li class="nav-item"><a class="nav-link "  routerLink="/app/master_attributevalue">Attribute Value</a></li> 
-                    <li class="nav-item"><a class="nav-link "  routerLink="/app/specification_attribute">Specification Attribute Map</a></li> 
-                           
+                    <li class="nav-item"><a class="nav-link "  routerLink="/app/master_attributevalue">Attribute Value</a></li>
+                    <li class="nav-item"><a class="nav-link "  routerLink="/app/specification_attribute">Specification Attribute Map</a></li>
+
                 </ul>
             </div>
         </div>
-    
+
             <div class="row">
-                
+
                 <div class="col-lg-12">
                     <div class="tab-content">
                         <div id="product_info" class="active tab-block">
@@ -45,7 +45,8 @@
                                         <input type="text" class="form-control" formControlName="spec_name" [(ngModel)]="specification_name"
                                         placeholder="Enter Specification Name" required [ngClass]="{ 'is-invalid': submitted && f['spec_name'].errors }"/>
                                         <div *ngIf="submitted && f['spec_name'].errors" class="invalid-feedback">
-                                            <div *ngIf="f['spec_name'].errors['required']">Enter Specification </div> 
+                                            <div *ngIf="f['spec_name'].errors['required']">Enter Specification </div>
+                                            <div *ngIf="f['spec_name'].errors && f['spec_name'].errors['pattern']">Specification Name is not valid!</div>
                                           </div>
                                     </div>
                                 </div>
@@ -56,11 +57,11 @@
                                         <input type="text" class="form-control" formControlName="spec_code" [(ngModel)]="specification_code"
                                         placeholder="Enter Specification Code" required [ngClass]="{ 'is-invalid': submitted && f['spec_code'].errors }"/>
                                         <div *ngIf="submitted && f['spec_code'].errors" class="invalid-feedback">
-                                            <div *ngIf="f['spec_code'].errors['required']">Enter Specification Code</div> 
+                                            <div *ngIf="f['spec_code'].errors['required']">Enter Specification Code</div>
                                           </div>
                                     </div>
                                 </div>
-                                
+
                             </div>
                         </form>
                             </div>
@@ -69,7 +70,7 @@
 
                 <div class="col-lg-12 mt-4">
                     <div class="text-center">
-                        <input type="text" [(ngModel)]="specification_id" hidden />                       
+                        <input type="text" [(ngModel)]="specification_id" hidden />
                         <a type="button" class="btn btn-template wide next" (click)="Clear()" [disabled]="btn_dissable===false">
                             Clear<i class="fa fa-angle-right"></i>
                         </a>&nbsp;
@@ -84,8 +85,8 @@
                 <div class="col-md-9">{{val.product_id_ret}}</div>
                 <div class="col-md-9">{{val.sub_category_id_ret}}</div>
                 <div class="col-md-9">{{val.additional_cat_id_ret}}</div>
-                
-            </div> 
+
+            </div>
     </div>
     <div class="container">
         <div class="col-lg-12">
@@ -93,7 +94,7 @@
             <div class="tab-content">
 
                 <h5 class="my-4">Specification List</h5>
-                <div class="col-md-4" style="float: right">                    
+                <div class="col-md-4" style="float: right">
                     <input class="form-control form-control-sm" type="text" [(ngModel)]="search" placeholder="search here...">
                 </div>
                 <table class="table table-hover table-responsive-md small">
@@ -101,22 +102,22 @@
                         <tr>
                             <th>SL No</th>
                             <th>Specification Name</th>
-                            <th>Specification Code</th>                    
+                            <th>Specification Code</th>
                             <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                       
+
                             <tr *ngFor="let pro of specification_list|filter:search| paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index">
-                               
+
                                 <th>{{tableSize *(page-1)+i+1}}</th>
                                 <td>{{pro.specification_name}}</td>
                             <td>{{pro.specification_code}}</td>
-                          
+
                             <td>
                                 <a class="btn btn-primary btn-sm" (click)="edit_specidfication(pro)"><i class="fa fa-edit"></i></a> &nbsp;| &nbsp;
                                  <a class="btn btn-danger btn-sm" (click)="delete_specidfication(pro)"><i class="fa fa-trash text-white"></i></a>
-                                        
+
                             </td>
 
                         </tr>

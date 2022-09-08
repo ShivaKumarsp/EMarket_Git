@@ -16,7 +16,7 @@
               </div>
           </div>
       </section>
-      
+
       <!-- Checkout Forms-->
       <section class="checkout min-vh-100">
           <div class="container">
@@ -30,17 +30,17 @@
                       <div class="tab-content">
                           <div id="address" class="active tab-block">
                               <form >
-                                  <!-- Invoice Address-->
-                                  <div class="block-header mb-5" *ngIf="list_tab==true">
+
+                                  <!-- <div class="block-header mb-5" *ngIf="list_tab==true">
                                       <h6>Shipping Address</h6>
-                                  </div>
+                                  </div> -->
                                   <div class="row" *ngIf="list_tab==true">
-                                      <div class="col-md-12">
+                                      <div class="col-md-6">
                                           <div class="card card-body shadow-sm">
                                               <div>
-                                                  <h5>Delivery Address</h5>
+                                                  <h5><strong>Delivery Address</strong></h5>
                                                   <div *ngIf="this.shipping_address_list.length>0">
-                                                      <h6><strong>{{customer_name1}}</strong></h6>
+                                                      <h6>{{customer_name1}}</h6>
                                                       <p>{{address_1}} {{address_2}} {{city1}}</p>
                                                       <p>{{pincode1}}</p>
                                                       <p>{{mob}}</p>
@@ -54,23 +54,41 @@
                                               </div>
                                               <div>
                                                   <input type="text" [(ngModel)]="shippingaddress_id" hidden />
-                                                  <button class="btn btn-template wide bg-primary" *ngIf="this.shipping_address_list.length>0" (click)="edditaddress()">Edit</button>
-                                                  <button class="btn btn-template wide bg-primary" *ngIf="this.shipping_address_list.length>0" (click)="changeaddress()"> Change Address  </button>
+                                                  <button class="btn btn-template wide bg-primary" *ngIf="this.shipping_address_list.length>0" (click)="edditaddress()">Edit</button> &nbsp;
+                                                  <button class="btn btn-template wide bg-primary" *ngIf="this.shipping_address_list.length>0" (click)="changeaddress()"> Change</button>&nbsp;
                                                       <button class="btn btn-template wide bg-primary" (click)="addaddress()">
-                                                          Add Address
+                                                          Add
                                                       </button>
-      
                                               </div>
                                           </div>
-      
-                                        
-                                      
                                       </div>
-                                      <!--<div class="form-group col-12 mt-3 ml-3">
-                                          <input id="another-address" type="checkbox" class="checkbox-template">
-                                          <label for="another-address" data-toggle="collapse" data-target="#shippingAddress" aria-expanded="false" aria-controls="shippingAddress">Use different shipping address</label>
-                                      </div>-->
+                                      <div class="col-md-6">
+                                        <div class="card card-body shadow-sm">
+                                            <div>
+                                                <h5><strong>Invoice Address</strong></h5>
+                                                <div>
+                                                    <h6>{{first_name}}</h6>
+                                                    <p>{{address2}}  {{city2}}</p>
+                                                    <p>{{pincode_new}}</p>
+                                                    <p>{{mobile2}}</p>
+                                                    <p>{{email2}}</p>
+                                                </div>
+                                                <div *ngIf="this.invoice_count==0">
+                                                    <div class="text-center text-muted my-3">
+                                                        <h6>No Address Found, Please Add Invoice Address</h6>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+
+                                                <button class="btn btn-template wide bg-primary" *ngIf="this.invoice_count>0" (click)="edit_invoice()">Edit</button>
+                                                <button class="btn btn-template wide bg-primary" *ngIf="this.invoice_count==0" (click)="edit_invoice()">Save</button>
+
+                                            </div>
+                                        </div>
+                                    </div>
                                   </div>
+
                                   <!-- /Invoice Address-->
                                   <!-- Shippping Address-->
                                   <div   *ngIf="edit_tab==true">
@@ -79,11 +97,22 @@
                                           <h6>Shipping address</h6>
                                       </div>
                                       <div class="row">
+                                        <div class="form-group col-md-6">
+                                            <label class="form-label">Pincode</label>
+                                            <input formControlName="e_pincode" [(ngModel)]="pincode" type="text" (change)="check_pincode(pincode)"  placeholder="Pincode" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['e_pincode'].errors }"  minlength="6" maxlength="6" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
+                                            <div *ngIf="submitted && f['e_pincode'].errors" class="invalid-feedback">
+                                                <div *ngIf="f['e_pincode'].errors['required']">Enter Pincode</div>
+                                                <div *ngIf="f['e_pincode'].errors['minlength']">Minimum 6 Digit</div>
+                                                <div *ngIf="f['e_pincode'].errors['pattern']">pincode is invalid!</div>
+                                             </div>
+                                        </div>
+
                                           <div class="form-group col-md-6">
                                               <label class="form-label">Name</label>
                                               <input formControlName="e_name" [(ngModel)]="name" type="text" name="name" placeholder="Enter you name" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f['e_name'].errors }" required>
                                               <div *ngIf="submitted && f['e_name'].errors" class="invalid-feedback">
-                                                  <div *ngIf="f['e_name'].errors['required']">Enter Name</div> 
+                                                  <div *ngIf="f['e_name'].errors['required']">Enter Name</div>
+                                                  <div *ngIf="f['e_name'].errors['pattern']">Name is invalid!</div>
                                                 </div>
                                           </div>
                                           <div class="form-group col-md-6">
@@ -91,7 +120,8 @@
                                               <input formControlName="e_mob" [(ngModel)]="mobile" type="text" name="mobile" placeholder="Enter Mobile Number" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['e_mob'].errors }"  minlength="10" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
                                               <div *ngIf="submitted && f['e_mob'].errors" class="invalid-feedback">
                                                   <div *ngIf="f['e_mob'].errors['required']">Enter Mobile Number</div>
-                                                  <div *ngIf="f['e_mob'].errors['minlength']">Minimum 10 Digit</div>  
+                                                  <div *ngIf="f['e_mob'].errors['minlength']">Minimum 10 Digit</div>
+                                                  <div *ngIf="f['e_mob'].errors['pattern']">mobile is invalid!</div>
                                                 </div>
                                           </div>
                                           <div class="form-group col-md-6">
@@ -99,13 +129,15 @@
                                               <input formControlName="e_email" [(ngModel)]="email" type="email"  placeholder="Enter your email address" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['e_email'].errors }" required>
                                               <div *ngIf="submitted && f['e_email'].errors" class="invalid-feedback">
                                                   <div *ngIf="f['e_email'].errors['required']">Enter Email</div>
-                                                                                </div>
+                                                  <div *ngIf="f['e_email'].errors['pattern']">Email is invalid!</div>
+                                              </div>
                                           </div>
                                           <div class="form-group col-md-6">
                                               <label class="form-label">Address Line1</label>
                                               <input formControlName="e_addressline1" [(ngModel)]="address_line1" type="text"  placeholder="Your street name" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['e_addressline1'].errors }" required>
                                               <div *ngIf="submitted && f['e_addressline1'].errors" class="invalid-feedback">
                                                   <div *ngIf="f['e_addressline1'].errors['required']">Enter Address Line1</div>
+                                                  <div *ngIf="f['e_addressline1'].errors['pattern']">Address Line1 is invalid!</div>
                                                </div>
                                           </div>
                                           <div class="form-group col-md-6">
@@ -120,28 +152,49 @@
                                               <input formControlName="e_city" [(ngModel)]="city" type="text" placeholder="Your city" class="form-control"  [ngClass]="{ 'is-invalid': submitted && f['e_city'].errors }" required>
                                               <div *ngIf="submitted && f['e_city'].errors" class="invalid-feedback">
                                                   <div *ngIf="f['e_city'].errors['required']">Enter City</div>
+                                                  <div *ngIf="f['e_city'].errors['pattern']">City is invalid!</div>
                                                </div>
                                           </div>
+
+                                          <div class="form-group col-md-6">
+                                            <label class="form-label">Country</label>
+                                           <select class="form-control" formControlName="e_country" [(ngModel)]="ship_country_id" (change)="get_state1(ship_country_id)" [ngClass]="{ 'is-invalid': submitted && f['e_country'].errors }">
+                                            <option value="">--Select Country--</option>
+                                            <option *ngFor="let cou of country_list" [ngValue]="cou.countryid">{{cou.countryname}}</option>
+                                        </select>
+                                            <div *ngIf="submitted && f['e_country'].errors" class="invalid-feedback">
+                                                <div *ngIf="f['e_country'].errors['required']">Select Country</div>
+                                              </div>
+                                        </div>
+    
+                                        <div class="form-group col-md-6">
+                                            <label class="form-label">State</label>
+                                           <select class="form-control" formControlName="e_state" [(ngModel)]="ship_state_id" [ngClass]="{ 'is-invalid': submitted && f['e_state'].errors }">
+                                            <option value="">--Select State--</option>
+                                            <option *ngFor="let st of state_list" [ngValue]="st.stateid">{{st.statename}}</option>
+                                        </select>
+                                            <div *ngIf="submitted && f['e_state'].errors" class="invalid-feedback">
+                                                <div *ngIf="f['e_state'].errors['required']">Select State</div>
+                                              </div>
+                                        </div>
+
+                                      
+
+
                                           <div class="form-group col-md-6">
                                               <label class="form-label">Landmark</label>
                                               <input formControlName="e_landmark" [(ngModel)]="land_mark" type="text"  placeholder="Landmark" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['e_landmark'].errors }" required>
                                               <div *ngIf="submitted && f['e_landmark'].errors" class="invalid-feedback">
                                                   <div *ngIf="f['e_landmark'].errors['required']">Enter Landmark</div>
+                                                  <div *ngIf="f['e_landmark'].errors['pattern']">Landmark is invalid!</div>
                                                </div>
                                           </div>
-                                          <div class="form-group col-md-6">
-                                              <label class="form-label">Pincode</label>
-                                              <input formControlName="e_pincode" [(ngModel)]="pincode" type="text"  placeholder="Pincode" class="form-control" [ngClass]="{ 'is-invalid': submitted && f['e_pincode'].errors }"  minlength="6" maxlength="6" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
-                                              <div *ngIf="submitted && f['e_pincode'].errors" class="invalid-feedback">
-                                                  <div *ngIf="f['e_pincode'].errors['required']">Enter Pincode</div>
-                                                  <div *ngIf="f['e_pincode'].errors['minlength']">Minimum 6 Digit</div> 
-                                               </div>
-                                          </div>
-                                      </div>  
+                                          
+                                      </div>
                                        <div class="row mt-2" *ngFor="let val of validation_list">
-                      <div class="col-md-9" style="color:red">{{val}}</div>               
-                  </div> 
-                                   
+                      <div class="col-md-9" style="color:red">{{val}}</div>
+                  </div>
+
                                             <br>
                                             <div class="col-md-12 mt-4">
                                               <div class="text-center">
@@ -150,10 +203,10 @@
                                                   <a type="button" class="btn btn-template wide next"  (click)="save_shipping_address()" >
                                                       Save<i class="fa fa-angle-right"></i>
                                                   </a>
-                                                 
+
                                               </div>
                                           </div>
-      
+
                                   </form>
                                   </div>
                                   <!-- /Shipping Address-->
@@ -173,9 +226,9 @@
                           <p>Shipping and additional costs are calculated based on values you have entered</p>
                           <ul class="order-menu list-unstyled">
                               <li class="d-flex justify-content-between"><span>Order Subtotal </span><strong>₹ {{total}}</strong></li>
-                              <li class="d-flex justify-content-between"><span>Shipping and handling</span><strong>₹ 10</strong></li>
-                              <li class="d-flex justify-content-between"><span>Tax</span><strong>16 %</strong></li>
-                              <li class="d-flex justify-content-between"><span>Discount</span><strong>₹ 100</strong></li>
+                              <li class="d-flex justify-content-between d-none"><span>Shipping and handling</span><strong>₹ 10</strong></li>
+                              <li class="d-flex justify-content-between d-none"><span>Tax</span><strong>16 %</strong></li>
+                              <li class="d-flex justify-content-between d-none"><span>Discount</span><strong>₹ 100</strong></li>
                               <li class="d-flex justify-content-between"><span>Total</span><strong class="text-primary price-total">₹ {{payableamount| number}}</strong></li>
                           </ul>
                       </div>
@@ -183,7 +236,7 @@
               </div>
           </div>
       </section>
-      
+
       <div class="modal fade" id="Changeaddress" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
            aria-labelledby="staticBackdropLabel" aria-hidden="true">
           <form>
@@ -193,7 +246,7 @@
                           <button type="button" class="btn-close" data-bs-dismiss="modal" (click)="modelclose()" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
-      
+
                           <h5 class="text-center">Select the Delivery Address</h5>
                           <div class="card border-0">
                               <div class="card-body border-0">
@@ -210,14 +263,14 @@
                                                       {{add.pincode}}&nbsp;{{add.mob}}&nbsp;{{add.email}}
                                                   </p>
                                               </div>
-      
+
                                       </div>
                                   </div>
-      
+
                               </div>
-      
+
                           </div>
-      
+
                       </div>
                       <div class="text-center my-4">
                           <button type="submit" class="btn btn-primary btn-submit" (click)="change_address_save()">Select Address</button>
@@ -226,5 +279,142 @@
               </div>
           </form>
       </div>
-      
-      
+
+
+   <!-- Modal -->
+   <div class="modal fade" id="allOrderModal" tabindex="-1" aria-labelledby="exampleallOrderModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header border-0">
+          <h5 class="modal-title" id="exampleallOrderModal"></h5>
+          <button type="button" class="btn-close" (click)="closeModal()"></button>
+        </div>
+        <div class="modal-body border-0">
+            <div class="'row">
+              <div class="col-lg-12">
+                  <div class="block">
+                    <div class="block-body">
+                                <form [formGroup]="invoiceaddress">
+                                <div class="block-header mb-5 mt-3">
+                                    <h6>Innoviceaddress</h6>
+                                </div>
+                                <div class="row">
+                                    <div class="form-group col-md-6">
+                                        <label class="form-label">Name</label>
+                                        <input formControlName="v_first_name" [(ngModel)]="first_name" type="text" name="name" placeholder="Enter you name" class="form-control"  [ngClass]="{ 'is-invalid': submitted1 && g['v_first_name'].errors }" required>
+                                        <div *ngIf="submitted1 && g['v_first_name'].errors" class="invalid-feedback">
+                                            <div *ngIf="g['v_first_name'].errors['required']">Enter Name</div>
+                                            <div *ngIf="g['v_first_name'].errors['pattern']">Name is invalid!</div>
+                                          </div>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label class="form-label">Gender</label>
+                                       <select class="form-control" formControlName="v_gender_id" [(ngModel)]="gender_id" [ngClass]="{ 'is-invalid': submitted1 && g['v_gender_id'].errors }">
+                                        <option value="">--Select Gender--</option>
+                                        <option *ngFor="let gen of gender_list" [ngValue]="gen.genderid">{{gen.gendername}}</option>
+                                    </select>
+                                        <div *ngIf="submitted1 && g['v_gender_id'].errors" class="invalid-feedback">
+                                            <div *ngIf="g['v_gender_id'].errors['required']">Select Gender</div>
+                                          </div>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label class="form-label">Email</label>
+                                        <input formControlName="v_email2" [(ngModel)]="email2" type="text" name="name" placeholder="Enter you name" class="form-control"  [ngClass]="{ 'is-invalid': submitted1 && g['v_email2'].errors }">
+                                        <div *ngIf="submitted1 && g['v_email2'].errors" class="invalid-feedback">
+                                            <div *ngIf="g['v_email2'].errors['required']">Enter Email</div>
+                                            <div *ngIf="g['v_email2'].errors['pattern']">Email is invalid!</div>
+                                          </div>
+                                    </div>
+
+
+                                    <div class="form-group col-md-6">
+                                        <label class="form-label">Mobile</label>
+                                        <input formControlName="v_mobile2" [(ngModel)]="mobile2" type="text" name="mobile" placeholder="Enter Mobile Number" class="form-control" [ngClass]="{ 'is-invalid': submitted1 && g['v_mobile2'].errors }"  minlength="10" maxlength="10" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
+                                        <div *ngIf="submitted1 && g['v_mobile2'].errors" class="invalid-feedback">
+                                            <div *ngIf="g['v_mobile2'].errors['required']">Enter Mobile Number</div>
+                                            <div *ngIf="g['v_mobile2'].errors['minlength']">Minimum 10 Digit</div>
+                                            <div *ngIf="g['v_mobile2'].errors['pattern']">mobile is invalid!</div>
+                                          </div>
+                                    </div>
+
+                                    <div class="form-group col-md-12">
+                                        <label class="form-label">Address</label>
+                                        <textarea formControlName="v_address2" [(ngModel)]="address2" type="text"  placeholder="Your Address" class="form-control" [ngClass]="{ 'is-invalid': submitted1 && g['v_address2'].errors }" [cols]="3"></textarea>
+                                        <div *ngIf="submitted1 && g['v_address2'].errors" class="invalid-feedback">
+                                            <div *ngIf="g['v_address2'].errors['required']">Enter Address</div>
+                                            <div *ngIf="g['v_address2'].errors['pattern']">Address is invalid!</div>
+                                         </div>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label class="form-label">City</label>
+                                        <input formControlName="v_city2" [(ngModel)]="city2" type="text" placeholder="Your city" class="form-control"  [ngClass]="{ 'is-invalid': submitted1 && g['v_city2'].errors }" required>
+                                        <div *ngIf="submitted1 && g['v_city2'].errors" class="invalid-feedback">
+                                            <div *ngIf="g['v_city2'].errors['required']">Enter City</div>
+                                            <div *ngIf="g['v_city2'].errors['pattern']">City is invalid!</div>
+                                         </div>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label class="form-label">Country</label>
+                                       <select class="form-control" formControlName="v_country_id" [(ngModel)]="country_id" (change)="get_state(country_id)" [ngClass]="{ 'is-invalid': submitted1 && g['v_country_id'].errors }">
+                                        <option value="">--Select Country--</option>
+                                        <option *ngFor="let cou of country_list" [ngValue]="cou.countryid">{{cou.countryname}}</option>
+                                    </select>
+                                        <div *ngIf="submitted1 && g['v_country_id'].errors" class="invalid-feedback">
+                                            <div *ngIf="g['v_country_id'].errors['required']">Select Country</div>
+                                          </div>
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label class="form-label">State</label>
+                                       <select class="form-control" formControlName="v_state_id" [(ngModel)]="state_id" [ngClass]="{ 'is-invalid': submitted1 && g['v_state_id'].errors }">
+                                        <option value="">--Select State--</option>
+                                        <option *ngFor="let st of state_list" [ngValue]="st.stateid">{{st.statename}}</option>
+                                    </select>
+                                        <div *ngIf="submitted1 && g['v_state_id'].errors" class="invalid-feedback">
+                                            <div *ngIf="g['v_state_id'].errors['required']">Select State</div>
+                                          </div>
+                                    </div>
+
+
+                                    <div class="form-group col-md-6">
+                                        <label class="form-label">Pincode</label>
+                                        <input formControlName="pincode2" [(ngModel)]="pincode_new" type="text"  placeholder="Pincode" class="form-control" [ngClass]="{ 'is-invalid': submitted1 && g['pincode2'].errors }"  minlength="6" maxlength="6" onkeypress='return event.charCode >= 48 && event.charCode <= 57' required>
+                                        <div *ngIf="submitted1 && g['pincode2'].errors" class="invalid-feedback">
+                                            <div *ngIf="g['pincode2'].errors['required']">Enter Pincode</div>
+                                            <div *ngIf="g['pincode2'].errors['minlength']">Minimum 6 Digit</div>
+                                            <div *ngIf="g['pincode2'].errors['pattern']">pincode is invalid!</div>
+                                         </div>
+                                    </div>
+                                </div>
+
+
+                                      <br>
+                                      <div class="col-md-12 mt-4">
+                                        <div class="text-center">
+                                          <input type="text" [(ngModel)]="address_id" hidden>
+                                            <a type="button" class="btn btn-template wide next"  (click)="cancel()" >Clear</a> &nbsp;
+                                            <a type="button" class="btn btn-template wide next"  (click)="insert_invoice_address()" >
+                                                Save<i class="fa fa-angle-right"></i>
+                                            </a>
+
+                                        </div>
+                                    </div>
+
+                            </form>
+
+                    </div>
+                  </div>
+
+
+              </div>
+            </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>

@@ -3,7 +3,7 @@ import { Component, HostListener,  OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AllapiService } from 'src/app/apiservice/allapi.service';
 import Swal from 'sweetalert2';
-declare var Razorpay: any; 
+declare var Razorpay: any;
 
 
 @Component({
@@ -35,7 +35,9 @@ export class CartCheckOutPlaceorderComponent implements OnInit {
    mob5="";
    public razorpay_payment_id="";
    public razorpay_order_id="";
-
+   base64='data:image/jpeg;base64,';
+   imageBaseUrl='http://124.153.106.183:8015/EMarket_Image';
+   
   ngOnInit(): void {
 let url='CartCheckout/get_payment_data/';
       var data = {
@@ -45,7 +47,7 @@ let url='CartCheckout/get_payment_data/';
 if(promise.cartcount>0)
 {
             this.mycartlist_json=sessionStorage.getItem('mycartlist_json');
-            this.mycartlist = JSON.parse(this.mycartlist_json); 
+            this.mycartlist = JSON.parse(this.mycartlist_json);
             if (this.mycartlist != "") {
              var total = 0;
              var totalqty = 0;
@@ -56,10 +58,12 @@ if(promise.cartcount>0)
              }
              this.total = total;
              this.totalqty = totalqty;
-             this.gstamount = (total * 16) / 100;
-             this.payableamount = total + this.gstamount + 30 - 100;
+             this.gstamount = total;
+             this.payableamount = total;
+             //this.gstamount = (total * 16) / 100;
+           //  this.payableamount = total + this.gstamount + 30 - 100;
              this.cartcount = promise.mycartlist.length;
-         }          
+         }
           else {
               Swal.fire({
                   position: 'center',
@@ -85,16 +89,16 @@ if(promise.cartcount>0)
   }
 
 place_order () {
-   var modeofpayment=  sessionStorage.getItem('paymentmode');   
+   var modeofpayment=  sessionStorage.getItem('paymentmode');
     this.mycartlist1 = [];
     this.mycartlist.forEach((_ss:any)=>
     {
-        this.mycartlist1.push({  productid: _ss.productid, itemid: _ss.itemid,  
+        this.mycartlist1.push({  productid: _ss.productid, itemid: _ss.itemid,
                                quantity: _ss.quantity,totquantity: _ss.totquantity,
-             selling_price: _ss.selling_price, mrp: _ss.mrp})          
-           
+             selling_price: _ss.selling_price, mrp: _ss.mrp})
+
     })
-    
+
     var total = 0;
     var totalqty=0;
     for (var i = 0; i < this.mycartlist.length; i++) {
@@ -104,8 +108,10 @@ place_order () {
     }
     this.total = total;
     this.totalqty = totalqty;
-    this.gstamount = (total * 16) / 100;
-    this.payableamount = total + this.gstamount + 30 - 100;
+    this.gstamount = total;
+          this.payableamount = total;
+          //this.gstamount = (total * 16) / 100;
+        //  this.payableamount = total + this.gstamount + 30 - 100;
     let url='';
     let url1='CartCheckPlaceOrder/check_item_available/';
     var data1={
@@ -131,10 +137,10 @@ if(modeofpayment=='Online')
      url='CartCheckPlaceOrder/CheckOut_online/';
 }
 else if(modeofpayment=='POD'){
-    
+
      url='CartCheckPlaceOrder/CheckOut_POD/';
 }
-   
+
     var data = {
         'ordercartlist': this.mycartlist1,
         "shippingaddress_id": this.shippingaddress_id,
@@ -143,8 +149,9 @@ else if(modeofpayment=='POD'){
         "discount_amount":100,
         "total_order_amount":total,
         "tax_amount":this.gstamount,
-        "gross_amount":total + this.gstamount + 30 + 100,   
-        "payable_amount": this.payableamount,      
+        //"gross_amount":total + this.gstamount + 30 + 100,
+        "gross_amount":total,
+        "payable_amount": this.payableamount,
     }
 
     this.allapi.PostData(url, data).subscribe(promise=> {
@@ -169,13 +176,13 @@ else if(modeofpayment=='POD'){
         if(modeofpayment=='Online')
         {
             this.razorpay(this.payment_orderid);
-          
+
         }
         else if(modeofpayment=='POD')
         {
             if (promise.status_flg == true) {
                 window.location.replace("/app/cart/orderconfirm");
-               
+
             }
             else {
                 Swal.fire({
@@ -189,7 +196,7 @@ else if(modeofpayment=='POD'){
         }
 
     });
-   
+
 });
 }
 
@@ -205,18 +212,18 @@ razorpay (ss:any) {
         "handler": function (response:any) {
         var payment_id=  response.razorpay_payment_id;
          var ord_id=  response.razorpay_order_id;
-        
-         var event = new CustomEvent("payment.success", 
+
+         var event = new CustomEvent("payment.success",
          {
              detail: response,
              bubbles: true,
              cancelable: true
          }
-     );    
+     );
      window.dispatchEvent(event);
-   
+
         },
-    
+
 
         "prefill": {
             "name":  this.customername5,
@@ -232,9 +239,9 @@ razorpay (ss:any) {
 
     var rzp1 = new Razorpay(options);
     rzp1.open();
-    rzp1.on('payment.failed', function (response:any){    
-      
-      
+    rzp1.on('payment.failed', function (response:any){
+
+
     }
     );
 
@@ -242,7 +249,7 @@ razorpay (ss:any) {
 
 
 
-@HostListener('window:payment.success', ['$event']) 
+@HostListener('window:payment.success', ['$event'])
 onPaymentSuccess(event:any): void {
   if(event.detail.razorpay_payment_id!="")
   {
@@ -255,8 +262,10 @@ onPaymentSuccess(event:any): void {
     }
     this.total = total;
     this.totalqty = totalqty;
-    this.gstamount = (total * 16) / 100;
-    this.payableamount = total + this.gstamount + 30 - 100;
+    this.gstamount = total;
+    this.payableamount = total;
+    //this.gstamount = (total * 16) / 100;
+  //  this.payableamount = total + this.gstamount + 30 - 100;
 
    let url='CartCheckPlaceOrder/paymentsave/';
    var data = {
@@ -267,15 +276,16 @@ onPaymentSuccess(event:any): void {
         "discount_amount":100,
         "total_order_amount":total,
         "tax_amount":this.gstamount,
-        "gross_amount":total + this.gstamount + 30 + 100,   
-        "payable_amount": this.payableamount, 
-     
+        //"gross_amount":total + this.gstamount + 30 + 100,
+        "gross_amount":total,
+        "payable_amount": this.payableamount,
+
        };
    this.allapi.PostData(url,data).subscribe(promise=>
        {
            if (promise.status_flg == true) {
                window.location.replace("/app/cart/orderconfirm");
-              
+
            }
            else {
                Swal.fire({
@@ -286,7 +296,7 @@ onPaymentSuccess(event:any): void {
                    timer: 3000
                })
            }
-          
+
        })
     }
 }

@@ -3,18 +3,21 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AllapiService } from 'src/app/apiservice/allapi.service';
 import Swal from 'sweetalert2';
 
+
+
 @Component({
   selector: 'app-hub-route',
   templateUrl: './hub-route.component.html',
   styleUrls: ['./hub-route.component.css']
 })
 export class HubRouteComponent implements OnInit {
+  time = {hour: 13, minute: 30};
 
   newRoutes:any=[]
   constructor(private allapi:AllapiService) { }
   page: number = 1;
   count: number = 0;
-  tableSize: number = 7;
+  tableSize: number = 6;
   tableSizes: any = [3, 6, 9, 12];
 
   hub_list_1:any;
@@ -28,18 +31,19 @@ export class HubRouteComponent implements OnInit {
   distance="";
   travel_time_hour="";
   travel_time_minute="";
+  departure_time="";
   hub_route_id=0;
   submitted=false;
   search="";
   //form group
-  routeForm=new FormGroup(
-    {
+  routeForm=new FormGroup({
       hub1:new FormControl ('',[Validators.required]),
       hub2:new FormControl ('',[Validators.required]),
          transportationType:new FormControl ('',[Validators.required]),
       totalDistance:new FormControl ('',[Validators.required]),
       travelHour:new FormControl (''),
       travelMinute:new FormControl ('',[Validators.required]),
+      departuretime:new FormControl ('',[Validators.required]),
     }
   );
 
@@ -79,6 +83,7 @@ export class HubRouteComponent implements OnInit {
       {
         this.hub_list_1=JSON.parse(promise.hub_list_1).Table;      
         this.hub_route_list=JSON.parse(promise.hub_route_list).Table;
+        
       })
   }
 
@@ -112,6 +117,7 @@ var data={
   "distance":this.distance,
   "travel_time_hour":parseInt(this.travel_time_hour),
   "travel_time_minute":parseInt(this.travel_time_minute),
+  "departure_time":this.departure_time,
   "language_id":1
 }
 let url='Hub_Route/save_hub_route';
@@ -120,6 +126,8 @@ this.allapi.PostData(url,data).subscribe(promise=>
     this.validation_list=[];
     if(promise.status=="Insert")
     {
+      this.submitted=false;
+      this.routeForm.reset();
       Swal.fire({
         position: 'center',
         icon: 'success',
@@ -129,7 +137,7 @@ this.allapi.PostData(url,data).subscribe(promise=>
     })
     this.hub_list_1=JSON.parse(promise.hub_list_1).Table;      
     this.hub_route_list=JSON.parse(promise.hub_route_list).Table;
-   this.Clear();
+ 
   }
     else if(promise.status=="Failed")
     {
@@ -158,6 +166,7 @@ this.allapi.PostData(url,data).subscribe(promise=>
   this.distance=ss.distance;
   this.travel_time_hour=ss.travel_time_hour;
   this.travel_time_minute=ss.travel_time_minute;
+  this.departure_time=ss.departure_time;
  }
 delete_data(ss:any) {
 
@@ -217,6 +226,7 @@ delete_data(ss:any) {
   this.distance="";
   this.travel_time_hour="";
   this.travel_time_minute="";
+  this.departure_time="";
   this.hub_route_id=0;
   this.submitted=false;
 this.routeForm.reset();

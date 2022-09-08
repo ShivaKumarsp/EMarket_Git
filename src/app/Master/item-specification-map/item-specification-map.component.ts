@@ -181,12 +181,11 @@ getspecification(ss:any) {
      this.allapi.PostData(saveurl, data).subscribe(promise=> {
          if (promise.msg_flg == "Update") {
              this.is_visible = true;
+             this.submitted=false;
+             this.form.reset();
              this.itemcategoryspecificationlist = promise.itemcategoryspecificationlist;
               this.specificationlist=promise.specificationlist;
-             this.specification_id = "";
-             this.attribute_name_id = "";
-             this.is_refiners="";
-             this.masteritemspec_id=0;
+            
              Swal.fire({
                  position: 'center',
                  icon: 'success',

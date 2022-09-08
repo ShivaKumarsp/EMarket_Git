@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { trim } from '@rxweb/reactive-form-validators';
 import { NgxSpinner, NgxSpinnerService } from 'ngx-spinner';
 import { AllapiService } from 'src/app/apiservice/allapi.service';
 import Swal from 'sweetalert2';
@@ -27,6 +28,8 @@ export class EditItemComponent implements OnInit {
      submitted: boolean = false;
      check_durability: boolean = false;
   
+     base64="data:image/jpeg;base64,";
+     imageBaseUrl='http://124.153.106.183:8015/EMarket_Image';
      In_the_box=""
      durability_uom = "";
      durability ="";
@@ -41,7 +44,7 @@ export class EditItemComponent implements OnInit {
      currency_id = "";
      warranty = "";
      expiry_date: any;
-  
+     dub_show=false;
      item_id:any;
      item_code="";
      item_name ="";
@@ -71,14 +74,14 @@ export class EditItemComponent implements OnInit {
     this.form = formBuilder.group({
       v_productid:new FormControl('', [Validators.required]),
       v_item_type:new FormControl('',[Validators.required]),
-      v_itemname:new FormControl('',[Validators.required]),
+      v_itemname:new FormControl('',[Validators.required,Validators.minLength(5)]),
       v_storename: new FormControl('',[Validators.required]),
-      v_item_mrp: new FormControl('',[Validators.required]),
-      v_item_list_price:new FormControl('',[Validators.required]),
+      v_item_mrp: new FormControl('',[Validators.required,Validators.min(1)]),
+      v_item_list_price:new FormControl('',[Validators.required,Validators.min(1)]),
       v_currencyid:new FormControl('',[Validators.required]),
-      v_quantity:new FormControl(''),
-      v_min_quantity:new FormControl('',[Validators.required]),
-      v_sku_id:new FormControl('',[Validators.required]),
+      v_quantity:new FormControl('',[Validators.required,Validators.min(1)]),
+      v_min_quantity:new FormControl('',[Validators.required,Validators.min(1)]),
+      v_sku_id:new FormControl('',[Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/)]),
       v_checkdurability: new FormControl(),
       v_durability_duration:new FormControl(),
       v_durableumo: new FormControl(),
@@ -90,14 +93,40 @@ export class EditItemComponent implements OnInit {
       v_product_warrent:new FormControl(),
       v_warrantyumo:new FormControl(),
       v_imagepic:new FormControl(),
-
+   
     });
    }
 
+   get v_item_mrp() {
+    return this.form.get('v_item_mrp')!;
+  }
+  get v_item_list_price() {
+    return this.form.get('v_item_list_price')!;
+  }
+  get v_quantity() {
+    return this.form.get('v_quantity')!;
+  }
+  get v_min_quantity() {
+    return this.form.get('v_min_quantity')!;
+  }
+  get v_itemname() {
+    return this.form.get('v_itemname')!;
+  }
+
+  keyPressSpace(event:any) {
+    if(event.target.selectionStart===0 && event.code==='Space')
+    {
+      event.preventDefault();       
+    }
+  }
+
    ngOnInit(): void {
+   // this.form.controls['v_productid'].disable();
+    //this.form.controls['v_sku_id'].disable();
     this.spinner.show();
+
     this.item_id=this.activateroute.snapshot.paramMap.get("itemid");
-   
+  
     var data = {
       "language_id": 1,
       "item_id": parseInt(this.item_id)
@@ -105,7 +134,7 @@ export class EditItemComponent implements OnInit {
   let requestFormUrl = 'All_Item/get_edit_data/';
   this.allapi.PostData(requestFormUrl,data).subscribe(promise => {
       if (promise.edit_item_list != "") {
-        this.edit_item_list = promise.edit_item_list;        
+        this.edit_item_list = promise.edit_item_list; 
         this.item_code =this.edit_item_list[0].itemcode;
         this.item_type_id  =this.edit_item_list[0].itemtype_id ;
         this.product_id   =this.edit_item_list[0].productid;     
@@ -119,6 +148,9 @@ export class EditItemComponent implements OnInit {
         this.min_quantity   =this.edit_item_list[0].minquantity;     
         this.store_id   =this.edit_item_list[0].storeid;  
         this.durability    =this.edit_item_list[0].v_durability;
+        this.check_durability=this.edit_item_list[0].checkdurability;
+      
+        this.dub_show=this.check_durability;
         this.item_name    =this.edit_item_list[0].itemname;
         this.p_imageurl   =this.edit_item_list[0].itemimage;
           this.quantity    =this.edit_item_list[0].v_quantity;
@@ -142,19 +174,67 @@ export class EditItemComponent implements OnInit {
          this.currencylist = promise.currencylist;
         
      }
-     
 
   })
   this.spinner.hide();
 }
 
+
+
    get f(){
     return this.form.controls;
   }
+  keyPressname(event:any) {
+    var inp = String.fromCharCode(event.keyCode);
+    // (/[a-zA-Z0-9-_ ]/.test(inp))
+    if (/[a-zA-Z-_0-9 ]/.test(inp)) {
+      return true;
+    } else {
+      event.preventDefault();
+      return false;
+    }
+  }
+
+  get v_durability_duration() {
+    return this.form.get('v_durability_duration')!;
+  }
+  checkdub()
+  {    this.submitted=false; 
+    this.dub_show=this.check_durability;
+    if(this.dub_show==true)
+    {
+     this.form.controls["v_durableumo"].setValidators([Validators.required]);
+     this.form.controls["v_durableumo"].updateValueAndValidity();
+     this.form.controls["v_durability_duration"].setValidators([Validators.required,Validators.min(1)]);
+     this.form.controls["v_durability_duration"].updateValueAndValidity();
+    }
+    else if(this.dub_show==false)
+    {
+     this.form.controls["v_durableumo"].setValidators(null);
+     this.form.controls["v_durableumo"].updateValueAndValidity();
+     this.form.controls["v_durability_duration"].setValidators(null);
+     this.form.controls["v_durability_duration"].updateValueAndValidity();
+    }
+  }
   editForm(){  
+  
+    if(this.form.value.v_itemname.trim().length<5){
+      this.form.controls['v_itemname'].setErrors({'minlength': true})
+    }
+    // if(this.form.value.v_sku_id.trim().length<3){
+    //   this.form.controls['v_sku_id'].setErrors({'minlength': true})
+    // }
+
     this.submitted=true;
     if(this.form.invalid)
     {
+      Swal.fire({
+        position: 'center',
+        icon: 'warning',
+        title: 'Enter All Mandatory Fields',
+        showConfirmButton: false,
+        timer: 3000
+      })
       return
     }
     if(this.listing_price>this.mrp)
@@ -167,6 +247,36 @@ export class EditItemComponent implements OnInit {
         timer: 3000
       })
       return;
+    }
+    if(this.check_durability==true)
+    {
+      if(this.durability=="" ||this.durability=="0")
+      {
+        Swal.fire({
+          position: 'center',
+          icon: 'warning',
+          title: 'Enter Durable Till',
+          showConfirmButton: false,
+          timer: 3000
+        })
+        return
+      }
+      if(this.durability_uom=="")
+      {
+        Swal.fire({
+          position: 'center',
+          icon: 'warning',
+          title: 'Select Durable Type',
+          showConfirmButton: false,
+          timer: 3000
+        })
+        return
+      }
+    }
+    if(this.check_durability==false)
+    {
+      this.durability_uom="0";
+     
     }
 
     if(this.country_origin_id=="" ||this.country_origin_id=="0"||this.country_origin_id==null)
@@ -185,7 +295,8 @@ export class EditItemComponent implements OnInit {
     {
       this.manufacture_date="0001-01-01T00:00:00"
     }
-  
+  var ss=this.item_name.trim();
+   
      this.spinner.show();
     let itemcode=this.item_name;
     
@@ -197,9 +308,9 @@ export class EditItemComponent implements OnInit {
     var data =
     {
         "item_id": parseInt(this.item_id),
-        "item_name": this.item_name,
-        "item_code":itemcode,
-        "sku": this.sku,
+        "item_name": this.item_name.trim(),
+        "item_code":itemcode.trim(),
+        "sku": this.sku.trim(),
         "item_type_id":parseInt(this.item_type_id),
         "currency_id": parseInt(this.currency_id),
         "product_id": parseInt(this.product_id),
@@ -213,13 +324,13 @@ export class EditItemComponent implements OnInit {
         "listing_price":parseInt(this.listing_price),
         "min_quantity": parseInt(this.min_quantity),
         "store_id": parseInt(this.store_id),
-        //"durability_umo": parseInt(this.durability_uom),
-        //"durability": parseInt(this.durability),
+        "durability_umo": parseInt(this.durability_uom),
+        "durability": parseInt(this.durability),
         "check_durability": this.check_durability,
         "language_id": sid,
         "item_image": this.p_imageurl,
         "quantity": parseInt(this.quantity),
-        "In_the_box":this.In_the_box,
+        "In_the_box":this.In_the_box.trim(),
   
     }
 
@@ -261,16 +372,20 @@ export class EditItemComponent implements OnInit {
     this.spinner.hide();
   };
   
+  nextForm(){  
+    
+    window.location.replace("/app/additemspecification/" + this.item_id);
+  };
+
   showItem:boolean=false;
   bindThis:any;
   
   getimg(ss:any) {
-  let tempSS = parseInt(ss);
   var data={
     "product_id":parseInt(ss),
     "language_id":1
   }
-  let url = 'Vendor_Add_Item/saveproductitem/';
+  let url = 'Vendor_Add_Item/get_item_product_details/';
   this.allapi.PostData(url,data).subscribe(promise=>
     {
       this.product_details=JSON.parse(promise.product_details).Table; 
@@ -312,7 +427,7 @@ export class EditItemComponent implements OnInit {
     }
    this.selectItemImageUpload=imageInput.files[0];
    formData.append("File", this.selectItemImageUpload);
-   let url='http://192.168.1.200:1305/api/ImageUpload/DocumentUpload'; 
+   let url='http://localhost:1305/api/ImageUpload/Item_Image_Upload'; 
   
    return this.http.post(url, formData).subscribe((promise:any)=>
    {

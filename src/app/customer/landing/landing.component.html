@@ -1,53 +1,13 @@
-
- <!--<nav class="navbar navbar-expand-lg">
-  
-
-
-    <div class="container-fluid">
-        <div id="navbarCollapse" class="collapse navbar-collapse">  
-            <ul class="navbar-nav mb-2 mb-lg-0" style="cursor:pointer">
-            
-              <li class="nav-item dropdown" *ngFor="let cat of category_list"  >
-                  <a  data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link" (click)="get_subcategory(cat)">
-                    <i class="fa fa-angle-down"> {{cat.categoryname}}</i></a>
-                    <ul   class="dropdown-menu">
-                      <li class="nav-item dropdown" *ngFor="let sub of subcategory_list">
-                          <a class="dropdown-item" style="cursor:pointer" [id]="sub.msc_id" (click)="get_addcategory(cat,sub)">
-                            <i class="fa fa-angle-down">{{sub.subcategory_name}}</i>
-                          </a> 
-                        
-                        <ul  class="dropdown-submenu">
-                          <li class="nav-item dropdown" *ngFor="let add of addcategory_list">
-                              <a class="dropdown-item" style="cursor:pointer" [id]="add.additionalcat_id" >
-                                <i class="fa fa-angle-down">{{add|json}}</i>
-                              </a> 
-                              <ul class="dropdown-menu">
-                                <li *ngFor="let add of addcategory_list">
-                                    <a class="dropdown-item" style="cursor:pointer">{{add.additionalcat_name}}</a>
-                                </li>
-                            </ul>
-    
-                           </li>
-                      </ul> 
-                        
-
-                      </li>
-                  </ul>
-
-              </li>                                     
-          </ul> 
-          
-        </div>
-
-     </div> 
-    </nav>--> 
-    
+<ngx-spinner  bdColor="rgba(51,51,51,0.8)"  size="medium"  color="#fff"  type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner> 
+       <div class="min-vh-100">
     <section class="hero hero-home no-padding">
 
         <owl-carousel-o [options]="customOptions" >
-          <ng-container *ngFor="let slide of banner_list" class="owl-carousel owl-theme hero-slider" >
+          <ng-container *ngFor="let slide of banner_list" class="owl-carousel owl-theme hero-slider">
             <ng-template id="slide.id" carouselSlide  >
-              <div [style.background-image]="'url('+slide.banner_image+')'" class="item d-flex align-items-center">
+              <div [style.background-image]="'url('+imageBaseUrl+slide.banner_image+')'" class="item d-flex align-items-center">
                 <div class="container">
                   <div class="row">
                     <div class="col-lg-6 text-white">
@@ -65,24 +25,24 @@
       </section>
 
      <!--All product showing-->
-     <section>      
+     <section>
 
         <main>
             <div class="container">
                 <div class="row">
                     <!-- Grid -->
                     <div class="products-grid col-12 sidebar-none">
-                       
+
                         <div class="row">
-                         
-                 
+
+
                             <!-- item-->
                             <div class="item col-xl-3 col-lg-4 col-md-6" *ngFor="let produ of product_list">
-                  
-                               <div class="product is-gray"> 
+
+                               <div class="product is-gray">
                                     <div class="image d-flex align-items-center justify-content-center">
                                         <!-- <div class="ribbon ribbon-primary text-uppercase">Sale </div> -->
-                                         <img src="{{produ.imagepath}}">
+                                         <img src="{{imageBaseUrl+produ.imagepath}}">
                                         <div class="hover-overlay d-flex align-items-center justify-content-center">
                                             <div class="CTA d-flex align-items-center justify-content-center">
                                                 <a type="button" class="add-to-cart" (click)="add_to_cart(produ)"><i class="fa fa-shopping-cart"></i></a>
@@ -92,12 +52,32 @@
                                             </div>
                                         </div>
                                     </div>
+
+                                    <!-- <div class="title" style="display: -webkit-box;">
+
+                                          <a type="button" class="btn btn-template wide next check" (click)="add_to_cart(produ)">
+                                            <i class="fa fa-shopping-cart" style="color: rgb(87, 11, 11);"></i>
+                                          </a> &nbsp; &nbsp;
+                                          <a type="button" class="btn btn-template wide next" [routerLink]="['/app/home/itemdetails/',produ.itemid]">
+                                              View
+                                          </a>
+
+                                      </div> -->
+
+
                                     <div class="title">
                                        <a [routerLink]="['/app/home/itemdetails/',produ.itemid]">
                                             <h3 class="h6 text-uppercase no-margin-bottom"  >
                                                 {{ (produ.itemname.length>30)? (produ.itemname | slice:0:30)+'....':(produ.itemname) }}
                                            </h3>
-                                        </a><span class="price text-muted">{{produ.currencysymbol}} {{produ.listingprice}}</span>
+                                        </a>
+                                       <span class="price text-muted">{{produ.currencysymbol}} {{produ.listingprice}}</span>
+                                        <!-- <ul class="price list-inline no-margin">
+                                          <li class="list-inline-item current">{{produ.currencysymbol}} {{produ.listingprice}}</li>
+                                          <li class="list-inline-item original">{{produ.currencysymbol}} {{produ.item_mrp}}</li>
+                                      </ul> -->
+
+                                        <!-- item_mrp -->
                                     </div>
                                 </div>
                             </div>
@@ -136,15 +116,15 @@
             <div class="row text-left">
                 <div class="col-lg-4 mt-4" *ngFor="let ct of category_list">
                     <a type="button" (click)="get_category_page(ct)">
-                        <div style="background-image: url({{ct.imageurl}});" class="item d-flex align-items-end" >
-                           
+                        <div style="background-image: url({{imageBaseUrl}}{{ct.imageurl}});" class="item d-flex align-items-end" >
+
                         </div>
                          <!--<div class="item"><img src="{{ct.imageurl}}" ></div>-->
                         <div class="content">
                             <h3><span>{{ct.categoryname}}</span></h3>
                         </div>
                     </a>
-                    
+
                 </div>
 
 
@@ -192,10 +172,10 @@
                   <ng-template id="slide.id" carouselSlide  >
                     <div class="item">
                       <div class="product is-gray">
-                        <div class="image d-flex align-items-center justify-content-center"><img [src]="item1.itemimage" alt="product" class="img-fluid">
+                        <div class="image d-flex align-items-center justify-content-center"><img [src]="imageBaseUrl+item1.itemimage" alt="product" class="img-fluid">
                           <div class="hover-overlay d-flex align-items-center justify-content-center">
                             <div class="CTA d-flex align-items-center justify-content-center"><a (click)="add_to_cart(item1)" class="add-to-cart"><i class="fa fa-shopping-cart"></i></a>
-                              
+
                               <a [routerLink]="['/app/home/itemdetails/',item1.itemid]" class="visit-product active">
                                 <i class="icon-search"></i>View</a>
                             </div>
@@ -225,7 +205,7 @@
                   <ng-template id="slide.id" carouselSlide  >
                     <div class="item">
                       <div class="product is-gray">
-                        <div class="image d-flex align-items-center justify-content-center"><img [src]="item2.itemimage" alt="product" class="img-fluid">
+                        <div class="image d-flex align-items-center justify-content-center"><img [src]="imageBaseUrl+item2.itemimage" alt="product" class="img-fluid">
                           <div class="hover-overlay d-flex align-items-center justify-content-center">
                             <div class="CTA d-flex align-items-center justify-content-center"><a (click)="add_to_cart(item2)" class="add-to-cart"><i class="fa fa-shopping-cart"></i></a><a [routerLink]="['/app/home/itemdetails/',item2.itemid]" class="visit-product active"><i class="icon-search"></i>View</a>
                              </div>
@@ -241,10 +221,9 @@
               </owl-carousel-o>
             </div>
           </section>
-    
-    
-      
-      
+     </div>
+
+
       <!-- Overview Popup    -->
       <div id="exampleModal" tabindex="-1" role="dialog" aria-hidden="true" class="modal fade overview">
         <div role="document" class="modal-dialog">
@@ -288,5 +267,5 @@
 
       <!-- test page -->
 
-      
+
 

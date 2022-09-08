@@ -65,6 +65,8 @@ search="";
           let url='Map_Category_Specification/savemappedspecification/';
           this.allapi.PostData(url, data).subscribe(promise=> {
               if (promise.msg_flg == "Update") {
+             
+                this.form.reset();
                   this.mastercatspeclist =JSON.parse(promise.mastercatspeclist).Table;
                   this.getspecification(Number(this.additional_cat_id), 'list');
                   this.specification_id = "";

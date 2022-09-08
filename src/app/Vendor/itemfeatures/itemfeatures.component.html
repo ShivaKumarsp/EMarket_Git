@@ -26,6 +26,7 @@
                         <li class="nav-item"><a class="nav-link" [routerLink]="['/app/edititem/',itemid]">Edit Item</a></li>
                         <li class="nav-item"><a class="nav-link">Item Specification </a></li>
                         <li class="nav-item"><a class="nav-link active">Item Features</a></li>
+                        <li class="nav-item"><a class="nav-link" [routerLink]="['/app/add_image/',itemid]">Add Images</a></li>
                     </ul>
                 </div>
             </div>
@@ -35,40 +36,49 @@
                 {{item_name}}</h5>
 
                 <div class="tab-content">
-                    <div id="product_info" class="active tab-block">                       
-                        
-                            <div class="card card-body p-4">                               
+                    <div id="product_info" class="active tab-block">
+
+                            <div class="card card-body p-4">
                                 <div class="form-group" class="my-2" [formGroup]="forms">
-                                  
+
                                     <a type="button" class="btn btn-template wide next"  (click)="saveifeatures()">
                                         Save<i class="fa fa-angle-right"></i>
                                     </a>
 
+                                    <a class="btn btn-primary btn-template wide next" [routerLink]="['/app/add_image/',itemid]">
+                                        Next<i class="fa fa-angle-right"></i>
+                                    </a>
+
+
                                         <div class="NgxEditor__Wrapper" class="shadow shodow-sm" [style]="{'height':'auto'}">
-                                            <ngx-editor-menu [editor]="editor"  [style]="{'height':'auto'}"  formControlName="msg"> </ngx-editor-menu>
+
+                                            <ngx-editor-menu [editor]="editor"  [toolbar]="toolbar" [style]="{'height':'auto'}"  formControlName="msg"> </ngx-editor-menu>
+
+
+
                                             <ngx-editor
                                             [editor]="editor"
                                             [ngModel]="html"
                                             [disabled]="false"
                                             [placeholder]="'.Type here..'"
                                             formControlName="msg"
-                                            
+
                                             >
                                             </ngx-editor>
-                                       
+
                                         </div>
                                 </div>
                                 <div class="text-center py-0">
-                                                                    
-                                   
+
+
                                 </div>
-                            </div>       
-                        
+                            </div>
+
                     </div>
-                </div> 
+                </div>
             </div>
 
         </div>
     </form>
+
     </section>
-    

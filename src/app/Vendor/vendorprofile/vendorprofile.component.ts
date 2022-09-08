@@ -1,7 +1,8 @@
 import { formatDate } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import {AbstractControl, Form, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
+
 import { AllapiService } from 'src/app/apiservice/allapi.service';
 import Swal from 'sweetalert2';
 
@@ -11,13 +12,15 @@ import Swal from 'sweetalert2';
   styleUrls: ['./vendorprofile.component.css']
 })
 export class VendorprofileComponent implements OnInit {
-  vendorform: FormGroup;
+
   //patterns
   pincodepat="/^[1-9]{1}[0-9]{2}\s{0,1}[0-9]{3}$/"
   panpat="/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/"
   emailpat="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/"
-  phonepat="/^[6-9][0-9]{9}$/"
-
+  phonepat="/^[7-9][0-9]{10}$/"
+  base64="data:image/jpeg;base64,";
+  imageBaseUrl='http://124.153.106.183:8015/EMarket_Image';
+  validation_list:any;
   genderlist:any
   countrylist:any
   businessnamecheck=false
@@ -25,32 +28,32 @@ export class VendorprofileComponent implements OnInit {
   vendor_name=""
   vendor_email=""
   vendor_mobile=""
-
+  vendor_mobile123="";
   vendor_dob="";
-  mg_id:any
-
+  mg_id="";
   vendor_panno=""
   vendor_city:any
-  vendor_state_id:any
-  vendor_country_id:any
+  vendor_state_id="";
+  vendor_country_id="";
   vendor_pincode=""
   permanentAddress=""
   business_termscondiction:boolean=false;
   btermscondiction:boolean=false;
   vendor_gst_available:any
-  business_state_id:any
-  business_country_id:any
+  business_state_id=""
+  business_country_id=""
   business_address=""
   business_pincode=""
   vendor_businessname=""
-  business_type:any
+  business_type=""
   legal_name=""
   registration_no=""
   business_pan_no=""
   vendor_image=""
   statelist:any
-  gstshow=false
   statelist1:any
+  gstshow=false
+
   format = 'yyyy-MM-dd';
   locale = 'en-US';
   businesstypelist:any
@@ -67,55 +70,104 @@ export class VendorprofileComponent implements OnInit {
   constructor(private httpClient: HttpClient,
     private http: HttpClient,
     private formBuilder: FormBuilder,
-    private allapi: AllapiService,) { 
-      this.vendorform = formBuilder.group({
-        name: new FormControl('', [Validators.required]),
-        phonenumber: new FormControl('', [Validators.required, Validators.minLength(10)]),
-        email: new FormControl('', [Validators.required,Validators.email]),
-        v_country: new FormControl('', [Validators.required]),
-        new_dob1:new FormControl('',[Validators.required]),
-        state: new FormControl('', [Validators.required]),
-        cname: new FormControl('', [Validators.required]),
-        panno: new FormControl(''),
-        gender: new FormControl('', [Validators.required]),
-        profile: new FormControl('', [Validators.required]),
-        paddress: new FormControl('', [Validators.required]),
-        vpincode: new FormControl('', [Validators.required]),
-        businessname: new FormControl('', [Validators.required]),       
-        bcountry: new FormControl('', [Validators.required]),
-        bstate: new FormControl('', [Validators.required]),
-        baddress: new FormControl('', [Validators.required]),
-        bpincode: new FormControl('', [Validators.required]),
-        gstavail: new FormControl('', [Validators.required]),
-        gstlegalname: new FormControl('', [Validators.required]),
-        regno: new FormControl('', [Validators.required]),
-        bpanno: new FormControl(''),
-        businesstermscondiction:new FormControl(false,[Validators.required]),
-      });
-    } 
- 
+    private allapi: AllapiService,) { }
+
+  
+    vendorform = new FormGroup({
+      vname: new FormControl(''.trim(), [Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/),Validators.minLength(3),Validators.maxLength(30)]),
+      phonenumber: new FormControl('', [Validators.required,Validators.pattern("^[6-9]{1}[0-9]{9}$")]),
+      email: new FormControl('', [Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]),
+      v_country: new FormControl('', [Validators.required]),
+      new_dob1:new FormControl('',[Validators.required]),
+      v_state: new FormControl('', [Validators.required]),
+      cname: new FormControl('', [Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/),Validators.minLength(3)]),
+      panno: new FormControl(''),
+      gender: new FormControl('', [Validators.required]),
+      businessname: new FormControl('', [Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/),Validators.minLength(5),Validators.maxLength(30)]),
+      File: new FormControl(''),
+      paddress: new FormControl('', [Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/),Validators.minLength(5)]),
+      vpincode: new FormControl('', [Validators.required]),
+
+      bcountry: new FormControl('', [Validators.required]),
+      bstate: new FormControl('', [Validators.required]),
+      baddress: new FormControl('', [Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/),Validators.minLength(5)]),
+      bpincode: new FormControl('', [Validators.required]),
+      gstavail: new FormControl(null),
+      gstlegalname: new FormControl(null),
+      regno: new FormControl(''),
+          bpanno: new FormControl(''),
+      businesstermscondiction:new FormControl(false,[Validators.required]),
+      vendormobile123:new FormControl(''),
+    });
+   
+
+    keyPressAlphaNumeric(event:any) {
+      var inp = String.fromCharCode(event.keyCode);
+      // (/[a-zA-Z0-9-_ ]/.test(inp))
+      if (/[a-zA-Z-_ ]/.test(inp)) {
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+      
+    }
+    keyPressemail(event:any) {
+      var inp = String.fromCharCode(event.keyCode);
+      // (/[a-zA-Z0-9-_ ]/.test(inp))
+      if (/[a-zA-Z-_ ]/.test(inp)) {
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
+    keyPresspincode(event:any) {
+      var inp = String.fromCharCode(event.keyCode);
+      
+      if (/[0-9]/.test(inp)) {
+        return true;
+      } else {
+        event.preventDefault();
+        return false;
+      }
+    }
+   
+    keyPressSpace(event:any) {
+      if(event.target.selectionStart===0 && event.code==='Space')
+      {
+        event.preventDefault();       
+      }
+    }
+
 
     ngOnInit(): void {
-      this.min_dob=new Date();
+
+      const currentYear = new Date().getFullYear();
+      const currentmonth = new Date().getMonth();
+      const currentday = new Date().getDay();
+       this.min_dob = new Date(currentYear - 18, currentmonth, currentday);
+
       let requestFormUrl = 'Vendor_Profile/getdata/';
       this.allapi.GetDataById(requestFormUrl, 1).subscribe(promise => {
-         console.log(promise)
+         //console.log(promise)
         this.genderlist = promise.genderlist;
         this.countrylist = promise.countrylist;
-       
+
         this.businessnamecheck = false;
         if (promise.vendorprofileupdate != "") {
-  
+
             this.vendorprofileupdate = promise.vendorprofileupdate;
             this.vendor_name = this.vendorprofileupdate[0].vendorname;
             this.vendor_email = this.vendorprofileupdate[0].vendoremail;
             this.vendor_mobile = this.vendorprofileupdate[0].vendormobile;
-            this.vendor_city = this.vendorprofileupdate[0].vendorcity;           
+            this.vendor_city = this.vendorprofileupdate[0].vendorcity;
             this.vendor_panno = this.vendorprofileupdate[0].vendorpanno;
            this.vendor_image=this.vendorprofileupdate[0].vendorimage;
             this.vendor_country_id = this.vendorprofileupdate[0].vendorcountryid;
-            this.vendor_state_id = parseInt(this.vendorprofileupdate[0].vendorstateid);
-            this.mg_id = parseInt(this.vendorprofileupdate[0].mgid);
+            this.vendor_state_id = this.vendorprofileupdate[0].vendorstateid;
+          
+            this.mg_id = this.vendorprofileupdate[0].mgid;
             this.getstate_e(this.vendor_country_id);
             this.vendor_pincode = this.vendorprofileupdate[0].vendorpincode;
             this.permanentAddress = this.vendorprofileupdate[0].vendoraddress;
@@ -129,51 +181,57 @@ export class VendorprofileComponent implements OnInit {
             else {
                 this.vendor_gst_available = 0;
                 this.gstchange(0);
-            }  
-  
-            this.business_state_id = parseInt(this.vendorprofileupdate[0].businessstateid);
-             this.business_country_id = parseInt(this.vendorprofileupdate[0].businesscountryid);
-            this.getstate1_b(this.business_country_id);
+            }
+
+            this.business_state_id = this.vendorprofileupdate[0].businessstateid;
+             this.business_country_id = this.vendorprofileupdate[0].businesscountryid;
+            this.getstate1(this.business_country_id);
             this.business_address = this.vendorprofileupdate[0].businessaddress;
             this.business_pincode = this.vendorprofileupdate[0].businesspincode;
             this.vendor_businessname = this.vendorprofileupdate[0].vendorbusinessname;
-            this.business_type = this.vendorprofileupdate[0].businesstype;
+            this.business_type = this.vendorprofileupdate[0].businesstype_id;
             this.legal_name = this.vendorprofileupdate[0].legalname;
             this.registration_no = this.vendorprofileupdate[0].registrationno;
             this.business_pan_no = this.vendorprofileupdate[0].businesspanno;
             this.p_imageurl = this.vendorprofileupdate[0].vendorimage;
-  
             if (this.vendor_businessname != null && this.vendor_businessname != "") {
                 this.businessnamecheck = true;
             }
             this.vendorform.patchValue({
               new_dob1: formatDate(this.vendorprofileupdate[0].vendordob, this.format, this.locale)
               });
-       
+
         }
+        console.log(this.vendor_name)
       });
     }
 
-  getstate(e:any) {  
+  getstate(e:any) {
+
+
       var data = {
-         "country_id": parseInt(e.target.value),
-          "language_id": 1,
-      }     
-      let url='Vendor_Profile/getstate/';
-      this.allapi.PostData(url,data).subscribe(promise => {  
-          this.statelist = promise.statelist;  
+         "country_id": parseInt(e),
+         "language_id": 1,
+      }
+      //console.log(data)
+      let url='Vendor_Profile/getstate/'
+      this.allapi.PostData(url,data).subscribe(promise => {
+          this.statelist =promise.statelist
+          //console.log(this.statelist)
+
       });
   };
 
-  
-  getstate_e(ss:any) {  
+
+  getstate_e(ss:any) {
     var data = {
        "country_id": parseInt(ss),
         "language_id": 1,
-    }     
-    let url='Vendor_Profile/getstate/';
-    this.allapi.PostData(url,data).subscribe(promise => {  
-        this.statelist = promise.statelist;  
+    }
+    let url='Vendor_Profile/getstate/'
+    this.allapi.PostData(url,data).subscribe(promise => {
+        this.statelist = promise.statelist;
+console.log(this.statelist)
     });
 };
 
@@ -181,41 +239,36 @@ export class VendorprofileComponent implements OnInit {
     return this.vendorform.controls;
   }
   gstchange(ss:any) {
+    this.submitted=false;
     if (ss == 1) {
         this.gstshow = true;
-      
-        
+        this.vendorform.controls["gstlegalname"].setValidators([Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/),Validators.minLength(5)]);
+        this.vendorform.controls["gstlegalname"].updateValueAndValidity();
+        this.vendorform.controls["regno"].setValidators([Validators.required,Validators.pattern(/^(\s+\S+\s*)*(?!\s).*$/),Validators.minLength(5)]);
+        this.vendorform.controls["regno"].updateValueAndValidity();
+     
+
     }
     else {
         this.gstshow = false;
-       
-    
+        this.vendorform.controls["gstlegalname"].setValidators(null);
+        this.vendorform.controls["gstlegalname"].updateValueAndValidity();
+        this.vendorform.controls["regno"].setValidators(null);
+        this.vendorform.controls["regno"].updateValueAndValidity();
+
     }
 }
 
 getstate1(b:any) {
       var data = {
-      "country_id":  parseInt(b.target.value),
+      "country_id":  parseInt(b),
       "language_id": 1,
   }
   let url='Vendor_Profile/getstate/'
   this.allapi.PostData(url,data).subscribe(promise=> {
-    alert(promise.statelist)
       this.statelist1 = promise.statelist;
   });
 };
-
-getstate1_b(b1:any) {
-  var data = {
-    "country_id":  parseInt(b1),
-    "language_id": 1,
-}
-let url='Vendor_Profile/getstate/'
-this.allapi.PostData(url,data).subscribe(promise=> {
-    this.statelist1 = promise.statelist;
-});
-};
-
 
 SelectedFile_Array:any;
 VendorImageUpload(imageInput: any) {
@@ -229,7 +282,7 @@ VendorImageUpload(imageInput: any) {
       showConfirmButton: false,
       timer: 3000
   })
-      return; 
+      return;
   } else if (imageInput.files[0].size > 2097152) {
     Swal.fire({
       position: 'center',
@@ -253,25 +306,45 @@ VendorImageUpload(imageInput: any) {
 
   this.selectItemImageUpload = imageInput.files[0];
   formData.append("File", this.selectItemImageUpload);
-  let url = 'http://192.168.1.200:1305/api/ImageUpload/DocumentUpload';
-
-  return this.http.post('http://192.168.1.200:1305/api/ImageUpload/DocumentUpload', formData).subscribe((promise: any) => {
+  let url = 'http://localhost:1305/api/ImageUpload/Profile_Upload';
+  return this.http.post('http://localhost:1305/api/ImageUpload/Profile_Upload', formData).subscribe((promise: any) => {
     this.p_imageurl = promise.path;
-    alert(this.p_imageurl)
   })
 }
 change_checkbox()
 {
-  
+
 }
+
+
 //save
 savedata() {
-  
-  this.submitted=true;
-  if(this.vendorform.valid)
-  {
-    return
+  this.submitted=true
+
+  if(this.vendorform.value.vname.trim().length<3){
+    this.vendorform.controls['vname'].setErrors({'minlength': true})
   }
+  if(this.vendorform.value.cname.trim().length<3){
+    this.vendorform.controls['cname'].setErrors({'minlength': true})
+  }
+  if(this.vendorform.value.paddress.trim().length<5){
+    this.vendorform.controls['paddress'].setErrors({'minlength': true})
+  }
+  if(this.vendorform.value.businessname.trim().length<5){
+    this.vendorform.controls['businessname'].setErrors({'minlength': true})
+  }
+  if(this.vendorform.value.baddress.trim().length<5){
+    this.vendorform.controls['baddress'].setErrors({'minlength': true})
+  }
+  if( this.gstshow == true)
+  {
+  if(this.vendorform.value.gstlegalname.trim().length<5){
+    this.vendorform.controls['gstlegalname'].setErrors({'minlength': true})
+  }
+  if(this.vendorform.value.regno.trim().length<5){
+    this.vendorform.controls['regno'].setErrors({'minlength': true})
+  }
+}
   if(this.business_termscondiction==false)
   {
     Swal.fire({
@@ -283,6 +356,22 @@ savedata() {
   })
   return
   }
+  
+  
+  this.validation_list=[];
+  this.submitted=true;
+  if(this.vendorform.invalid)
+  {
+    Swal.fire({
+      position: 'center',
+      icon: 'warning',
+      title: 'Please Enter All Mandatory Fields',
+      showConfirmButton: false,
+      timer: 3000
+  })
+    return
+  }
+ 
   this.agree1 = false;
   if (this.agree == true) {
       this.agree1 = true;
@@ -295,13 +384,13 @@ savedata() {
       this.legal_name = "";
       this.registration_no = "";
       this.business_pan_no = "";
-      this.business_type = 0;
+      this.business_type = "";
   }
   // if (this.vendorform.$valid) {
       var data = {
           "vendor_id": this.vendor_id,
-          "vendor_name": this.vendor_name,
-          "vendor_email": this.vendor_email,
+          "vendor_name": this.vendor_name.trim(),
+          "vendor_email": this.vendor_email.trim(),
           "vendor_mobile": parseInt(this.vendor_mobile),
           "vendor_dob": this.vendorform.value.new_dob1,
           "vendor_panno": "",
@@ -309,13 +398,13 @@ savedata() {
           "vendor_state_id": parseInt(this.vendor_state_id),
           "vendor_country_id": parseInt(this.vendor_country_id),
           "mg_id": parseInt(this.mg_id),
-          "vendor_address": this.permanentAddress,
+          "vendor_address": this.permanentAddress.trim(),
           "vendor_pincode": parseInt(this.vendor_pincode),
           //"pickup_address": this.pickupAddress,
           //"pickup_pincode": parseInt(this.pickup_pincode),
-          "business_address": this.business_address,
+          "business_address": this.business_address.trim(),
           "business_pincode": parseInt(this.business_pincode),
-          "vendor_businessname": this.vendor_businessname,
+          "vendor_businessname": this.vendor_businessname.trim(),
           "business_state_id": parseInt(this.business_state_id),
           "business_country_id": parseInt(this.business_country_id),
 
@@ -323,15 +412,18 @@ savedata() {
           "business_termscondiction": this.business_termscondiction,
 
           "vendor_gst_available": this.gstvalue,
-          "legal_name": this.legal_name,
-          "registration_no": this.registration_no,
+          "legal_name": this.legal_name.trim(),
+          "registration_no": this.registration_no.trim(),
           "business_pan_no": "",
-          "business_type": parseInt(this.business_type),
+          "business_type_id": 1,
           "vendor_image": this.p_imageurl,
       }
-    //console.log(data)
+    console.log(data)
+    console.log('form',this.vendorform.value)
     let url='Vendor_Profile/UpdateProfile/'
       this.allapi.PostData(url,data).subscribe(promise=>{
+        console.log('promise')
+        console.log(promise)
           if (promise.msg_flg == "Update") {
               Swal.fire({
                   position: 'center',
@@ -350,6 +442,17 @@ savedata() {
                   timer: 3000
               })
           }
+          else if (promise.msg_flg == "Validation") {
+            Swal.fire({
+              position: 'center',
+              icon: 'warning',
+              title: 'Please Enter All Mandatory Fields',
+              showConfirmButton: false,
+              timer: 3000
+          })
+
+            this.validation_list=promise.validation_list;
+        }
           else {
               Swal.fire({
                   position: 'center',
@@ -371,4 +474,3 @@ clear()
 
 
 }
- 

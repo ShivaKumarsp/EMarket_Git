@@ -9,8 +9,9 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import * as CryptoJS from 'crypto-js';
 import { CartService } from 'src/app/AllPageService/CartService/cart.service';
 import { Guid } from 'guid-typescript';
+
 declare var window: any;
-  
+
 
 @Injectable({
   providedIn:'root'
@@ -22,35 +23,36 @@ declare var window: any;
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  AES_Encrypt(ptext:any){
-    return CryptoJS.AES.encrypt(ptext,this.salt).toString();  
-  }
-
-  AES_Decrypt(ptext:any){
-    var bytes  = CryptoJS.AES.decrypt(ptext, this.salt);
-    return  bytes.toString(CryptoJS.enc.Utf8);  
-  }
   
-  Decrypt(ptext:any){
-     let bytes= CryptoJS.AES.decrypt(ptext,this.salt);     
-     return JSON.parse(bytes.toString(CryptoJS.enc.Utf8)) 
-      }
+  // AES_Encrypt(ptext:any){
+  //   return CryptoJS.AES.encrypt(ptext,this.salt).toString();
+  // }
 
-  Hashsha256withsalt(sha256pwd:string){
-    let hash= (CryptoJS.HmacSHA256(sha256pwd,this.salt))
-    return CryptoJS.enc.Base64.stringify(hash);
-  }
-  Hashsha256(sha256pwd:string){
-    let hash= (CryptoJS.SHA256(sha256pwd))
-    return CryptoJS.enc.Base64.stringify(hash);
-  }
+  // AES_Decrypt(ptext:any){
+  //   var bytes  = CryptoJS.AES.decrypt(ptext, this.salt);
+  //   return  bytes.toString(CryptoJS.enc.Utf8);
+  // }
+
+  // Decrypt(ptext:any){
+  //    let bytes= CryptoJS.AES.decrypt(ptext,this.salt);
+  //    return JSON.parse(bytes.toString(CryptoJS.enc.Utf8))
+  //     }
+
+  // Hashsha256withsalt(sha256pwd:string){
+  //   let hash= (CryptoJS.HmacSHA256(sha256pwd,this.salt))
+  //   return CryptoJS.enc.Base64.stringify(hash);
+  // }
+  // Hashsha256(sha256pwd:string){
+  //   let hash= (CryptoJS.SHA256(sha256pwd))
+  //   return CryptoJS.enc.Base64.stringify(hash);
+  // }
 
   MD5_Convert(plaintext:string){
     let hash= (CryptoJS.MD5(plaintext))
     return CryptoJS.enc.Base64.stringify(hash);
-  } 
+  }
 
-  constructor(  
+  constructor(
     private httpClient: HttpClient,
   private http: HttpClient,
  private router: Router,
@@ -84,6 +86,7 @@ role_v="";
 public getrole="";
 public role_get:any;
 isvendor:any;
+isvendorprofile:any;
 login_dto: any;
 public usrnme="";
 public test="";
@@ -109,32 +112,34 @@ formModels:any
 customerLogin = new FormGroup({
   name: new FormControl('', [Validators.required]),
   pass: new FormControl('',[Validators.required]),
- 
+
 });
 
 v_cart:any;
 guid:any;
 
-    ngOnInit(): void {      
-      if( Number(localStorage.getItem('roleid'))==0)
+    ngOnInit(): void {
+     
+     // this.spinner.show();
+       if( Number(localStorage.getItem('roleid'))==0)
       {
         localStorage.setItem('Role',"Public");
         this.role_v="Public";
       }
 
       this.v_cart=localStorage.getItem('v_cart');
-    if(this.v_cart==null && this.v_cart!="")
+     if(this.v_cart==null && this.v_cart!="")
     {
       this.guid= Guid.create();
       localStorage.setItem('v_cart',this.guid);
-  
+
     }
 
         let requestFormUrl = 'Account/getmodule/';
         var data={
           "roleid": Number(localStorage.getItem('roleid')),
           "userid":Number(localStorage.getItem('userid')),
-          "session_cart":localStorage.getItem('v_cart')     
+          "session_cart":localStorage.getItem('v_cart')
         }
          this.allapi.PostData(requestFormUrl,data).subscribe(response => {
          if(response.role!=null)
@@ -143,71 +148,90 @@ guid:any;
          }
         this.role=response.role;
         this.v_role=response.role;
-      
+
         localStorage.setItem('rolename',response.role);
-        localStorage.setItem('idToken', response.get_token); 
-        localStorage.setItem('isvendor', response.is_vendor);
+        localStorage.setItem('idToken', response.get_token);
+        localStorage.setItem('isvendor', response.is_vendor_doc);
+        localStorage.setItem('isvendorprofile', response.is_vendor_profile);
         this.module_list = response.getmodulelist;
         this.page_list = response.getpagelist;
         if(response.cartlist!="" && response.cartlist!=null)
         {
           this.cartcount = response.cartlist.length;
-        }       
+        }
         this.category_list=JSON.parse(response.category_list).Table;
         this.subcategory_list=JSON.parse(response.subcategory_list).Table;
         this.addcategory_list=JSON.parse(response.addcategory_list).Table;
     })
-    
+    //this.spinner.hide();
+ 
     }
 
-    logout = () => {      
-      localStorage.removeItem('v_cart');  
+    logout = () => {
+      localStorage.removeItem('v_cart');
       let logid= localStorage.getItem('log_id');
       localStorage.clear();
        let requestFormUrl = 'Account/logout/';
          this.allapi.GetDataById(requestFormUrl,logid).subscribe(response => {
-         if (response.code == 200) {     
-     
+         if (response.code == 200) {
+
           localStorage.clear();
         }
          else {
-         
+
          //this.spinner.hide();
          //this.toastr.errorToaser(response.error);
         }
       });
-          
+
       localStorage.removeItem("idToken");
       localStorage.removeItem("LoggedIn");
       localStorage.removeItem("userid");
       localStorage.removeItem("roleid");
-      
+
       window.location.reload();
       window.location.replace('');
-     
-    }  
+
+    }
   redirect_home()
   {
-    this.role_get=localStorage.getItem('rolename'); 
-    this.isvendor=localStorage.getItem('isvendor'); 
+    this.role_get=localStorage.getItem('rolename');
+    this.isvendor=localStorage.getItem('isvendor');
+    this.isvendorprofile=localStorage.getItem('isvendorprofile');
+
     if(this.role_get=="Customer")
         {
-          
+
           window.location.replace('/app/home');
         }
-        else if(this.role_get=="Vendor" && this.isvendor=="0")
+        else if(this.role=="Vendor")
         {
-          window.location.replace("/app/vendordocuments");
-        }
-        else if(this.role_get=="Vendor" && this.isvendor=="1")
-        {
-          window.location.replace("/app/vendordashboard");
+          if(this.isvendor=="0" || this.isvendorprofile=="false")
+          {
+            window.location.replace("/app/vendordocuments");
+          }
+          else if(this.role=="Vendor" && this.isvendor=="1" || this.isvendorprofile=="true")
+          {
+            window.location.replace("/app/vendordashboard");
+          }
         }
         else if(this.role_get=="SuperAdmin")
         {
           window.location.replace("/app/admindashboard");
         }
-        else 
+        else if(this.role=="Delivery"){
+
+          window.location.replace('/app/vendor_to_facilitation');
+         }
+        else if(this.role=="HubManager"){
+
+          window.location.replace('/app/hub_consignment_list');
+         }
+         else if(this.role=="FacilitationCenter"){
+
+          window.location.replace('/app/assign_item_from_vendor');
+         }
+        else
         {
           window.location.replace("/app/home");
         }
@@ -232,15 +256,17 @@ guid:any;
       }
     });
   }
- 
+
   get_addcategory(ss:any)
   {          sessionStorage.setItem('category_id', ss.mcid);
-    window.location.replace("/app/landingcategory");          
+    window.location.replace("/app/landingcategory");
   }
 
     click_login(ss: any){
-      this.isVisible=0; 
-      this.customerLogin.reset(); 
+      this.submitted = false;
+      this.customerLogin.reset();
+      this.isVisible=0;
+      this.customerLogin.reset();
         this.getrole=ss;
       localStorage.setItem('rol_name',ss.toString());
       let url='Account/set_salt/';
@@ -248,43 +274,55 @@ guid:any;
     {
       this.salt=response.entity.salt;
       this.salt_token=response.entity.salt_token;
-   
+
     })
       this.formModel = new window.bootstrap.Modal(
         document.getElementById("loginModal")
-      );    
+      );
       this.formModel.show();
       this.role=ss.toString();
     }
 
     click_login_from_landing(ss:any,slt:any,salttoken:any){
       this.customerLogin.reset();
-   
-      this.isVisible=0;     
+
+      this.isVisible=0;
       this.getrole=ss.toString();
       localStorage.setItem('slt',slt);
       localStorage.setItem('tkn',salttoken);
       localStorage.setItem('rol_name',ss.toString());
+      //this.temp1='updated'
       this.formModel = new window.bootstrap.Modal(
         document.getElementById("loginModal")
-      );    
+      );
       this.formModel.show();
       this.rl=localStorage.getItem('rol_name');
       this.role=this.rl;
       this.getrole=this.rl;
     }
 
- 
+
 
 
     showForm(ids:any){
-   
+
+      this.submitted = false;
+      this.customerLogin.reset();
+
+      this.login_otp.reset();
+
+
       this.customerregister = new FormGroup({
-        r_username: new FormControl(''),
-        r_email: new FormControl(''),
-        r_phone: new FormControl(''),
-        r_pwd: new FormControl(''),
-        r_repwd: new FormControl('')
+        r_username: new FormControl('', [Validators.required, Validators.minLength(3)]),
+        r_email: new FormControl('',[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]),
+        r_phone: new FormControl('',[Validators.required]),
+        r_pwd: new FormControl('',[Validators.required, Validators.minLength(8)]),
+        r_repwd: new FormControl('',[Validators.required]),
+        // r_username: new FormControl(''),
+        // r_email: new FormControl(''),
+        // r_phone: new FormControl(''),
+        // r_pwd: new FormControl(''),
+        // r_repwd: new FormControl('')
     });
    this.forgetotp=new FormGroup({
     f_username: new FormControl('')
@@ -292,7 +330,7 @@ guid:any;
    this.loginwithotp=new FormGroup({
     otp_username: new FormControl('')
    })
-  
+
       this.isVisible = ids;
     }
 
@@ -302,30 +340,31 @@ guid:any;
       if (this.customerLogin.invalid) {
         return;
       }
- 
+
       this.rl=localStorage.getItem('rol_name');
       this.role=this.rl;
+      console.log('userloginprocess',this.role)
     if(this.salt==""||this.salt==undefined)
     {
-     
+
       this.slt1=localStorage.getItem('slt');
       this.salt=this.slt1;
     }
     if(this.salt_token==""||this.salt_token==undefined)
     {
-      
+
       this.slttkn1=localStorage.getItem('tkn');
       this.salt_token=this.slttkn1;
     }
-     
-   
-      this.pwdd= this.MD5_Convert(this.customerLogin.value.pass);        
+
+
+      this.pwdd= this.MD5_Convert(this.customerLogin.value.pass);
       let hash= this.MD5_Convert(this.pwdd.toString()+this.salt);
       this.customerLogin.patchValue({
         pass: this.pwdd
         });
-  
-        localStorage.setItem('username',this.customerLogin.value.name); 
+
+        localStorage.setItem('username',this.customerLogin.value.name);
       var data={
         "UserName":this.customerLogin.value.name,
         "Password":hash.toString(),
@@ -335,34 +374,39 @@ guid:any;
         "apitype":"Web",
         "session_cart":localStorage.getItem('v_cart')
 
-      }   
+      }
       let requestFormUrl = 'Account/login';
          this.allapi.PostData_login(requestFormUrl,data).subscribe(response => {
-         if (response.code == 200) {  
+         if (response.code == 200) {
           localStorage.removeItem('v_salt');
-          localStorage.removeItem('v_salt_token');              
-          localStorage.setItem('idToken', response.entity.token); 
-          localStorage.setItem('log_id', response.entity.log_id); 
+          localStorage.removeItem('v_salt_token');
+          localStorage.setItem('idToken', response.entity.token);
+          localStorage.setItem('log_id', response.entity.log_id);
           localStorage.setItem('roleid', response.entity.roleid);
-          localStorage.setItem('userid', response.entity.userId); 
-          localStorage.setItem('isvendor',response.entity.is_vendor);        
+
+          localStorage.setItem('userid', response.entity.userId);
+          localStorage.setItem('isvendor',response.entity.is_vendor_doc);
+          localStorage.setItem('isvendorprofile', response.entity.is_vendor_profile);
+
           this.authService.setSecureToken(response.entity.token);
-          this.authService.setSecureRole(response.entity.role);            
-            this.role = response.entity.role;
+          this.authService.setSecureRole(response.entity.role);
+                     this.role = response.entity.role;
             this.role_v = response.entity.role;
             localStorage.setItem('rolename',response.entity.role);
+
               this.formModel = new window.bootstrap.Modal(
-            document.getElementById("loginModal") 
-                    
-          );    
+            document.getElementById("loginModal")
+
+          );
+
+
+          localStorage.removeItem('v_cart');
+          this.isvendor=localStorage.getItem('isvendor');
+          this.isvendorprofile=localStorage.getItem('isvendorprofile');
+
           this.formModel.hide();
-          localStorage.removeItem('v_cart');  
-          this.isvendor=localStorage.getItem('isvendor');  
-          // this.customerLogin = new FormGroup({     
-          //   pass: new FormControl('') 
-          // });
           if(this.role=="Customer")
-          {   
+          {
            let redirectpage= localStorage.getItem('redirect_page');
               if(redirectpage!=null)
            {
@@ -371,30 +415,43 @@ guid:any;
            else{
             window.location.replace('/app/home');
            }
-            
+
           }
-          else if(this.role=="Vendor" && this.isvendor=="0")
+
+          else if(this.role=="Vendor")
           {
-            window.location.replace("/app/vendordocuments");
+            if(this.isvendor=="0" || this.isvendorprofile=="false")
+            {
+              window.location.replace("/app/vendordocuments");
+            }
+            else if(this.role=="Vendor" && this.isvendor=="1" || this.isvendorprofile=="true")
+            {
+              window.location.replace("/app/vendordashboard");
+            }
           }
-          else if(this.role=="Vendor" && this.isvendor=="1")
-          {
-            window.location.replace("/app/vendordashboard");
-          }
+
          else if(this.role=="SuperAdmin"){
-      
+
           window.location.replace('/app/admindashboard');
          }
          else if(this.role=="Delivery"){
-      
-          window.location.replace('/app/accept_delivery');
+
+          window.location.replace('/app/vendor_to_facilitation');
          }
-  
-  
-        
+         else if(this.role=="HubManager"){
+
+          window.location.replace('/app/hub_consignment_list');
+         }
+
+         else if(this.role=="FacilitationCenter"){
+
+          window.location.replace('/app/assign_item_from_vendor');
+         }
+
+
            //this.spinner.hide();
         }
-         else { 
+         else {
           Swal.fire({
             position: 'center',
             icon: 'warning',
@@ -403,10 +460,10 @@ guid:any;
             timer: 3000
         })
         }
-  
+
         this.spinner.hide();
       });
-    } 
+    }
 
     customerRegistration(){
       this.submitted = true;
@@ -424,15 +481,17 @@ guid:any;
       })
       return;
       }
-      this.r_pwdd= this.MD5_Convert(this.customerregister.value.r_pwd);  
-      localStorage.setItem('username',this.customerregister.value.r_username); 
+      this.r_pwdd= this.MD5_Convert(this.customerregister.value.r_pwd);
+      localStorage.setItem('username',this.customerregister.value.r_username);
       var data={
         "UserName":this.customerregister.value.r_username,
         "Email":this.customerregister.value.r_email,
         "mobile":this.customerregister.value.r_phone,
         "role": localStorage.getItem('rol_name')
       }
-      let url = 'Account/CheckAvailable'; 
+      localStorage.setItem('reg_mobile',this.customerregister.value.r_phone)
+      localStorage.setItem('reg_email',this.customerregister.value.r_email)
+      let url = 'Account/CheckAvailable';
       this.allapi.PostData(url,data).subscribe(promise=>
         {
           if(promise.status=="Failed")
@@ -448,23 +507,23 @@ guid:any;
           else if(promise.status=="Success")
           {
             this.reg_otp=promise.reg_otp;
-            this.isVisible=5;
+            this.isVisible=2;
           }
-         
-        }) 
+
+        })
   }
 
   Forgot_submitotp(){
     this.submitted = true;
     if (this.forgetotp.invalid) {
       return;
-    }  
-    this.VerifyOtp = new FormGroup({     
-      vrotp: new FormControl('') 
-    });  
+    }
+    this.VerifyOtp = new FormGroup({
+      vrotp: new FormControl('')
+    });
     var data={
       "Role":localStorage.getItem('rol_name'),
-      "UserName":this.forgetotp.value.f_username 
+      "UserName":this.forgetotp.value.f_username
     }
     let url='Account/checkusername';
       this.allapi.PostData_login(url,data).subscribe(response=>
@@ -486,10 +545,10 @@ guid:any;
       })
   }
 
-  resend_otp(){ 
+  resend_otp(){
     var data={
       "Role":localStorage.getItem('rol_name'),
-      "UserName":localStorage.getItem('username'), 
+      "UserName":localStorage.getItem('username'),
     }
     let url='Account/resend_otp';
       this.allapi.PostData_login(url,data).subscribe(response=>
@@ -509,6 +568,33 @@ guid:any;
        }
       })
   }
+  resend_registration_otp(){
+    var data={
+      "Role":localStorage.getItem('rol_name'),
+      "UserName":localStorage.getItem('username'),
+      "mobile":localStorage.getItem('reg_mobile'),
+      "Email":localStorage.getItem('reg_email')
+    }
+    let url='Account/resend_registration_otp';
+      this.allapi.PostData_login(url,data).subscribe(response=>
+      {
+       if(response.status=="Success")
+       {
+        this.reg_otp=response.reg_otp;
+       }
+       else{
+        Swal.fire({
+          position: 'center',
+          icon: 'warning',
+          title:response.message,
+          showConfirmButton: false,
+          timer: 3000
+      })
+       }
+      })
+  }
+
+
   submit_registration(){
     this.submitted = true;
     if (this.VerifyOtp.invalid) {
@@ -522,22 +608,27 @@ guid:any;
       "UserName":this.customerregister.value.r_username,
       "Email":this.customerregister.value.r_email,
       "PhoneNumber":this.customerregister.value.r_phone,
-      "Password":this.r_pwdd,  
-      "apitype":"Web"  
+      "Password":this.r_pwdd,
+      "apitype":"Web"
     }
+    console.log(data)
     let url='Account/Register';
       this.allapi.PostData_login(url,data).subscribe(response=>
       {
-        if (response.code == 200) {    
+        if (response.code == 200) {
           Swal.fire({
             position: 'center',
             icon: 'success',
             title:'Registration Successfull. Please Login',
             showConfirmButton: false,
             timer: 3000
-        }) 
+        })
         this.isVisible=0;
         this.spinner.hide();
+        this.submitted = false;
+        this.customerLogin.reset();
+        localStorage.removeItem('reg_mobile');
+        localStorage.removeItem('reg_email');
      }
       })
     }
@@ -549,15 +640,15 @@ guid:any;
         title:'OTP Mismatch, Please Enter valid OTP.',
         showConfirmButton: false,
         timer: 3000
-    }) 
+    })
     }
     this.spinner.hide();
   }
 
-  forgetresend_otp(){ 
+  forgetresend_otp(){
     var data={
       "role":localStorage.getItem('rol_name'),
-      "UserName":this.forgetotp.value.f_username 
+      "UserName":this.forgetotp.value.f_username
     }
     let url='Account/resend_otp';
       this.allapi.PostData_login(url,data).subscribe(response=>
@@ -575,7 +666,7 @@ guid:any;
           timer: 3000
       })
        }
-      }) 
+      })
   }
 
   submit_forget_otp()
@@ -617,12 +708,12 @@ timer: 3000
 })
 }
 else{
-this.pwdd= this.MD5_Convert(this.enterpassword.value.f_password); 
+this.pwdd= this.MD5_Convert(this.enterpassword.value.f_password);
 var data={
 "role":localStorage.getItem('rol_name'),
 "UserName":this.forgetotp.value.f_username,
 "Password":this.pwdd,
-} 
+}
 let url='Account/changepassword';
 this.allapi.PostData_login(url,data).subscribe(promise=>
 {
@@ -650,7 +741,7 @@ this.allapi.PostData_login(url,data).subscribe(promise=>
 })
 }
 }
-get_loginwithotpt(){ 
+get_loginwithotpt(){
 
                 this.submitted=true;
                 if(this.loginwithotp.invalid)
@@ -660,7 +751,7 @@ get_loginwithotpt(){
                 localStorage.setItem('username',this.loginwithotp.value.otp_username);
                 var data={
                   "role":localStorage.getItem('rol_name'),
-                  "UserName":this.loginwithotp.value.otp_username 
+                  "UserName":this.loginwithotp.value.otp_username
                 }
                 let url='Account/resend_otp';
                   this.allapi.PostData_login(url,data).subscribe(response=>
@@ -679,11 +770,11 @@ get_loginwithotpt(){
                       timer: 3000
                   })
                    }
-                  }) 
+                  })
               }
 
         get_loginwithotp_resend(){
- 
+
                 var data={
                   "role":localStorage.getItem('rol_name'),
                   "UserName":localStorage.getItem('username')
@@ -704,10 +795,11 @@ get_loginwithotpt(){
                       timer: 3000
                   })
                    }
-                  }) 
+                  })
               }
 
-submit_loginwithotp=()=>{
+submit_loginwithotp(){
+
                 this.submitted = true;
                 if (this.login_otp.invalid) {
                   return;
@@ -724,50 +816,79 @@ submit_loginwithotp=()=>{
                 })
                 this.spinner.hide();
                 return;
-                }    
-                       
-                var data={
-                  "UserName":localStorage.getItem('username'),               
-                   "role":localStorage.getItem('rol_name')             
                 }
-               
+
+                var data={
+                  "UserName":localStorage.getItem('username'),
+                   "role":localStorage.getItem('rol_name'),
+                   "session_cart":localStorage.getItem('v_cart')
+                }
+
                 let requestFormUrl = 'Account/login_with_otp';
                    this.allapi.PostData_login(requestFormUrl,data).subscribe(response => {
-                   if (response.code == 200) {    
-                       this.customerLogin = new FormGroup({     
-                        pass: new FormControl('') 
-                      });
-                      localStorage.setItem('idToken', response.entity.token); 
-                      localStorage.setItem('log_id', response.entity.log_id); 
+                   if (response.code == 200) {
+
+                      localStorage.setItem('idToken', response.entity.token);
+                      localStorage.setItem('log_id', response.entity.log_id);
                       localStorage.setItem('roleid', response.entity.roleid);
-                      localStorage.setItem('userid', response.entity.userId);        
+                      localStorage.setItem('userid', response.entity.userId);
+                      localStorage.setItem('isvendor',response.entity.is_vendor_doc);
+                      localStorage.setItem('isvendorprofile', response.entity.is_vendor_profile);
+                      localStorage.setItem('rolename',response.entity.role);
                       this.authService.setSecureToken(response.entity.token);
-                      this.authService.setSecureRole(response.entity.role);            
-                        this.role = response.entity.role;
-                        this.role_v = response.entity.role;
-                        localStorage.setItem('rolename',response.entity.role);
-                        this.formModel = new window.bootstrap.Modal(
-                      document.getElementById("loginModal")         
-                    );    
-                    this.formModel.hide();
-            
-                    if(this.role=="Customer")
-                    {
-                     
-                      window.location.replace('/app/home');
-                    }
+                      this.authService.setSecureRole(response.entity.role);
+                      this.role = response.entity.role;
+                      this.role_v = response.entity.role;
+                      this.formModel = new window.bootstrap.Modal(
+                        document.getElementById("loginModal")
+                      );
+                      this.formModel.hide();
+                      localStorage.removeItem('v_cart');
+                      this.isvendor=localStorage.getItem('isvendor');
+                      this.isvendorprofile=localStorage.getItem('isvendorprofile');
+
+                      if(this.role=="Customer")
+                      {
+                       let redirectpage= localStorage.getItem('redirect_page');
+                          if(redirectpage!=null)
+                       {
+                        window.location.replace(redirectpage);
+                       }
+                       else{
+                        window.location.replace('/app/home');
+                       }
+
+                      }
                     else if(this.role=="Vendor")
                     {
-                  
-                      window.location.replace("/app/vendordashboard");
+                      if(this.isvendor=="0" || this.isvendorprofile=="false")
+                      {
+                        window.location.replace("/app/vendordocuments");
+                      }
+                      else if(this.role=="Vendor" && this.isvendor=="1" || this.isvendorprofile=="true")
+                      {
+                        window.location.replace("/app/vendordashboard");
+                      }
                     }
                    else if(this.role=="SuperAdmin"){
-                
+
                     window.location.replace('/app/admindashboard');
                    }
-                 
+                   else if(this.role=="Delivery"){
+
+                    window.location.replace('/app/vendor_to_facilitation');
+                   }
+                   else if(this.role=="HubManager"){
+
+                    window.location.replace('/app/hub_consignment_list');
+                   }
+                   else if(this.role=="FacilitationCenter"){
+
+                    window.location.replace('/app/assign_item_from_vendor');
+                   }
+
                   }
-                   else { 
+                   else {
                     Swal.fire({
                       position: 'center',
                       icon: 'warning',
@@ -776,20 +897,20 @@ submit_loginwithotp=()=>{
                       timer: 3000
                   })
                   }
-              
+
                 });
                 this.spinner.hide();
-              } 
+              }
 
 
-  
+
   doSomething(){
-  
+
     this.formModel.hide();
   }
 
   doSomethings(){
-  
+
     this.formModels.hide();
   }
 
@@ -797,7 +918,7 @@ submit_loginwithotp=()=>{
   openModal(){
     this.formModels = new window.bootstrap.Modal(
       document.getElementById("sModal")
-    );    
+    );
     this.formModels.show();
     //let a = prompt("Search Product")
     //window.location.replace('app/search-result/'+a)
@@ -825,12 +946,14 @@ get l(){
 get m(){
   return this.login_otp.controls;
 }
+
+
 // form group
   customerregister = new FormGroup({
     r_username: new FormControl('', [Validators.required]),
-    r_email: new FormControl('',[Validators.required]),
+    r_email: new FormControl('',[Validators.required,Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")]),
     r_phone: new FormControl('',[Validators.required]),
-    r_pwd: new FormControl('',[Validators.required]),
+    r_pwd: new FormControl('',[Validators.required, Validators.minLength(8)]),
     r_repwd: new FormControl('',[Validators.required]),
   });
   VerifyOtp = new FormGroup({
@@ -846,10 +969,10 @@ get m(){
   });
 
   loginwithotp=new FormGroup({
-    otp_username:new FormControl('',[Validators.required]) 
+    otp_username:new FormControl('',[Validators.required])
   });
   login_otp=new FormGroup({
-    login_otp_enter:new FormControl('',[Validators.required]) 
+    login_otp_enter:new FormControl('',[Validators.required])
   })
   SearchForm = new FormGroup({
     Searchstring: new FormControl('',[
@@ -857,8 +980,15 @@ get m(){
       Validators.minLength(1)]),
   });
   onSubmit(){
-    let a =this.SearchForm.value.Searchstring;
-    window.location.replace('../app/search-result/'+a)
+    let a =this.SearchForm.value.Searchstring.trim().length;
+    if(a>0){
+        let str = this.SearchForm.value.Searchstring
+        window.location.replace('../app/search-result/'+str)
+
+    }
+
+
+
   }
 
   click_add_to_cart(ss:any,aa:any)
@@ -866,7 +996,7 @@ get m(){
    alert(localStorage.getItem('Role'))
     var data = {
       "product_id": ss,
-      "item_id": aa     
+      "item_id": aa
   }
 
     let requestFormUrl = 'Landing_Item_Details/add_to_cart/';
@@ -887,7 +1017,7 @@ get m(){
         {
           this.cartcount=response.cartlist.length;
         }
-    
+
         Swal.fire({
           position: 'center',
           icon: 'success',
@@ -895,11 +1025,11 @@ get m(){
           showConfirmButton: false,
           timer: 3000
       });
-    
+
       }
-      
-    
-      
+
+
+
  });
   }
 
@@ -907,14 +1037,26 @@ get m(){
   {
    if(localStorage.getItem('Role')=="Public")
    {
-    window.location.replace('/app/public_cart'); 
+    window.location.replace('/app/public_cart');
    }
    else{
+
     window.location.replace('/app/cart');
+
    }
-   
+
 
   }
+  setCustomerText(e:any ){
+    // this.temp1=e
+    alert(e)
+  }
 
-
+  keyPressSpace(event:any) {
+    // if(event.target.selectionStart===0 && event.code==='Space')
+    if(event.code==='Space')
+    {
+      event.preventDefault();
+    }
+  }
 }

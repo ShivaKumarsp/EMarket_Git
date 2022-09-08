@@ -27,16 +27,16 @@ export class ContentmanagementComponent implements OnInit {
     detail: new FormControl('',[Validators.required]),
     bannerimage: new FormControl('',[Validators.required]),
     catid:new FormControl('',[Validators.required]),
-    url: new FormControl(''),   
-    page:new FormControl('')  
+    url: new FormControl(''),
+    page:new FormControl('')
   })
   formEditBanner= new FormGroup({
     title1_e: new FormControl('',[Validators.required]),
     detail_e: new FormControl('',[Validators.required]),
     bannerimage_e: new FormControl(''),
     catid_e:new FormControl('',[Validators.required]),
-    url_e: new FormControl(''),   
-    page_e:new FormControl('')   
+    url_e: new FormControl(''),
+    page_e:new FormControl('')
   })
   banner_list:any;
   page_list:any;
@@ -50,7 +50,8 @@ export class ContentmanagementComponent implements OnInit {
   banner_image="";
   is_active:boolean=false;
   submitted=false;
-
+base64='data:image/jpeg;base64,';
+imageBaseUrl='http://124.153.106.183:8015/EMarket_Image';
     //validation
 get f(){
   return this.formAddBanner.controls;
@@ -63,7 +64,7 @@ get g(){
     this.formModel = new window.bootstrap.Modal(
       document.getElementById("editbanners")
     );
-   
+
     let url="Banner/get_data/";
     this.allapi.GetDataById(url,1).subscribe(promise=>
       {
@@ -75,7 +76,20 @@ get g(){
   }
 
   addbanner(){
+ 
     this.submitted=true;
+    if(this.formAddBanner.value.title1.trim() ==''){
+      this.formAddBanner.controls['title1'].setErrors({'required': true})
+    }
+    if(this.formAddBanner.value.detail.trim() ==''){
+      this.formAddBanner.controls['detail'].setErrors({'required': true})
+    }
+    if(this.formAddBanner.value.title1_e.trim() ==''){
+      this.formAddBanner.controls['title1_e'].setErrors({'required': true})
+    }
+    if(this.formAddBanner.value.detail_e.trim() ==''){
+      this.formAddBanner.controls['detail_e'].setErrors({'required': true})
+    }
     if(this.formAddBanner.invalid)
     {
       return;
@@ -83,9 +97,9 @@ get g(){
     this.spinner.show();
     var data={
       "banner_id":this.banner_id,
-      "banner_title":this.banner_title,
+      "banner_title":this.banner_title.trim(),
       "banner_link":"test",
-      "banner_details":this.banner_details,
+      "banner_details":this.banner_details.trim(),
       "page_id":this.page_id,
       "add_cat_id":parseInt(this.add_cat_id),
       "banner_image":this.banner_image,
@@ -102,16 +116,13 @@ if(promise.status=="Insert")
     showConfirmButton: false,
     timer: 3000
 })
-this.banner_id=0;
-this.banner_title="";
-this.banner_link="";
-this.banner_details="";
-this.page_id=0;
-this.add_cat_id="";
-this.banner_image="";
 this.banner_list=JSON.parse(promise.banner_list).Table;
 this.page_list=JSON.parse(promise.page_list).Table;
 this.category_list=JSON.parse(promise.category_list).Table;
+this.submitted=false;
+this.formAddBanner.reset();
+this.formEditBanner.reset();
+
 }
 else if(promise.status=="Update")
 {
@@ -123,13 +134,9 @@ else if(promise.status=="Update")
     showConfirmButton: false,
     timer: 3000
 })
-this.banner_id=0;
-this.banner_title="";
-this.banner_link="";
-this.banner_details="";
-this.page_id=0;
-this.add_cat_id="";
-this.banner_image="";
+this.submitted=false;
+this.formAddBanner.reset();
+this.formEditBanner.reset();
 this.banner_list=JSON.parse(promise.banner_list).Table;
 this.page_list=JSON.parse(promise.page_list).Table;
 this.category_list=JSON.parse(promise.category_list).Table;
@@ -168,17 +175,13 @@ else if(promise.status=="Failed")
     let url="Banner/save_banner/";
  this.allapi.PostData(url, data).subscribe(promise=>{
  if(promise.status=="Update")
-{  
-this.banner_id=0;
-this.banner_title="";
-this.banner_link="";
-this.banner_details="";
-this.page_id=0;
-this.add_cat_id="";
-this.banner_image="";
-this.banner_list=JSON.parse(promise.banner_list).Table;
-this.page_list=JSON.parse(promise.page_list).Table;
-this.category_list=JSON.parse(promise.category_list).Table;
+{
+  this.submitted=false;
+  this.formAddBanner.reset();
+  this.formEditBanner.reset();
+  this.banner_list=JSON.parse(promise.banner_list).Table;
+  this.page_list=JSON.parse(promise.page_list).Table;
+  this.category_list=JSON.parse(promise.category_list).Table;
 
   Swal.fire({
     position: 'center',
@@ -204,14 +207,14 @@ else if(promise.status=="Failed")
   }
 
   edit_banner(a:any){
-    
+
     this.banner_id=a.banner_id;
     this.banner_title=a.banner_title;
     this.banner_link=a.banner_link;
     this.banner_details=a.banner_details;
     this.page_id=a.page_id;
     this.add_cat_id=a.add_cat_id;
-    this.banner_image=a.banner_image;    
+    this.banner_image=a.banner_image;
     this.formModel.show();
   }
 
@@ -233,7 +236,7 @@ else if(promise.status=="Failed")
           }
           let url="Banner/delete_banner/";
             this.allapi.PostData(url, data).subscribe(promise=> {
-  
+
                 if (promise.status == "Delete") {
                   this.banner_id=0;
  this.banner_list=JSON.parse(promise.banner_list).Table;
@@ -246,9 +249,9 @@ else if(promise.status=="Failed")
                         showConfirmButton: false,
                         timer: 3000
                     });
-  
+
                 }
-                else { 
+                else {
                     Swal.fire({
                         position: 'center',
                         icon: 'warning',
@@ -258,13 +261,13 @@ else if(promise.status=="Failed")
                     })
                 }
             })
-  
+
         }
     })
-  
+
   };
 
-  
+
 
   SelectedFile_Array:any;
 selectFileUpload(imageInput: any) {
@@ -278,7 +281,7 @@ selectFileUpload(imageInput: any) {
         showConfirmButton: false,
         timer: 3000
     })
-        return; 
+        return;
     } else if (imageInput.files[0].size > 2097152) {
       Swal.fire({
         position: 'center',
@@ -313,7 +316,7 @@ selectFileUpload1(imageInput1: any) {
         showConfirmButton: false,
         timer: 3000
     })
-        return; 
+        return;
     } else if (imageInput1.files[0].size > 2097152) {
       Swal.fire({
         position: 'center',
@@ -328,7 +331,7 @@ selectFileUpload1(imageInput1: any) {
    this.SelectedFile_Array=imageInput1.files[0];
    formData.append("File", this.SelectedFile_Array);
    console.log(formData)
-   let url='ImageUpload/DocumentUpload/';
+   let url='ImageUpload/Banner_Image_Upload/';
    this.allapi.upload_image(url,formData).subscribe(promise=>
     {
        this.banner_image=promise.path;

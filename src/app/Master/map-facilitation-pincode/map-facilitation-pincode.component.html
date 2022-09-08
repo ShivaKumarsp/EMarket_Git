@@ -1,0 +1,173 @@
+<section class="checkout">
+          <div class="container">
+              <div class="row">
+                  <div class="col-12">
+                    <ul class="nav nav-pills">
+                        <li class="nav-item"><a class="nav-link" href="/app/logistics/Managehub">Manage Hub</a></li>
+                        <li class="nav-item"><a class="nav-link" href="/app/master_facilitation">Facilitation Center</a></li>                     
+                        <li class="nav-item"><a class="nav-link active">Map Facilitation And Pincode</a></li>
+                    </ul>
+                  </div>
+              </div>
+          </div> 
+        </section>
+      
+      <section class="checkout">
+          <div class="container">
+             
+          
+                  <div class="row">
+                      
+                      <div class="col-lg-12">
+                          <div class="tab-content">
+                              <div id="product_info" class="active tab-block">
+                                  <form [formGroup]="hform"   novalidate>
+                                  <div class="row">
+                                    <div class="col-md-6">
+                            <div class="col-sm-12 col-md-12">
+                            <div class="form-group">
+                             <label class="form-label">Hub<b style="color:red">*</b></label>
+                                                      <select class="form-control" formControlName="vhub" [(ngModel)]="hub_id" (change)="get_facilitation(hub_id)" required 
+                                                      [ngClass]="{ 'is-invalid': submitted && f['vhub'].errors }">
+                                                          <option value="">-- Select Hub --</option>
+                                                          <option *ngFor="let hb of hub_list" [ngValue]="hb.hub_id">
+                                                              {{hb.hub_name}}
+                                                          </option>
+                                                      </select>
+                                                      <div *ngIf="submitted && f['vhub'].errors" class="invalid-feedback">
+                                                          <div *ngIf="f['vhub'].errors['required']">Select Hub </div> 
+                                                        </div>
+                                                  </div>
+                             </div>
+
+                            <div class="col-sm-12 col-md-12">
+                                          <div class="form-group">
+                                              <label class="form-label">Facilitaion<b style="color:red">*</b></label>
+                                              <select class="form-control" formControlName="vfacilitation" [(ngModel)]="facilitation_id" (change)="get_pincode(hub_id,facilitation_id)" required 
+                                              [ngClass]="{ 'is-invalid': submitted && f['vfacilitation'].errors }">
+                                                  <option value="">-- Select Facilitaion --</option>
+                                                  <option *ngFor="let fc of facilitation_dd" [ngValue]="fc.facilitation_id">
+                                                      {{fc.facilitation_name}}
+                                                  </option>
+                                              </select>
+                                              <div *ngIf="submitted && f['vfacilitation'].errors" class="invalid-feedback">
+                                                  <div *ngIf="f['vfacilitation'].errors['required']">Select Facilitaion </div> 
+                                                </div>
+                                          </div>
+                            </div>
+                        </div>  
+                        <div class="col-md-6">  
+                         <div class="row">
+                           
+                                      <div class="col-md-12 p-4">
+                            
+                                        <h6>Servicable Pincodes</h6>
+                                        <div class="input-group">
+                                          <!-- [ngClass]="{ 'is-invalid': submitted && f['delpin'].errors }" -->
+                                          <select class="form-select" id="dpin"  formControlName="delpin" aria-label="Example select with button addon" [(ngModel)]="pincode_id">
+                                            <option value="" >-- Select Pincode --</option>
+                                            <option *ngFor="let dpin of pincode_dd" [ngValue]="dpin.pincode_id">
+                                                {{dpin.area+" : "+ dpin.pincode}}
+                                            </option>
+                                          </select>
+                                        
+                                          <button type="button" class="btn btn-info" (click)="add_data(pincode_id)"> <i class="fa fa-plus"></i> Add</button>
+                            
+                                        </div>
+                                        <table class="table table-bordered mt-4" >
+                                          <thead>
+                                            <tr>
+                                              <th>S No</th>
+                                              <th>Pincode</th>
+                                              <th>Servicable Area</th>
+                                              <th>Action</th>
+                                            </tr>
+                                          </thead>                                        
+                                          <tbody>
+                                            <tr *ngFor="let item of pincode_array_list;index as i">
+                                              <td>{{i+1}}</td>
+                                              <td>{{item.pincode}}</td>
+                                              <td>{{item.area}}</td>
+                                              <td><button class="btn btn-sm btn-danger" (click)="remove_data(item)">Remove</button></td>
+                                            </tr>
+                                          </tbody>
+                            
+                                        </table>
+                                        </div>
+                            
+                                </div>
+                                    </div>
+                                  </div>
+                              </form>
+                                  </div>
+                          </div>
+                      </div>
+      
+                      <div class="col-lg-12 mt-4">
+                          <div class="text-center">
+                              <input type="text" [(ngModel)]="in_spin_id" hidden />                       
+                              <a type="button" class="btn btn-template wide next" >
+                                  Clear<i class="fa fa-angle-right"></i> 
+                              </a> &nbsp;
+                              <a type="button" class="btn btn-template wide next" (click)="save_map_data()">
+                                  Save<i class="fa fa-angle-right"></i>
+                              </a>
+      
+                          </div>
+                      </div>
+                  </div>
+                 
+          </div>
+          <div class="container">
+              <div class="col-lg-12">
+      
+                  <div class="tab-content">
+      
+                      <h5 class="my-4">Facilitation Pincode Map List</h5>
+                      <div class="col-md-4" style="float: right">                    
+                          <input class="form-control form-control-sm" type="text"  [(ngModel)]="search" placeholder="search here...">
+                      </div>
+                      <table class="table table-hover table-responsive-md small">
+                          <thead>
+                              <tr>
+                                  <th>SL No</th>
+                                  <th>Facilitation</th>
+                                  <th>Pincode</th>
+                                  <th>Area</th>
+                                  <!-- <th>Action</th> -->
+                              </tr>
+                          </thead>
+                          <tbody>
+                          
+                              <tr *ngFor="let pro of facilitation_pincode_list|filter:search| paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index">
+                                  <th>{{tableSize *(page-1)+i+1}}</th>
+                                  <td>{{pro.facilitation_name}}</td>
+                                  <td>{{pro.pincode}}</td>
+                                  <td>{{pro.area}}</td>
+                                 
+                                  <!-- <td>
+                                      <a class="btn btn-primary btn-sm" ><i class="fa fa-edit"></i></a> &nbsp;| &nbsp;
+                                      <a class="btn btn-danger btn-sm" ><i class="fa fa-trash"></i></a>
+                                               
+                                  </td> -->
+      
+                              </tr>
+      
+                          </tbody>
+                      </table>
+                      <div class="d-flex justify-content-center">
+                          <pagination-controls  previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+                          </pagination-controls>
+                        </div>
+                       
+      
+      
+      
+                  </div>
+              </div>
+      
+          </div>
+      
+      </section>
+      
+      

@@ -2,7 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Editor} from 'ngx-editor';
+
+
+import { Validators, Editor, Toolbar } from 'ngx-editor';
+
 import { AllapiService } from 'src/app/apiservice/allapi.service';
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
@@ -20,7 +23,16 @@ export class ItemfeaturesComponent implements OnInit, OnDestroy {
      private formBuilder: FormBuilder,
    private allapi:AllapiService,
    private activateroute:ActivatedRoute) { }
-  
+   toolbar: Toolbar = [
+    ['bold', 'italic'],
+    ['underline', 'strike'],
+    ['code', 'blockquote'],
+    ['ordered_list', 'bullet_list'],
+    [{ heading: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'] }],
+    ['link', 'image'],
+    ['text_color', 'background_color'],
+    ['align_left', 'align_center', 'align_right', 'align_justify'],
+  ];
   //declaration
  public itemname="";
  public item_title="";
@@ -40,16 +52,19 @@ export class ItemfeaturesComponent implements OnInit, OnDestroy {
  html:any = this.editData;
  editor: Editor = new Editor;
  editorConfig:any
+ 
+
+
   ngOnInit(): void {
     this.itemid=this.activateroute.snapshot.paramMap.get("itemid");
     this.editor = new Editor();
     this.editorConfig = {
       "toolbar":[
         ["link","unlink","video"],["bold"]
-        
+
       ]
     }
-    var data = {  
+    var data = {
       "language_id": 1,
       "item_id":parseInt(this.itemid)
     }
@@ -60,14 +75,14 @@ export class ItemfeaturesComponent implements OnInit, OnDestroy {
       {
         this.html = this.feature_list[0].v_description;
         this.ifid = this.feature_list[0].ifid;
-      }   
+      }
        this.item_name = promise.ret_item_name;
 
-              
-    })  
+
+    })
   }
 
-  
+
   ngOnDestroy(): void {
     this.editor.destroy();
   }
@@ -98,12 +113,12 @@ export class ItemfeaturesComponent implements OnInit, OnDestroy {
       "item_subheader": "",
       "description": this.forms.value.msg,
       "language_id": 1,
-    
+
     }
     console.log(data);
     let url = 'Vendor_Add_Item/save_itemfeatures/';
     this.allapi.PostData(url,data).subscribe(promise => {
-    
+
       if (promise.msg_flg == "Update") {
         Swal.fire({
           position: 'center',
@@ -117,7 +132,7 @@ export class ItemfeaturesComponent implements OnInit, OnDestroy {
       {
         this.html = this.feature_list[0].v_description;
         this.ifid = this.feature_list[0].ifid;
-      }   
+      }
               this.item_name = promise.item_name;
       }
       else if (promise.msg_flg == "Failed") {
@@ -138,7 +153,7 @@ export class ItemfeaturesComponent implements OnInit, OnDestroy {
           timer: 3000
         })
       }
-              
+
 
     })
   }

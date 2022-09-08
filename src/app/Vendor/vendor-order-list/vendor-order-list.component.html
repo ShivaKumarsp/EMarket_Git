@@ -1,3 +1,6 @@
+
+
+<div class="min-vh-100">
 <section class="checkout">
   <div class="container">
       <div class="row">
@@ -5,31 +8,34 @@
               <ul class="nav nav-pills">
                   <li class="nav-item"><a class="nav-link active">Order List</a></li>
                   <li class="nav-item"><a class="nav-link" href="/app/consignment">Consignment</a></li>
-                  <li class="nav-item"><a class="nav-link" href="/app/item_handover">Hand Over</a></li>
+                  <li class="nav-item"><a class="nav-link" href="/app/item_handover">Ready To Hand Over</a></li>
                   <li class="nav-item"><a class="nav-link" href="/app/item_handover_list">Hand Over List</a></li>
               </ul>
           </div>
       </div>
-  </div> 
+  </div>
 </section>
 
 
 <div class="container my-3">
     <h6>Total Orders List&nbsp; <span class="badge bg-secondary" alignment="text-left" >{{vendor_order_list.length}}</span></h6>
-    <div class="col-md-4" style="float: right">                    
+    <div class="col-md-4" style="float: right">
       <input class="form-control form-control-sm" type="text" [(ngModel)]="search" placeholder="search here...">
   </div>
-  <table class="table table-hover">
+  <!-- {{vendor_order_list[0]|json}} -->
+  <table class="table table-hover table-responsive">
            <thead>
         <tr>
           <th scope="col">SL No</th>
           <th scope="col">Order No</th>
+          <th scope="col">Order Item No</th>
           <th scope="col">Item Detail</th>
+          <th scope="col">Item SKU</th>
           <th scope="col">Quantity</th>
           <th scope="col">Order Date</th>
-          <th scope="col">Payment Method</th> 
-          <th scope="col">Payment Id</th> 
-          <th scope="col">Vendor Status</th> 
+          <th scope="col">Payment Method</th>
+          <th scope="col">Payment Id</th>
+          <th scope="col">Vendor Status</th>
           <th scope="col">Delivery Accept On</th>
           <th scope="col">Action</th>
         </tr>
@@ -38,16 +44,18 @@
         <tr *ngFor="let pro of vendor_order_list| filter:search | paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index; filter:search">
           <td>{{tableSize *(page-1)+i+1}}</td>
           <td>{{pro.order_id}}</td>
+          <td>{{pro.order_item_id}}</td>
           <td>{{pro.item_name}}</td>
+          <td>{{pro.sku}}</td>
           <td>{{pro.quantity}}</td>
           <td>{{pro.order_date|date}}</td>
           <td>{{pro.payment_method}}</td>
           <td>{{pro.transaction_id}}</td>
-          <td>{{pro.order_accept_status}}</td> 
-          <td>{{pro.delivery_accept_on|date}}</td>       
+          <td>{{pro.order_accept_status}}</td>
+          <td>{{pro.delivery_accept_on|date}}</td>
           <td><button *ngIf="pro.order_accept_status=='Pending'" type="button" class="btn btn-primary" (click)="openModal(pro)">Update</button></td>
-        </tr>  
-    </tbody>            
+        </tr>
+    </tbody>
     </table>
     <div class="d-flex justify-content-center">
       <pagination-controls
@@ -59,15 +67,10 @@
     </div>
 
   </div>
-  
-  
-  
-  
-  
-  
-  
+</div>
+
       <!-- Modal -->
-      <div class="modal fade" id="allOrderModal" tabindex="-1" aria-labelledby="exampleallOrderModal" aria-hidden="true">
+      <div class="modal fade" id="allOrderModal123" tabindex="-1" aria-labelledby="exampleallOrderModal" aria-hidden="true">
           <div class="modal-dialog">
             <div class="modal-content">
               <div class="modal-header border-0">
@@ -75,64 +78,94 @@
                 <button type="button" class="btn-close" (click)="closeModal()"></button>
               </div>
               <div class="modal-body border-0">
-       
+
                   <div class="'row">
                     <div class="col-lg-12">
                         <!-- for venfor registration -->
-    
+
                         <div class="block">
                           <div class="block-header">
                             <h5>Accept/Deny</h5>
                         </div>
                           <div class="block-body">
-      
-                            <div > 
-                            
-                              <p class="lead">Accept or Deny for delivery your Item</p>
+
+                            <div >
+
+                              <p class="lead">Accept or Deny for delivery your Item 22</p>
                               <form  [formGroup]="orderGroup">
-  
-  
                                   <div class="form-floating" >
-                                      <select class="form-select" id="floatingSelectGrid" aria-label="Floating label select example" formControlName="orderStatus" [(ngModel)]="order_accept_status" [ngClass]="{ 'is-invalid': submitted && f['orderStatus'].errors }">
-                                          <option selected>Select Status</option>
+                                      <select class="form-select" id="floatingSelectGrid" aria-label="Floating label select example" formControlName="orderStatus"  [(ngModel)]="order_accept_status"  (change)="change_data(order_accept_status)" [ngClass]="{ 'is-invalid': submitted && f['orderStatus'].errors }">
+                                          <option value="">--Select--</option>
                                         <option value="Accept">Accept</option>
                                         <option value="Reject">Reject</option>
                                        </select>
                                        <div *ngIf="submitted && f['orderStatus'].errors" class="invalid-feedback">
-                                        <div *ngIf="f['orderStatus'].errors['required']">Select Status</div> 
+                                        <div *ngIf="f['orderStatus'].errors['required']">Select Status</div>
                                       </div>
-
                                       <label for="floatingSelectGrid">Update Status</label>
                                     </div>
-                                
+
                                   <div class="mb-3" >
                                     <label for="orderstatusremark" class="form-label"><b>Comments</b></label>
                                     <div class="form-floating" >
-                                      <textarea class="form-control" placeholder="Leave a comment here"  formControlName="orderRemark" id="floatingTextarea2" style="height: 100px" [(ngModel)]="order_accept_comment" [ngClass]="{ 'is-invalid': submitted && f['orderRemark'].errors }"></textarea>
+                                      <textarea class="form-control" placeholder="Leave a comment here"  formControlName="orderRemark" (keypress)="keyPressSpace($event)"  id="floatingTextarea2" style="height: 100px" [(ngModel)]="order_accept_comment" [ngClass]="{ 'is-invalid': submitted && f['orderRemark'].errors }"></textarea>
                                       <div *ngIf="submitted && f['orderRemark'].errors" class="invalid-feedback">
-                                        <div *ngIf="f['orderRemark'].errors['required']">Enter Remark</div> 
+                                        <div *ngIf="f['orderRemark'].errors['required']">Enter Remark</div>
+                                        <div *ngIf="f['orderRemark'].errors && f['orderRemark'].errors['pattern']">Enter Remark</div>
+                                        <div *ngIf="f['orderRemark'].errors && f['orderRemark'].errors['minlength']">Min Character 5</div>
                                       </div>
                                       <label for="orderstatusremark">Type Here..</label>
                                     </div>
                                   </div>
-                              
+                                  <div class="mb-3" *ngIf="i_show==true">
+                                   Length(cm): <input formControlName="v_item_l" class="form-control" type="text" placeholder="Length in cm" (keypress)="keyPressSpace($event)"  [(ngModel)]="item_l" pattern="^[1-9][0-9]*$" oninput="if(!this.value.match('^[1-9][0-9]*$'))this.value='';" [ngClass]="{ 'is-invalid': submitted && f['v_item_l'].errors }">
+                                   <div *ngIf="submitted && f['v_item_l'].errors" class="invalid-feedback">
+                                    <div *ngIf="f['v_item_l'].errors['required']">Enter Length</div>
+                                  </div>
+                                  </div>
+                                  <div class="mb-3" *ngIf="i_show==true">
+                                    Width(cm): <input formControlName="v_item_b" class="form-control" type="text" placeholder="Width in cm" (keypress)="keyPressSpace($event)"  [(ngModel)]="item_b" pattern="^[1-9][0-9]*$" oninput="if(!this.value.match('^[1-9][0-9]*$'))this.value='';" [ngClass]="{ 'is-invalid': submitted && f['v_item_b'].errors }">
+                                    <div *ngIf="submitted && f['v_item_b'].errors" class="invalid-feedback">
+                                      <div *ngIf="f['v_item_b'].errors['required']">Enter Width</div>
+                                    </div>
+                                   </div>
+                                   <div class="mb-3" *ngIf="i_show==true">
+                                    Height(cm): <input formControlName="v_item_h" class="form-control" type="text" placeholder="Height in cm" [(ngModel)]="item_h" pattern="^[1-9][0-9]*$" oninput="if(!this.value.match('^[1-9][0-9]*$'))this.value='';" [ngClass]="{ 'is-invalid': submitted && f['v_item_h'].errors }">
+                                    <div *ngIf="submitted && f['v_item_h'].errors" class="invalid-feedback">
+                                      <div *ngIf="f['v_item_h'].errors['required']">Enter Height</div>
+                                    </div>
+                                   </div>
+                                   <div class="mb-3" *ngIf="i_show==true">
+                                    <!-- pattern="^[0-9][0-9]{3}*$" -->
+                                    Weight(kg): <input formControlName="v_item_w" class="form-control" type="text" placeholder="Weight in kg" [(ngModel)]="item_w" pattern="^[0-9]\d*(\.\d+)?$"  (keypress)="keyPressnumber($event)" (keypress)="keyPressSpace($event)"  [ngClass]="{ 'is-invalid': submitted && f['v_item_w'].errors }">
+                                    <div *ngIf="submitted && f['v_item_w'].errors" class="invalid-feedback">
+                                      <div *ngIf="f['v_item_w'].errors['required']">Enter Weight</div>
+                                      <div *ngIf="f['v_item_w'].errors && f['v_item_w'].errors['pattern']">Weight should not be zero or invalid pattern!</div>
+                                    </div>
+                                   </div>
+
                                 <div class="d-flex justify-content-end">
                                   <button type="submit"   class="btn btn-primary m-2" (click)="update_order()"><i class="fa fa-sign-in"></i> Update</button>
-                                  
+
                                 </div>
                               </form>
-      
+
                             </div>
                           </div>
                         </div>
-  
-    
+
+
                     </div>
                   </div>
-              
+
               </div>
-              
+
             </div>
           </div>
+
+          <div class="row mt-2" *ngFor="let valid of validation_list">
+            <div class="col-md-9" style="color:red">{{valid}}</div>
+          </div>
+
+          <!-- </div> -->
         </div>
-    

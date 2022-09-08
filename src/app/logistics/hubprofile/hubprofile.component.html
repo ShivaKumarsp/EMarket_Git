@@ -1,0 +1,176 @@
+
+<section class="checkout">
+  <div class="container">
+      <div class="row">
+          <div class="col-12">
+            <ul class="nav nav-pills">
+              <li class="nav-item"><a class="nav-link active " >Manage Hub</a></li>
+              <li class="nav-item"><a class="nav-link " href="/app/master_facilitation">Facilitation Center</a></li>
+              <li class="nav-item"><a class="nav-link" href="/app/map_facilitation_pincode">Map Facilitation And Pincode</a></li>
+          </ul>
+             
+          </div>
+      </div>
+  </div> 
+</section>
+
+<div class="container min-vh-100">
+
+  <form [formGroup]="hform" >
+<br>
+    <div class="row" *ngIf="showadd==true">
+     
+            <div class="col-md-4"> 
+               <h3>Manage Hub</h3> </div>    
+                 
+             <div class="col-md-4"></div>   
+              <div class="col-md-4 text-end"> <button class="btn btn-sm btn-primary"
+                       (click)="showlist()">All Hub</button></div>     
+         </div>
+     
+        <div class="row " *ngIf="showadd==true">
+          
+            <div class="col-md-6">
+              <label for="hname" class="form-label">Hub Name<b style="color:red">*</b></label>
+              <input type="text" class="form-control" formControlName="hname"  [(ngModel)]="hub_name" placeholder="Enter Hub Name" (keypress)="keyPressSpace($event)" [ngClass]="{ 'is-invalid': submitted && f['hname'].errors }" required>
+              <div *ngIf="submitted && f['hname'].errors" class="invalid-feedback">
+                <div *ngIf="f['hname'].errors['required']">Please Enter Hub Name</div>
+                <div *ngIf="f['hname'].errors && f['hname'].errors['pattern']">Hub Name is Invalid</div>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <label for="email" class="form-label">Email address<b style="color:red">*</b></label>
+              <input type="email" class="form-control" formControlName="email"  [(ngModel)]="email" placeholder="name@example.com" (keypress)="keyPressSpace1($event)" [ngClass]="{ 'is-invalid': submitted && f['email'].errors }" required>
+              <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+                <div *ngIf="f['email'].errors['required']">Please Enter Hub Email</div>
+                <div *ngIf="f['email'].errors && f['email'].errors['pattern']">Hub Email is Invalid</div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label  class="form-label">Contact Number<b style="color:red">*</b></label>
+              <input type="text" class="form-control" formControlName="contact" [(ngModel)]="contact_no"  placeholder="Enter contact no" pattern="^[6-9][0-9]*$" oninput="if(!this.value.match('^[6-9][0-9]*$'))this.value='';"  minlength="10" maxlength="10" (keypress)="keyPressSpace1($event)"[ngClass]="{ 'is-invalid': submitted && f['contact'].errors }" required>
+              <div *ngIf="submitted && f['contact'].errors" class="invalid-feedback">
+                <div *ngIf="f['contact'].errors['required']">Please Enter Hub Contact</div>
+              
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label for="Address" class="form-label">Address<b style="color:red">*</b></label>
+              <textarea class="form-control" formControlName="Address"  [(ngModel)]="address"  rows="3" [ngClass]="{ 'is-invalid': submitted && f['Address'].errors }" (keypress)="keyPressSpace($event)" required></textarea>
+              <div *ngIf="submitted && f['Address'].errors" class="invalid-feedback">
+                <div *ngIf="f['Address'].errors['required']">Please Enter Hub Address</div>
+              </div>
+            </div>
+            <div class="col-md-6" >
+              <label  class="form-label">Country<b style="color:red">*</b></label>
+               <select class="form-control"  formControlName="hcountry" [(ngModel)]="country_id" (change)="get_state(country_id)" [ngClass]="{ 'is-invalid': submitted && f['hcountry'].errors }">
+                <option value="" >-- Select Country --</option>
+                <option *ngFor="let cou of country_list" [ngValue]="cou.countryid">
+                    {{cou.countryname}}
+                </option>
+            </select>
+            <div *ngIf="submitted && f['hcountry'].errors" class="invalid-feedback">
+              <div *ngIf="f['hcountry'].errors['required']">Select Country</div>
+            </div>
+            </div>
+            <div class="col-md-6">
+              <label for="hstate" class="form-label">Hub State<b style="color:red">*</b></label>
+                <select class="form-control" id="hstate"  [(ngModel)]="state_id"  formControlName="hstate" (change)="get_city(country_id,state_id)" [ngClass]="{ 'is-invalid': submitted && f['hstate'].errors }" required>
+                <option value="" >-- Select State --</option>
+                <option *ngFor="let state of state_list" [ngValue]="state.stateid">
+                    {{state.statename}}
+                </option>
+                </select>
+                <div *ngIf="submitted && f['hstate'].errors" class="invalid-feedback">
+                  <div *ngIf="f['hstate'].errors['required']">Select state</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+              <label  class="form-label">Hub City<b style="color:red">*</b></label>
+              <select class="form-control" [(ngModel)]="city_id"  formControlName="hcity" id="hcity"  [ngClass]="{ 'is-invalid': submitted && f['hcity'].errors }" required>
+                <option value="" >-- Select City --</option>
+                <option *ngFor="let city of city_list" [ngValue]="city.city_id">
+                    {{city.city_name}}
+                </option>
+                </select>
+                <div *ngIf="submitted && f['hcity'].errors" class="invalid-feedback">
+                  <div *ngIf="f['hcity'].errors['required']">Select city</div>
+                </div>
+            </div>
+            <div class="col-md-6">
+              <label  class="form-label">Pincode<b style="color:red">*</b></label>
+             <input type="text" class="form-control" [(ngModel)]="pincode"  formControlName="hpin" pattern="^[1-9][0-9]*$" oninput="if(!this.value.match('^[1-9][0-9]*$'))this.value='';"  minlength="6" maxlength="6" (keypress)="keyPressSpace1($event)" placeholder="Enter Pincode" [ngClass]="{ 'is-invalid': submitted && f['hpin'].errors }" required>
+             <div *ngIf="submitted && f['hpin'].errors" class="invalid-feedback">
+              <div *ngIf="f['hpin'].errors['required']">Enter Pincode</div>
+              <div *ngIf="f['hpin'].errors && f['hpin'].errors['pattern']">Please Enter valid Pincode</div>
+            </div>
+            </div>
+
+      
+
+          
+    <div class="text-center my-4" *ngIf="showadd==true">
+      <input type="text" [(ngModel)]="hub_id" hidden>
+      <button type="button" class="btn  btn-template bg-warning" (click)="clear()" >Clear</button>
+      &nbsp;
+      <button type="button" class="btn  btn-template bg-primary" (click)="save_data()">Save</button>
+     
+     
+    </div>
+
+  </div>
+    
+  <div *ngIf="showadd==false">
+   
+<div class="row">
+
+<div class="col-md-4">  <h3>All Hub</h3> </div>    
+   
+<div class="col-md-4"></div>   
+<div class="col-md-4 text-end"> <button class="btn btn-sm btn-primary" (click)="show_add()">Add New </button></div>     
+</div>
+
+
+<table class="table table-bordered mt-4 shadow shadow-sm">
+  <thead>
+    <tr>
+      <th>S No</th>
+      <th>Pincode</th>
+      <th>Hub Name</th>
+      <th>Hub contact_no</th>
+      <th>Email</th>
+          <th>Action</th>
+  
+    </tr>
+  </thead>
+  <tbody>
+
+      <tr *ngFor="let hublist of hublist| filter:search | paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index; filter:search">
+        <td>{{tableSize *(page-1)+i+1}}</td>
+  
+      <td>{{hublist.in_pincode}}</td>
+      <td>{{hublist.in_hub_name}}</td>
+      <td>{{hublist.in_contact_no}}</td>
+      <td>{{hublist.in_email}}</td>
+       <td><button class="btn btn-sm btn-info" (click)="edit_data(hublist)">Edit</button>
+      </td>
+        </tr>
+  </tbody>
+
+
+</table>
+<div class="d-flex justify-content-center">
+    <pagination-controls
+      previousLabel="Prev"
+      nextLabel="Next"
+      (pageChange)="onTableDataChange($event)"
+    >
+    </pagination-controls>
+  </div>  
+</div>
+
+  </form>
+
+</div>
+

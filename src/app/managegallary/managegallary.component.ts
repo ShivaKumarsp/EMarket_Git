@@ -18,7 +18,7 @@ export class ManagegallaryComponent implements OnInit {
     type: new FormControl(''),
     data: new FormControl('')
   });
-  imageUrl:any=''
+  imageBaseUrl:any=''
   imageDetails:any=[]
   medialist:any
   title=""
@@ -90,7 +90,7 @@ export class ManagegallaryComponent implements OnInit {
 
 
     //location.reload();
-    this.files.reset();this.screen=0;this.imageUrl=''
+    this.files.reset();this.screen=0;this.imageBaseUrl=''
     setTimeout(()=>{this.getAll()},1000)
   }
   remove(e:any){
@@ -166,7 +166,7 @@ export class ManagegallaryComponent implements OnInit {
 
       reader.onload = (event) => {
         //console.log(event.target)
-        this.imageUrl=event.target
+        this.imageBaseUrl=event.target
         this.current_m_base64=event.target
       }
       this.screen=1
@@ -209,7 +209,7 @@ export class ManagegallaryComponent implements OnInit {
   const file: File = imageInput.files[0];
   this.selectItemImageUpload = imageInput.files[0];
   formData.append("File", this.selectItemImageUpload);
-  let url = 'http://192.168.1.200:1305/api/ImageUpload/DocumentUpload';
+  let url = 'http://localhost:1305/api/ImageUpload/DocumentUpload';
 
 
   return this.http.post(url, formData).subscribe((promise: any) => {

@@ -1,5 +1,7 @@
 
-
+<ngx-spinner  bdColor="rgba(51,51,51,0.8)"  size="medium"  color="#fff"  type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner>
 <div class="container my-3">
   <div class="d-flex justify-content-between">
     <h6>My Store</h6>
@@ -10,17 +12,17 @@
 <div class="container-fluid min-vh-100">
 
   <div class="row">
-  
+
     <div class="col-md-12">
       <hr class="d-none d-sm-block d-md-none">
       <div class="container my-3">
         <div class="col-md-2">
           <ul class="side-ui d-flex flex-wrap">
-            <li type="button" (click)="openModal()"  >Add New Store</li>        
+            <li type="button" (click)="openModal()"  >Add New Store</li>
           </ul>
-          <ul class="side-ui d-flex flex-wrap" *ngFor="let pro of vendor_store_list">           
+          <ul class="side-ui d-flex flex-wrap" *ngFor="let pro of vendor_store_list">
             <li type="button" (click)="edit_store(pro)">{{pro.store_name}}</li>
-          
+
           </ul>
         </div>
                <!-- <table class="table table-bordered" >
@@ -52,13 +54,13 @@
               <td>{{pro.pincode}}</td>
               <td><img [style]="{'max-height':'200px','max-width':'90%'}" src={{pro.store_image}} alt='' /></td>
               <td>
-                <a class="btn btn-primary btn-sm" (click)="edit_store(pro)"><i class="fa fa-edit"></i></a> 
+                <a class="btn btn-primary btn-sm" (click)="edit_store(pro)"><i class="fa fa-edit"></i></a>
                 <a hidden  class="btn btn-danger btn-sm" (click)="delete_store(pro)"><i class="fa fa-trash"></i></a>
               </td>
-            </tr>  
-                 </tbody>            
+            </tr>
+                 </tbody>
         </table>
-       
+
       </table>
       </table> -->
       </div>
@@ -73,8 +75,11 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header border-0">
-            <h5 class="modal-title" id="exampleModalLabel">
+            <h5 class="modal-title" id="exampleModalLabel" *ngIf="!edit">
               New Store
+            </h5>
+            <h5 class="modal-title" id="exampleModalLabel" *ngIf="edit">
+              Edit Store
             </h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
@@ -83,58 +88,109 @@
 
                 <form class="row g-0" [formGroup]="vendorstore">
                   <div class="col-md-12" *ngIf="store_id>0">
-                    <h6>#StoreID - {{store_id}}</h6>
+                    <!-- <h6>#StoreID - {{store_id}}</h6> -->
                   </div>
                   <div class="col-md-8 ">
                     <div>
-                      <label for="store_title" class="form-label p-0">Store Unique Name</label>
-                      <input type="text" class="form-control form-control-sm" formControlName="storename" [(ngModel)]="store_name" [ngClass]="{ 'is-invalid': submitted && f['storename'].errors }">
+                      <label for="store_title" class="form-label p-0">Store Unique Name<b style="color:red ;">*</b></label>
+                      <input type="text" class="form-control form-control-sm" formControlName="storename" [(ngModel)]="store_name" maxlength="40" oninput="if(!this.value.match('^[a-zA-Z][a-z A-Z 0-9]*$'))this.value='';"  (keypress)="keyPressSpace($event)" [ngClass]="{ 'is-invalid': submitted && f['storename'].errors }">
                       <div *ngIf="submitted && f['storename'].errors" class="invalid-feedback">
-                        <div *ngIf="f['storename'].errors['required']">Enter Unique Store Name</div> 
+                        <div *ngIf="f['storename'].errors['required']">Enter Unique Store Name</div>
+                        <div *ngIf="f['storename'].errors && f['storename'].errors['pattern']">Enter Unique Store Name</div>
+                        <div *ngIf="f['storename'].errors && f['storename'].errors['minlength']">Minimum 5 Character</div>
+                        <div *ngIf="f['storename'].errors && f['storename'].errors['maxlength']">Maximun 40 Character</div>
+                      </div>
+                    </div>
+                    <!-- mukta 30-08-2022 -->
+                    <div>
+                      <label for="Contact_Name" class="form-label p-0">Contact Name<b style="color:red ;">*</b></label>
+                      <input type="text" class="form-control form-control-sm" formControlName="contactname" [(ngModel)]="contact_name" maxlength="40" (keypress)="keyPressSpace($event)" [ngClass]="{ 'is-invalid': submitted && f['contactname'].errors }">
+                      <div *ngIf="submitted && f['contactname'].errors" class="invalid-feedback">
+                        <div *ngIf="f['contactname'].errors['required']">Enter Unique Store Name</div>
+                        <div *ngIf="f['contactname'].errors && f['contactname'].errors['pattern']">Enter Contact Name</div>
+                        <div *ngIf="f['contactname'].errors && f['contactname'].errors['minlength']">Minimum 5 Character</div>
+                        <div *ngIf="f['contactname'].errors && f['contactname'].errors['maxlength']">Maximun 40 Character</div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label for="Email" class="form-label p-0">Email<b style="color:red ;">*</b></label>
+                      <input type="text" class="form-control form-control-sm" formControlName="email" [(ngModel)]="contact_email"   [ngClass]="{ 'is-invalid': submitted && f['email'].errors }">
+                      <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+                        <div *ngIf="f['email'].errors['required']">Enter contact Email</div>
+                        <div *ngIf="f['email'].errors && f['email'].errors['pattern']">Enter valid contact Email</div>
+
+                      </div>
+                    </div>
+
+                    <div>
+                      <label for="Mobile" class="form-label p-0">Mobile<b style="color:red ;">*</b></label>
+                      <input type="tel" class="form-control form-control-sm" formControlName="mobile" [(ngModel)]="contact_primary_mobile" minlength="10" maxlength="10"  (keypress)="keyPressSpace($event)" [ngClass]="{ 'is-invalid': submitted && f['mobile'].errors }">
+                      <div *ngIf="submitted && f['mobile'].errors" class="invalid-feedback">
+                        <div *ngIf="f['mobile'].errors['required']">Enter Unique Store Name</div>
+                        <div *ngIf="f['mobile'].errors && f['mobile'].errors['pattern']">Enter Valid mobile Number!</div>
                       </div>
                     </div>
                     <div>
-                      <label for="store_name" class="form-label p-0">Store Display Name</label>
-                      <input type="text" class="form-control form-control-sm" formControlName="storetitle" [(ngModel)]="store_title" [ngClass]="{ 'is-invalid': submitted && f['storetitle'].errors }">
+                      <label for="altMobile" class="form-label p-0">Alternate Mobile<b style="color:red ;">*</b></label>
+                      <input type="tel" class="form-control form-control-sm" formControlName="altmobile" [(ngModel)]="contact_alternate_mobile" minlength="10" maxlength="10" (keypress)="keyPressSpace($event)" [ngClass]="{ 'is-invalid': submitted && f['altmobile'].errors }">
+                      <div *ngIf="submitted && f['altmobile'].errors" class="invalid-feedback">
+                        <div *ngIf="f['altmobile'].errors['required']">Enter Unique Store Name</div>
+                        <div *ngIf="f['altmobile'].errors && f['altmobile'].errors['pattern']">Enter Valid alternate mobile Number!</div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <label for="store_name" class="form-label p-0">Store Display Name<b style="color:red ;">*</b></label>
+                      <input type="text" class="form-control form-control-sm" formControlName="storetitle" [(ngModel)]="store_title" maxlength="40"   (keypress)="keyPressSpace($event)" [ngClass]="{ 'is-invalid': submitted && f['storetitle'].errors }">
                       <div *ngIf="submitted && f['storetitle'].errors" class="invalid-feedback">
-                        <div *ngIf="f['storetitle'].errors['required']">Enter Store Display Name</div> 
+                        <div *ngIf="f['storetitle'].errors['required']">Enter Store Display Name</div>
+                        <div *ngIf="f['storetitle'].errors && f['storetitle'].errors['pattern']">Enter Store Display Name</div>
+                        <div *ngIf="f['storetitle'].errors && f['storetitle'].errors['minlength']">Minimum 5 Character</div>
+                        <div *ngIf="f['storetitle'].errors && f['storetitle'].errors['maxlength']">Maximun 40 Character</div>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-4 ">
                     <div class=" text-end mb-4">
-                     
+
                       <label class="form-label shadow shadow-sm text-white badge bg-primary" type="button" for="img" >
-                        <i class="fa fa-edit"></i>Add Store Image</label>
-                      <input class="form-control form-control-sm d-none" type="file" formControlName="store_pic"  accept="image/jpeg" [(ngModel)]="store_image" (change)="selectFileUpload(imageInput)" id="img" #imageInput [ngClass]="{ 'is-invalid': submitted && f['store_pic'].errors }">
+                        <i class="fa fa-edit"></i>Add Store Image<b style="color:red ;">*</b></label>
+                      <input class="form-control form-control-sm d-none" type="file" formControlName="store_pic"   accept="image/jpeg" [(ngModel)]="store_image" (change)="selectFileUpload(imageInput)" id="img" #imageInput [ngClass]="{ 'is-invalid': submitted && f['store_pic'].errors }">
                       <div *ngIf="submitted && f['store_pic'].errors" class="invalid-feedback">
-                        <div *ngIf="f['store_pic'].errors['required']">Upload Store Image</div> 
+                        <div *ngIf="f['store_pic'].errors['required']">Upload Store Image</div>
                       </div>
                     </div>
                     <div class="overflow-hidden p-4">
-                      <img [style]="{'max-height':'200px','max-width':'90%'}" src={{store_image}} alt='' />
+                      <img [style]="{'max-height':'200px','max-width':'90%'}" src={{imageBaseUrl+store_image}} alt='' />
                     </div>
 
 
                   </div>
                   <div class="col-md-12">
-                    <label  class="form-label p-0">Store Details</label>
-                    <textarea class="form-control form-control-sm" formControlName="storedetails" rows="2" [(ngModel)]="store_details" [ngClass]="{ 'is-invalid': submitted && f['storedetails'].errors }" required></textarea>
+                    <label  class="form-label p-0">Store Details<b style="color:red ;">*</b></label>
+                    <textarea class="form-control form-control-sm" formControlName="storedetails" rows="2" [(ngModel)]="store_details" maxlength="50"   (keypress)="keyPressSpace($event)" [ngClass]="{ 'is-invalid': submitted && f['storedetails'].errors }" required></textarea>
                     <div *ngIf="submitted && f['storedetails'].errors" class="invalid-feedback">
-                      <div *ngIf="f['storedetails'].errors['required']">Enter Store Details</div> 
+                      <div *ngIf="f['storedetails'].errors['required']">Enter Store Details</div>
+                      <div *ngIf="f['storedetails'].errors && f['storedetails'].errors['pattern']">Enter Store Details</div>
+                      <div *ngIf="f['storedetails'].errors && f['storedetails'].errors['minlength']">Minimum 5 Character</div>
+                      <div *ngIf="f['storedetails'].errors && f['storedetails'].errors['maxlength']">Maximun 50 Character</div>
                     </div>
                   </div>
                   <div class="col-md-12">
-                    <label for="store_address" class="form-label p-0">Pickup Address</label>
-                    <textarea class="form-control form-control-sm" formControlName="pickupaddress" rows="1" [(ngModel)]="pickup_location" [ngClass]="{ 'is-invalid': submitted && f['pickupaddress'].errors }"></textarea>
+                    <label for="store_address" class="form-label p-0">Pickup Address<b style="color:red ;">*</b></label>
+                    <textarea class="form-control form-control-sm" formControlName="pickupaddress" rows="1" [(ngModel)]="pickup_location" maxlength="50"   (keypress)="keyPressSpace($event)" [ngClass]="{ 'is-invalid': submitted && f['pickupaddress'].errors }"></textarea>
                     <div *ngIf="submitted && f['pickupaddress'].errors" class="invalid-feedback">
-                      <div *ngIf="f['pickupaddress'].errors['required']">Enter Pickup Address</div> 
+                      <div *ngIf="f['pickupaddress'].errors['required']">Enter Pickup Address</div>
+                      <div *ngIf="f['pickupaddress'].errors && f['pickupaddress'].errors['pattern']">Enter  Pickup Address</div>
+                      <div *ngIf="f['pickupaddress'].errors && f['pickupaddress'].errors['minlength']">Minimum 5 Character</div>
+                      <div *ngIf="f['pickupaddress'].errors && f['pickupaddress'].errors['maxlength']">Maximun 50 Character</div>
                     </div>
                   </div>
 
                   <div class="col-md-4 p-1">
-                    <label for="store_state" class="form-label p-0">State</label>
-                    <select formControlName="v_state" class="form-select form-select-sm" [(ngModel)]="state_id" 
+                    <label for="store_state" class="form-label p-0">State<b style="color:red ;">*</b></label>
+                    <select formControlName="v_state" class="form-select form-select-sm" [(ngModel)]="state_id"
                     [ngClass]="{ 'is-invalid': submitted && f['v_state'].errors }">
                       <option value="">Choose...</option>
                       <option *ngFor="let state of statelist" [value]="state.stateid">
@@ -142,26 +198,32 @@
                       </option>
                     </select>
                     <div *ngIf="submitted && f['v_state'].errors" class="invalid-feedback">
-                      <div *ngIf="f['v_state'].errors['required']">Select State</div> 
+                      <div *ngIf="f['v_state'].errors['required']">Select State</div>
                     </div>
                   </div>
                   <div class="col-md-4 p-1">
-                    <label for="store_city" class="form-label p-0">City</label>
-                    <input type="text" class="form-control form-control-sm" formControlName="v_city" [(ngModel)]="city" [ngClass]="{ 'is-invalid': submitted && f['v_city'].errors }">
+                    <label for="store_city" class="form-label p-0">City<b style="color:red ;">*</b></label>
+                    <input type="text"   (keypress)="keyPressSpace($event)" class="form-control form-control-sm" formControlName="v_city" maxlength="30" [(ngModel)]="city" [ngClass]="{ 'is-invalid': submitted && f['v_city'].errors }">
                     <div *ngIf="submitted && f['v_city'].errors" class="invalid-feedback">
-                      <div *ngIf="f['v_city'].errors['required']">Enter City</div> 
+                      <div *ngIf="f['v_city'].errors['required']">Enter City</div>
+                      <div *ngIf="f['v_city'].errors && f['v_city'].errors['pattern']">Enter City</div>
+                      <div *ngIf="f['v_city'].errors && f['v_city'].errors['minlength']">Minimum 3 Character</div>
+                      <div *ngIf="f['v_city'].errors && f['v_city'].errors['maxlength']">Maximun 30 Character</div>
                     </div>
                   </div>
 
                   <div class="col-md-4 p-1">
-                    <label for="store_pincode" class="form-label p-0">Pincode</label>
-                    <input type="text" class="form-control form-control-sm" formControlName="v_pincode" [(ngModel)]="pincode" [ngClass]="{ 'is-invalid': submitted && f['v_pincode'].errors }" 
-                    onkeypress='return event.charCode >= 48 && event.charCode <= 57' minlength="6" maxlength="6">
+                    <label for="store_pincode" class="form-label p-0">Pincode<b style="color:red ;">*</b></label>
+                    <input type="text" class="form-control form-control-sm" formControlName="v_pincode" [(ngModel)]="pincode" (keypress)="keyPressSpace($event)" [ngClass]="{ 'is-invalid': submitted && f['v_pincode'].errors }"
+                    pattern="^[1-9][0-9]*$" oninput="if(!this.value.match('^[1-9][0-9]*$'))this.value='';" minlength="6" maxlength="6">
                     <div *ngIf="submitted && f['v_pincode'].errors" class="invalid-feedback">
-                      <div *ngIf="f['v_pincode'].errors['required']" >Enter Pincode</div> 
+                      <div *ngIf="f['v_pincode'].errors['required']" >Enter Pincode</div>
+
                     </div>
                   </div>
-
+                  <div class="row mt-2" *ngFor="let val of validation_list">
+                    <div class="col-md-9" style="color:red">{{val}}</div>
+                  </div>
                   <div class="col-12 text-end mt-3">
                     <input type="text" [(ngModel)]="store_id" hidden>
                     <button type="button" (click)="save_store()" class="btn btn-template bg-primary">Save</button>

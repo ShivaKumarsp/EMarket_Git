@@ -1,8 +1,8 @@
 <div class="container min-vh-100 mt-3">
           <div class="text-end p-2">
         
-            <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Show Hubs</button>
-            <button class="btn btn-sm btn-primary" type="button" (click)="export()">Get Data</button>
+            <!-- <button class="btn btn-sm btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Show Hubs</button>
+            <button class="btn btn-sm btn-primary" type="button" (click)="export()">Get Data</button> -->
           </div>
           <div class="collapse" id="collapseExample">
             <div class="table-responsive">
@@ -82,21 +82,28 @@
         
               <div class=" mb-3">
                 <label class="form-label">Travel Time<b style="color: red;">*</b></label>
-                <div class="input-group mb-3">
-        
-                  <input type="number" formControlName="travelHour"  step="1"  min="0" class="form-control form-control-sm" placeholder="Hours" [(ngModel)]="travel_time_hour">                 
-
+                <div class="input-group mb-3">        
+                  <input type="number" formControlName="travelHour"  step="1"  min="0" class="form-control form-control-sm" placeholder="Hours" [(ngModel)]="travel_time_hour"> 
                   <input type="number" formControlName="travelMinute" step="05" min="00" max="60" class="form-control form-control-sm" placeholder="Minutes" [(ngModel)]="travel_time_minute" 
                   [ngClass]="{ 'is-invalid': submitted && f['travelMinute'].errors }">
                   <div *ngIf="submitted && f['travelMinute'].errors" class="invalid-feedback">
                     <div *ngIf="f['travelMinute'].errors['required']">Enter Travel Time</div> 
-                  </div>
-                 
-                </div>
-        
-        
-        
+                  </div>                 
+                </div> 
               </div>
+          
+              <div class=" mb-3">
+                <label class="form-label">Departure Time<b style="color: red;">*</b></label>
+                <div class="input-group mb-3">                   
+                <input type="time" formControlName="departuretime" step="05" min="00" max="60" class="form-control form-control-sm" placeholder="Enter Departure Time" [(ngModel)]="departure_time" 
+                  [ngClass]="{ 'is-invalid': submitted && f['departuretime'].errors }"> 
+                  <div *ngIf="submitted && f['departuretime'].errors" class="invalid-feedback">
+                    <div *ngIf="f['departuretime'].errors['required']">Enter Departure Time</div> 
+                  </div>                 
+                </div> 
+              </div>
+              
+
               <div class="my-4 text-end">
                 <button class="btn btn-primary" (click)="saveRoute()">Save</button>
               </div>
@@ -120,6 +127,7 @@
                     <th>Transport Type</th>
                     <th>Distance</th>
                     <th>Travel Time</th>
+                    <th>Departure Time</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -132,6 +140,7 @@
                     <td>{{newRoute.transport_mode_name}}</td>
                     <td>{{newRoute.distance}}</td>
                     <td>{{newRoute.travel_time_hour}} H : {{newRoute.travel_time_minute}} Min</td>
+                    <td>{{newRoute.departure_time}}</td>
                     <td>
                     <a class="btn btn-primary btn-sm" (click)="edit_data(newRoute)"><i class="fa fa-edit"></i></a> &nbsp;| &nbsp;
                     <a class="btn btn-danger btn-sm" (click)="delete_data(newRoute)"><i class="fa fa-trash"></i></a>                                       
@@ -139,10 +148,18 @@
                   </tr>
                 </tbody>
               </table>
+              <div class="d-flex justify-content-center">
+                <pagination-controls
+                  previousLabel="Prev"
+                  nextLabel="Next"
+                  (pageChange)="onTableDataChange($event)"
+                >
+                </pagination-controls>
+              </div> 
+
             </div>
             </div>
             </div>
           </form>
         </div>
-        {{newRoutes|json}}
-        
+      

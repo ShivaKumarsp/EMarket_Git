@@ -1,0 +1,223 @@
+
+<!-- {{consignmentlist|json}} -->
+<section class="min-vh-100 checkout">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <ul class="nav nav-pills">
+            <li class="nav-item"><a  class="nav-link active" >Collected Consignment</a></li>
+            <li class="nav-item"><a  class="nav-link" href="/app/assignedbatchlist">Consigment Assigned to Pick Up</a></li>
+            <!-- <li class="nav-item"><a  class="nav-link" href="/app/hub_consignmentsfor_drop">Consigment Assigned for Drop</a></li> -->
+            <li class="nav-item"><a  class="nav-link" href="/app/hub_arrived_destination">Arrived at Destination</a></li>
+        </ul>
+        <div class="tab-content">
+          <div  class="active tab-block">
+
+
+
+
+            <div class=" my-4">
+              <div class=" mb-2 row" [formGroup]="form">
+              <!-- <p class="col-md-12">Banglore hub</p> -->
+              <div class="col-md-3">
+                <label for="fc" class="form-label">Facilitation Center</label>
+                <!-- {{facilitationcenterlist[0]|json}} -->
+                <select id="fc" class="form-select form-select-sm" formControlName="facilitationHubID" [ngClass]="{'is-invalid': submitted && f['facilitationHubID'].errors }" required>
+                  <option *ngFor="let item of facilitationcenterlist" [ngValue]="item.hubid" >
+                    {{item.pin}} {{item.hubname}}
+                  </option>
+                </select>
+                <div *ngIf="submitted && f['facilitationHubID'].errors" class="invalid-feedback">
+                  <div *ngIf="f['facilitationHubID'].errors['required']">Please Select Facilitation Center</div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label for="transport" class="form-label">Transport</label>
+                <select id="transport" class="form-select form-select-sm" formControlName="transportID" [ngClass]="{'is-invalid': submitted && f['transportID'].errors }" required>
+                  <option>--Select transportation</option>
+                        <option *ngFor="let item of locallist" [ngValue]="item.transportid">
+                          {{item.vehicle_registrationno}} {{item.transportorname}}|{{item.vehicletype}}
+                        </option>
+                </select>
+                <div *ngIf="submitted && f['transportID'].errors" class="invalid-feedback">
+                  <div *ngIf="f['transportID'].errors['required']">Please Select Transportation</div>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <label for="sDate" class="form-label">Schedule Date</label>
+                <!-- [max]="maxDate| date: 'yyyy-MM-dd'" -->
+                <input type="date" class="form-control form-control-sm" id="sDate" [min]="minDate| date: 'yyyy-MM-dd'"   formControlName="sDate" [ngClass]="{'is-invalid': submitted && f['sDate'].errors }" required>
+                <div *ngIf="submitted && f['sDate'].errors" class="invalid-feedback">
+                  <div *ngIf="f['sDate'].errors['required']">Please Select Schedule Date</div>
+                </div>
+              </div>
+              <div class="col-md-3 d-none">
+                <label for="departureTime" class="form-label">Departure Time</label>
+                <select id="departureTime" class="form-select form-select-sm" formControlName="departureTime" [ngClass]="{'is-invalid': submitted && f['departureTime'].errors }" required>
+                  <option value="1">06:30:00</option>
+                  <option value="2">18:30:00</option>
+                </select>
+                <div *ngIf="submitted && f['departureTime'].errors" class="invalid-feedback">
+                  <div *ngIf="f['departureTime'].errors['required']">Please Select Departure Time</div>
+                </div>
+              </div>
+
+              </div>
+
+            </div>
+            <!-- Drop -->
+
+            <div *ngIf="!leftTab" class="card card-body shadow shadow-sm">
+
+
+            <div class="d-flex justify-content-between">
+              <h5>List for Drop</h5>
+              <button class="btn btn-primary text-white shadow shadow-sm" (click)="leftTab=true"><i class="fa fa-arrow-circle-right" aria-hidden="true">Update Pickup List</i></button>
+            </div>
+
+            <div class="text-start">
+
+              <button class="btn btn-sm btn-primary" *ngIf="!showCheckbox" (click)="showCheckbox=!showCheckbox; " >Select Consignments</button>
+              <button class="btn btn-sm btn-primary ms-2" *ngIf="showCheckbox" (click)="newbatch=[];onLogClick()">Generate</button>
+
+            </div>
+            <div class="alert alert-warning alert-dismissible fade show mt-2" role="alert" *ngIf="newbatch.length>0">
+              <strong>{{newbatch.length}} consignments are added</strong>
+              <!-- <p>Added {{loop.length}}</p> -->
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <table class="table table-bordered my-4 p-1  shadow shadow-sm border-0">
+              <thead>
+                <tr>
+                  <th *ngIf="!showCheckbox">S No</th>
+                  <th *ngIf="showCheckbox">Select</th>
+                  <th>Consignment ID</th>
+                  <th>Consignment(l*b*h)cm</th>
+                  <th>Volume (cm<super>3</super>)</th>
+                  <th>Weight (Kg)</th>
+                  <th>Adress</th>
+                  <th>Pincode</th>
+                </tr>
+              </thead>
+              <tbody [formGroup]="form">
+                <tr  *ngFor="let consignment of consignmentlist;index as i">
+                  <td *ngIf="!showCheckbox">{{i+1}}</td>
+                  <td *ngIf="showCheckbox">
+                    <input  type="checkbox" (click)="onRowClick(consignment.consignmentid)"/>
+                  </td>
+                  <td>{{consignment.consignmentid}}</td>
+                  <td>L {{consignment.consignmentl}}<br/>B {{consignment.consignmentb}} <br/>H {{consignment.consignmenth}}</td>
+                  <td>{{consignment.consignmentl*consignment.consignmentb*consignment.consignmenth}}</td>
+                  <td>{{consignment.weightt}}</td>
+                  <td>{{consignment.address_line1}}
+                  <br/>{{consignment.address_line2}}
+                  <br/><b>Land Mark:</b>{{consignment.landmark}}
+                  </td>
+                  <td>{{consignment.pin}}</td>
+
+                </tr>
+              </tbody>
+            </table>
+            </div>
+            <div *ngIf="leftTab" class="card card-body shadow shadow-sm">
+
+
+
+            <!-- Pick up -->
+            <div class="d-flex justify-content-between">
+              <h5>List for Pickup</h5>
+              <button class="btn btn-primary text-white shadow shadow-sm" (click)="leftTab=false"><i class="fa fa-arrow-circle-right" aria-hidden="true">Update Drop List</i></button>
+            </div>
+            <div class="text-start">
+
+              <button class="btn btn-sm btn-primary" *ngIf="!showCheckbox" (click)="showCheckbox=!showCheckbox; " >Select Consignments</button>
+              <button class="btn btn-sm btn-primary ms-2" *ngIf="showCheckbox" (click)="newbatch=[];onLogClickp()">Generate</button>
+
+            </div>
+            <div class="alert alert-warning alert-dismissible fade show mt-2" role="alert" *ngIf="newbatch.length>0">
+              <strong>{{newbatch.length}} consignments are added</strong>
+              <!-- <p>Added {{loop.length}}</p> -->
+              <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <table class="table table-bordered my-4 p-1  shadow shadow-sm border-0">
+              <thead>
+                <tr>
+                  <th *ngIf="!showCheckbox">S No</th>
+                  <th *ngIf="showCheckbox">Select</th>
+                  <th>Consignment ID</th>
+                  <th>Consignment(l*b*h)cm</th>
+                  <th>Volume (cm<super>3</super>)</th>
+                  <th>Weight (Kg)</th>
+                  <th>Adress</th>
+                  <th>Pincode</th>
+                </tr>
+              </thead>
+              <tbody [formGroup]="form">
+                <tr  *ngFor="let consignment of pconsignmentlist;index as i">
+                  <td *ngIf="!showCheckbox">{{i+1}}</td>
+                  <td *ngIf="showCheckbox">
+                    <input  type="checkbox" (click)="onRowClick(consignment.consignmentid)"/>
+                  </td>
+                  <td>{{consignment.consignmentid}}</td>
+                  <td>L {{consignment.consignmentl}}<br/>B {{consignment.consignmentb}} <br/>H {{consignment.consignmenth}}</td>
+                  <td>{{consignment.consignmentl*consignment.consignmentb*consignment.consignmenth}}</td>
+                  <td>{{consignment.weightt}}</td>
+                  <td>{{consignment.address_line1}}
+                  <br/>{{consignment.address_line2}}
+                  <br/><b>Land Mark:</b>{{consignment.landmark}}
+                  </td>
+                  <td>{{consignment.pin}}</td>
+
+                </tr>
+              </tbody>
+            </table>
+            </div>
+
+
+
+
+
+
+
+
+
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+  <div *ngIf="newbatch.length>0">
+    <h5 class="my-3">Selected Batch</h5>
+    <table class="table table-bordered my-4 p-1  shadow shadow-sm border-0">
+      <thead>
+        <tr>
+
+          <th>Consignment ID</th>
+          <th>Transport</th>
+          <th>Facilitation Center</th>
+
+
+        </tr>
+      </thead>
+      <tbody [formGroup]="form">
+        <tr  *ngFor="let consignment of newbatch;index as i">
+
+          <td>{{consignment.consignmentid}}</td>
+          <td>{{this.form.value.transportID}}</td>
+          <td>{{this.form.value.facilitationHubID}}</td>
+
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+
+
+
+

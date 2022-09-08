@@ -153,9 +153,8 @@ savedata() {
           if (promise.msg_flg == "Update") {
               this.is_visible = true;
               this.mastercatspeclist = promise.mastercatspeclist;
-              this.specification_id = "";
-              this.attribute_name_id = "";
-              this.is_refiner="";
+              this.submitted=false;
+              this.form.reset();
 
               Swal.fire({
                   position: 'center',

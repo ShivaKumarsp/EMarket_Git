@@ -23,14 +23,14 @@ export class EditProductComponent implements OnInit {
     sub_cat:new FormControl('',[Validators.required]),
     add_cat:new FormControl('',[Validators.required]),
     producttype: new FormControl('',[Validators.required]),
-    productname_en: new FormControl('',[Validators.required]),
+    productname_en: new FormControl('',[Validators.required,Validators.pattern("^[a-zA-Z0-9_ ]*$")]),
     baseprice:new FormControl('',[Validators.required]),
     hsn:new FormControl('',[Validators.required]),
     ian: new FormControl('', [Validators.required]),
     uom:new FormControl('',[Validators.required]),
     bommm: new FormControl('', [Validators.required]),
     short_desc_en: new FormControl('',[Validators.required]),
-    itemimage: new FormControl('',[Validators.required]), 
+    itemimage: new FormControl('',[Validators.required]),
 
   }); }}
   validation_list:any;
@@ -65,7 +65,8 @@ export class EditProductComponent implements OnInit {
   ipAddress="";
  btn_dissable:boolean=false;
  productid:any;
- 
+ base64='data:image/jpeg;base64,';
+ imageBaseUrl='http://124.153.106.183:8015/EMarket_Image';
   ngOnInit(): void {
     this.productid=this.activateroute.snapshot.paramMap.get("productid");
 
@@ -92,7 +93,7 @@ export class EditProductComponent implements OnInit {
           this.uom_size_list.push(ss);
       }
       })
-     
+
 
       this.product_id = promise.single_product_list[0].productid;
       this.cat_id = promise.single_product_list[0].categoryid;
@@ -112,8 +113,8 @@ export class EditProductComponent implements OnInit {
       this.self_manufacturer = promise.single_product_list[0].selfmanufacturer;
       this.is_perishable = promise.single_product_list[0].isperishable;
       this.short_description = promise.single_product_list[0].shortdescription;
-      this.p_imageurl = promise.single_product_list[0].imagepath;    
-      //$('#productimg').attr('src', this.p_imageurl);      
+      this.p_imageurl = promise.single_product_list[0].imagepath;
+      //$('#productimg').attr('src', this.p_imageurl);
   });
   }
 
@@ -140,7 +141,7 @@ get_spl_category(mcid:any, mscid:any) {
       "ipAddress":this.ipAddress,
       "apitype":"Web"
   }
- 
+
   let requestFormUrl = 'AddProduct/get_spl_category/';
     this.allapi.PostData(requestFormUrl,data).subscribe(response =>  {
       if (response.msg_flg == "Failed") {
@@ -188,8 +189,8 @@ if (imageInput.files[0].type != "image/jpeg") {
     {
       this.SelectedFile_Array=imageInput.files[0];
       formData.append("File", this.SelectedFile_Array);
-      let url='ImageUpload/DocumentUpload/';
-      return this.http.post('http://192.168.1.200:1305/api/ImageUpload/DocumentUpload', formData).subscribe((promise:any)=>
+      let url='ImageUpload/Product_Image_Upload/';
+      return this.http.post('http://localhost:1305/api/ImageUpload/Product_Image_Upload', formData).subscribe((promise:any)=>
       {
        this.p_imageurl=promise.path;
       });
@@ -198,6 +199,19 @@ if (imageInput.files[0].type != "image/jpeg") {
 
 savedata  () {
   this.btn_dissable=false;
+  if(this.form.value.productname_en.trim() ==''){
+    this.form.controls['productname_en'].setErrors({'required': true})
+    return ;
+  }
+  if(this.form.value.short_desc_en.trim() ==''){
+    this.form.controls['short_desc_en'].setErrors({'required': true})
+    return;
+  }
+  if(this.form.value.baseprice.length < 8){
+    this.form.controls['baseprice'].setErrors({'required': true})
+    return;
+  }
+
     var data = {
         "product_id": this.product_id,
         "category_id": parseInt(this.cat_id),
@@ -226,7 +240,7 @@ savedata  () {
         "ipAddress":this.ipAddress,
         "apitype":"Web"
     }
-    
+
 let url='All_Product/Update_Product/'
     this.allapi.PostData(url, data).subscribe(promise=> {
         if (promise.status == "Update") {
@@ -237,10 +251,10 @@ let url='All_Product/Update_Product/'
                 showConfirmButton: false,
                 timer: 3000
             })
-           
-            
+
+
             this.router.navigate(["/app/addproductspecification/"+promise.ret_product_id]);
-           
+
             //window.location.reload();
         }
         else if (promise.status == "Failed") {
@@ -267,6 +281,10 @@ let url='All_Product/Update_Product/'
 
         this.btn_dissable=true;
     })
+
+};
+go_next  () {
+  this.router.navigate(["/app/addproductspecification/"+this.product_id]);
 
 };
 Clear()

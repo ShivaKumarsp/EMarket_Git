@@ -1,4 +1,6 @@
-
+<ngx-spinner  bdColor="rgba(51,51,51,0.8)"  size="medium"  color="#fff"  type="ball-scale-multiple">
+  <p style="font-size: 20px; color: white">Loading...</p>
+</ngx-spinner> 
 <div class="container my-4 min-vh-100" >
 
           <form class="row g-0 m-auto card card-body p-3 border-0 shadow shadow-sm" [style]="{'max-width':'500px'}" [formGroup]="vendorbank">
@@ -18,30 +20,37 @@
             </div>
             <div class="col-md-12 mt-4">
               <div class="mb-3">
-                <label for="store_title" class="form-label p-0">Account Holder Name</label>
-                <input type="text" class="form-control form-control-sm" formControlName="accountholdername" [(ngModel)]="account_holder_name" [ngClass]="{ 'is-invalid': submitted && f['accountholdername'].errors }"  [readonly]="this.acc_dis" >
+                <label for="store_title" class="form-label p-0">Account Holder Name<b style="color: red;">*</b></label>
+                <input type="text" class="form-control form-control-sm" formControlName="accountholdername" [(ngModel)]="account_holder_name" oninput="if(!this.value.match('^[a-zA-Z][a-z A-Z 0-9]*$'))this.value='';"  (keypress)="keyPressSpace($event)" [ngClass]="{ 'is-invalid': submitted && f['accountholdername'].errors }"  [readonly]="this.acc_dis" >
                 <div *ngIf="submitted && f['accountholdername'].errors" class="invalid-feedback">
                     <div *ngIf="f['accountholdername'].errors['required']">Enter Account Holder Name</div> 
+                    <div *ngIf="f['accountholdername'].errors && f['accountholdername'].errors['pattern']">Enter Account Holder Name</div> 
+                    <div *ngIf="f['accountholdername'].errors && f['accountholdername'].errors['minlength']">Minimum Character 5</div>
                   </div>
               </div>
   
               <div class="row mb-3">
                 <div class="col-md-6 mb-3">
-                  <label for="store_title" class="form-label p-0">Bank Account No</label>
-                  <input type="text" class="form-control form-control-sm" formControlName="bankaccount" [(ngModel)]="bank_account" [ngClass]="{ 'is-invalid': submitted && f['bankaccount'].errors }" [readonly]="this.acc_dis">
+                  <label for="store_title" class="form-label p-0">Bank Account No<b style="color: red;">*</b></label>
+                  <input type="text"  pattern="^[0-9][0-9]*$" oninput="if(!this.value.match('^[0-9][0-9]*$'))this.value='';" class="form-control form-control-sm" formControlName="bankaccount" [(ngModel)]="bank_account" [ngClass]="{ 'is-invalid': submitted && f['bankaccount'].errors }" [readonly]="this.acc_dis">
                   <div *ngIf="submitted && f['bankaccount'].errors" class="invalid-feedback">
                     <div *ngIf="f['bankaccount'].errors['required']">Enter Bank Account No</div> 
+                    <div *ngIf="f['bankaccount'].errors && f['bankaccount'].errors['pattern']">Enter Bank Account No</div> 
+                    <div *ngIf="f['bankaccount'].errors && f['bankaccount'].errors['minlength']">Minimum Character 5</div>
+                   
                   </div>
                 </div>
                 <div class="col-md-6  mb-3">
-                  <label for="store_name" class="form-label p-0">IFSC Code</label>
-                  <input type="text" class="form-control form-control-sm" formControlName="ifsccode" [(ngModel)]="ifsc_code" [ngClass]="{ 'is-invalid': submitted && f['ifsccode'].errors }" [readonly]="this.acc_dis">
+                  <label for="store_name" class="form-label p-0">IFSC Code<b style="color: red;">*</b></label>
+                  <input type="text" oninput="if(!this.value.match('^[a-zA-Z][a-z A-Z 0-9]*$'))this.value='';"  (keypress)="keyPressSpace($event)" maxlength="11" class="form-control form-control-sm" formControlName="ifsccode" [(ngModel)]="ifsc_code" [ngClass]="{ 'is-invalid': submitted && f['ifsccode'].errors }" [readonly]="this.acc_dis">
                   <div *ngIf="submitted && f['ifsccode'].errors" class="invalid-feedback">
                     <div *ngIf="f['ifsccode'].errors['required']">Enter IFSC Code</div> 
+                    <div *ngIf="f['ifsccode'].errors && f['ifsccode'].errors['pattern']">Enter Valid IFSC Code</div> 
+                    <div *ngIf="f['ifsccode'].errors && f['ifsccode'].errors['minlength']">Minimum Character 5</div>
                   </div>
                 </div>
                 <div class="col-md-6  mb-3">
-                  <label for="store_state" class="form-label p-0">Account Type</label>
+                  <label for="store_state" class="form-label p-0">Account Type<b style="color: red;">*</b></label>
                   <select  class="form-select form-select-sm" formControlName="accounttype" [(ngModel)]="account_type" [ngClass]="{ 'is-invalid': submitted && f['accounttype'].errors }" [disabled]="acc_dis">
                     <option value="">Choose...</option>
                     <option value="Current">Current</option>
@@ -52,16 +61,16 @@
                   </div>
                 </div>
                 <div class="col-md-6  mb-3">
-                  <label for="formFileSm" class="form-label p-0" *ngIf="this.acc_dis==false">Upload Passbook</label>
-                  <input type="file" formControlName="passbookimage"  accept="image/jpeg" [(ngModel)]="passbook_image" (change)="selectFileUpload(imageInput)" id="img" #imageInput [ngClass]="{ 'is-invalid': submitted && f['passbookimage'].errors }" *ngIf="this.acc_dis==false">
+                  <label for="formFileSm" class="form-label p-0" *ngIf="this.acc_dis==false">Upload Passbook<b style="color: red;">*</b></label>
+                  <input type="file" formControlName="passbookimage"  accept="image/jpeg" [(ngModel)]="passbook_image" (change)="selectFileUpload(imageInput)" id="img" #imageInput  *ngIf="this.acc_dis==false" [ngClass]="{ 'is-invalid': submitted && f['passbookimage'].errors }" >
                   <div *ngIf="submitted && f['passbookimage'].errors" class="invalid-feedback">
                     <div *ngIf="f['passbookimage'].errors['required']">Upload Passbook</div> 
                   </div>
                 </div>
                 <div class=" col-md-12 text-end my-3" >
                   <!-- <button class="btn btn-template bg-primary btn-sm badge">View Passbook</button> -->
-                  <div class="text-center">
-                    <img src="{{passbook_image}}" width="50%" class="my-3" />
+                  <div class="text-center" *ngIf="passbook_image!=''">
+                    <img src="{{imageBaseUrl+passbook_image}}" width="50%" class="my-3" />
                   </div>
   
                 </div>
@@ -81,7 +90,9 @@
             </div>
           </form>
   
-  
+          <div class="row mt-2" *ngFor="let val of validation_list">
+            <div class="col-md-9" style="color:red">{{val}}</div>
+        </div>
   
   </div>
   

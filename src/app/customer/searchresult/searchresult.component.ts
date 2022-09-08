@@ -21,7 +21,7 @@ export class SearchresultComponent implements OnInit {
 
    }
 
-
+   base64="data:image/jpeg;base64,";
   searchTxt:any=''
   responseSearch:any=[]
   resultlist:any
@@ -41,6 +41,7 @@ export class SearchresultComponent implements OnInit {
     console.log(data)
     let getresult='search_result/getresult/'
     this.allapi.PostData(getresult,data).subscribe(promise=>{
+      console.log(promise)
             this.resultlist=JSON.parse(promise.resultlist)
             this.resultlist.Table.forEach((x:any,y:any)=>{
               this.responseSearch.push(

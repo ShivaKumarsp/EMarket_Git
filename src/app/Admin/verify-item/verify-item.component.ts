@@ -44,7 +44,7 @@ export class VerifyItemComponent implements OnInit {
    submitted: boolean = false;
    check_durability: boolean = false;
 
-
+   base64='data:image/jpeg;base64,';
    durability_uom = "";
    durability ="";
    product_name ="";
@@ -96,6 +96,7 @@ get f(){
     this.verify_product=JSON.parse(promise.verify_product).Table;
      this.verify_item_specification=JSON.parse(promise.verify_item_specification).Table;
      this.feature_list=JSON.parse(promise.feature_list).Table;
+     console.log(this.edit_item_list)
      if(this.feature_list!="")
      {
        this.html = this.feature_list[0].v_description;      

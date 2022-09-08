@@ -12,15 +12,15 @@ import Swal from 'sweetalert2';
 })
 export class MasterSpecificationComponent implements OnInit {
 
-  
+
   constructor(private httpClient: HttpClient,
    private router: Router,
    private allapi:AllapiService,
    private formBuilder:FormBuilder)  { this.form = formBuilder.group({
-    spec_name:new FormControl('',[Validators.required]),
+    spec_name:new FormControl('',[Validators.required,Validators.pattern("^[a-zA-Z_ ]*$")]),
     spec_code:new FormControl('',[Validators.required]),
      }); }
- 
+
      page: number = 1;
      count: number = 0;
      tableSize: number = 7;
@@ -45,6 +45,10 @@ export class MasterSpecificationComponent implements OnInit {
   savedata()
   {
     this.submitted = true;
+    if(this.form.value.spec_name.trim() ==''){
+      this.form.controls['spec_name'].setErrors({'required': true})
+      return ;
+    }
     if (this.form.invalid) {
       return;
     }
@@ -61,8 +65,8 @@ export class MasterSpecificationComponent implements OnInit {
       {
         if(promise.status=="Insert")
         {
-          this.specification_name="";
-          this.specification_code="";
+          this.submitted=false;
+          this.form.reset();
           this.specification_list=promise.specification_list;
             Swal.fire({
                 position: 'center',
@@ -71,7 +75,7 @@ export class MasterSpecificationComponent implements OnInit {
                 showConfirmButton: false,
                 timer: 3000
             })
-           
+
         }
         if(promise.status=="Update")
         {
@@ -85,7 +89,7 @@ export class MasterSpecificationComponent implements OnInit {
                 showConfirmButton: false,
                 timer: 3000
             })
-           
+
         }
         if(promise.status=="Failed")
         {
@@ -127,14 +131,14 @@ this.specification_code=ss.specification_code;
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
-  
+
             var data = {
               "specification_id":ss.specification_id,
                 "language_id": 1
             }
             let url='Master_Specification/delete_specidfication/';
             this.allapi.PostData(url, data).subscribe(promise=> {
-  
+
                 if (promise.status == "Delete") {
                   this.specification_list=promise.specification_list;
                   Swal.fire({
@@ -144,7 +148,7 @@ this.specification_code=ss.specification_code;
                     showConfirmButton: false,
                     timer: 3000
                 })
-  
+
                 }
                 else if(promise.status=="Failed")
         {
@@ -157,10 +161,10 @@ this.specification_code=ss.specification_code;
         })
         }
             })
-  
+
         }
     })
-  
+
   };
 
 

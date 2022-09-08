@@ -8,7 +8,7 @@
                 <div class="col-lg-3 text-right order-1 order-lg-2">
                     <ul class="breadcrumb justify-content-lg-end">
                         <li class="breadcrumb-item"><a >Home</a></li>
-                        <li class="breadcrumb-item active">Add Item</li>
+                        <li class="breadcrumb-item active">Product Specification</li>
                     </ul>
                 </div>
             </div>
@@ -28,34 +28,35 @@
                     </ul>
                 </div>
             </div>
-            <form>
+            <form [formGroup]="product_spec">
 
                 <div class="text-end">
-                        <h6 class="my-3">{{productname}}</h6> 
+                        <h6 class="my-3">{{productname}}</h6>
                 </div>
-                
+
                 <div class="row" *ngIf="edit_product == false">
-                   
+
                  <div class="my-2 container" *ngFor="let a of additional_cat_spec_list_new|keyvalue">
 
                     <h3 class="text-primary">{{a.key}}</h3>
                     <div class="card card-body my-3 p-2" *ngFor="let b of a.value">
-                       
+
                         <div class="row">
                             <div class="col-sm-6 col-md-6">
                                 <h6>{{b.attributename}}<b style="color: red;">*</b></h6>
-                                
-                                <div *ngFor="let match of attribute_value_list_new|keyvalue">                                    
+
+                                <div *ngFor="let match of attribute_value_list_new|keyvalue">
                                         <ng-template [ngIf]="match.key == b.attributename_id" >
                                             <div class="form-floating">
-                                                <select class="form-select" aria-label="Floating label select"   (change)="changevalue($event,b.attributename_id)">
+                                                <select class="form-select" formControlName="attributeval" aria-label="Floating label select" (change)="changevalue($event,b.attributename_id)" required>
                                                 <option selected>select</option>
                                                 <option *ngFor="let matchs of match.value" value="{{matchs.attributevalue_id}}" >
-                                                    {{matchs.attributevalue}} 
+                                                    {{matchs.attributevalue}}
                                                     </option>
-                                                </select>                                               
+                                                </select>
+                                                <p class="small text-danger">{{tempError}}</p>
                                             </div>
-                                        </ng-template> 
+                                        </ng-template>
                                 </div>
                             </div>
 
@@ -63,16 +64,16 @@
                     </div>
                   </div>
                 </div>
-               
+
                 <div class="row" *ngIf="edit == true">
-                   
+
                      <h3 class="text-primary">{{spec_name}}</h3>
-                       <div class="card card-body my-3 p-2">                          
+                       <div class="card card-body my-3 p-2">
                            <div class="row">
                                <div class="col-sm-6 col-md-6">
                                    <h6>{{attributename}}<b style="color: red;">*</b></h6>
 
-                                   <div *ngFor="let match of attribute_value_list_new|keyvalue">                                    
+                                   <div *ngFor="let match of attribute_value_list_new|keyvalue">
                                     <ng-template [ngIf]="match.key == attributenameid" >
                                         <div class="form-floating">
                                             <select class="form-select" aria-label="Floating label select"   (change)="changevalue_edit($event,attributenameid)">
@@ -80,16 +81,17 @@
                                             <option *ngFor="let matchs of match.value" value="{{matchs.attributevalue_id}}" [selected]="matchs.attributevalue_id===attributevalue_id" >
                                                 {{matchs.attributevalue}}
                                                 </option>
-                                            </select>                                               
+                                            </select>
                                         </div>
-                                    </ng-template> 
+                                        <p class="small text-danger">{{tempError}}</p>
+                                    </ng-template>
                             </div>
-                                  
+
                                </div>
-   
+
                        </div>
                        </div>
-                    
+
                    </div>
 
                 <br />
@@ -125,7 +127,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                   
+
                                         <tr *ngFor="let pro of product_specification_list| paginate: {itemsPerPage: tableSize, currentPage: page, totalItems: count};let i = index">
                                             <td>{{i+1}}</td>
                                         <td>{{pro.specificationname}}</td>

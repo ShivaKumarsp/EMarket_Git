@@ -9,6 +9,7 @@ import { HeaderComponent } from 'src/app/component/header/header.component';
 import { LandingItemDetailsComponent } from '../landing-item-details/landing-item-details.component';
 import { InterfaceService } from 'src/app/AllPageService/interface.service';
 import { Guid } from 'guid-typescript';
+import { NgxSpinnerService } from 'ngx-spinner';
 declare var window: any;
 
 
@@ -18,7 +19,7 @@ declare var window: any;
   styleUrls: ['./landing.component.css']
 })
 export class LandingComponent implements OnInit {
-  spinner: any;
+ 
   toastr: any;
   formModel: any;
   matMenu:any;
@@ -28,7 +29,8 @@ export class LandingComponent implements OnInit {
    private allapi:AllapiService,
    private footer:FooterComponent,
    private header:HeaderComponent,
-   public Interface:InterfaceService) { }  
+   public Interface:InterfaceService,
+   public spinner:NgxSpinnerService) { }  
 
     customOptions: OwlOptions = {
       loop: true,
@@ -83,7 +85,7 @@ export class LandingComponent implements OnInit {
    
 
 
-
+     
    short_view_detail: any;
    product_list:any;
    category_list:any=[];
@@ -96,10 +98,11 @@ export class LandingComponent implements OnInit {
    banner_list:any;
    urlcheck:any;
    guid:any;
+   base64="data:image/jpeg;base64,";
+   imageBaseUrl='http://124.153.106.183:8015/EMarket_Image';
+   
   ngOnInit(): void {  
   
-
-
     const userRole = localStorage.getItem('Role');
    this.urlcheck= this.router.routerState.snapshot.url.split('/');
  if(this.urlcheck[1]!='app')
@@ -118,17 +121,28 @@ export class LandingComponent implements OnInit {
  {  
     window.location.replace("/app/accept_delivery");
  }
+ else if(userRole=="HubManager"){
 
+  window.location.replace('/app/hub_consignment_list');
+ }
+ else if(userRole=="FacilitationCenter"){
+
+  window.location.replace('/app/assign_item_from_vendor');
+ }
+
+
+ this.spinner.show();
       let requestFormUrl='Landing/getdata/';
     this.allapi.GetDataById_login(requestFormUrl,1).subscribe(response => {      
       this.product_list =response.product_list;
-      this.category_list = response.category_list;
-     
+      this.category_list = response.category_list;     
       this.itemslist_1 = JSON.parse(response.itemslist_1).Table;    
       this.itemslist_2 = JSON.parse(response.itemslist_2).Table;  
       this.banner_list = JSON.parse(response.banner_list).Table; 
-    });  
-  }
+    }); 
+    this.spinner.hide(); 
+
+     }
   
   viewproductdetails(_ss:any)
   {
